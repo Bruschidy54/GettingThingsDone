@@ -50,6 +50,15 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.toDoStore = toDoStore
         }
+        else if segue.identifier == "ViewToDoSegue" {
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                let toDo = toDoDataSource.toDos[selectedIndexPath.row]
+                
+                let destinationVC = segue.destination as! ItemDetailViewController
+                destinationVC.toDo = toDo
+                destinationVC.toDoStore = toDoStore
+            }
+        }
     }
     
 

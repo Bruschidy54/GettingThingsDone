@@ -24,6 +24,7 @@
 		CD7211421E724A7F00C475AA /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */; };
 		CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211431E72F72D00C475AA /* ToDoDataSource.swift */; };
 		CD7211461E72FA3600C475AA /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211451E72FA3600C475AA /* AddItemViewController.swift */; };
+		CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211471E74F01500C475AA /* ItemDetailViewController.swift */; };
 		CDD68A281E084BD300E32192 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD68A271E084BD300E32192 /* AppDelegate.swift */; };
 		CDD68A2D1E084BD300E32192 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD68A2B1E084BD300E32192 /* Main.storyboard */; };
 		CDD68A321E084BD300E32192 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD68A311E084BD300E32192 /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD7211431E72F72D00C475AA /* ToDoDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoDataSource.swift; sourceTree = "<group>"; };
 		CD7211451E72FA3600C475AA /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
+		CD7211471E74F01500C475AA /* ItemDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
 		CDD68A241E084BD300E32192 /* GettingThingsDone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GettingThingsDone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD68A271E084BD300E32192 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD68A2C1E084BD300E32192 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				CD72111E1E72037300C475AA /* CoreDataStack.swift */,
 				CDD68A271E084BD300E32192 /* AppDelegate.swift */,
 				CD7211011E6FB2F800C475AA /* ToDoViewController.swift */,
+				CD7211471E74F01500C475AA /* ItemDetailViewController.swift */,
 				CD7211431E72F72D00C475AA /* ToDoDataSource.swift */,
 				CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */,
 				CDD68A2B1E084BD300E32192 /* Main.storyboard */,
@@ -199,6 +202,7 @@
 				CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */,
 				CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */,
 				CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */,
+				CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */,
 				CD72113D1E724A7F00C475AA /* Project+CoreDataClass.swift in Sources */,
 				CD72113E1E724A7F00C475AA /* Project+CoreDataProperties.swift in Sources */,
 				CD72113C1E724A7F00C475AA /* Topic+CoreDataProperties.swift in Sources */,
