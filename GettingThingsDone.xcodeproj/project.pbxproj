@@ -8,23 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211011E6FB2F800C475AA /* ToDoViewController.swift */; };
-		CD7211051E71FBDE00C475AA /* GTDModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */; };
-		CD72110E1E7201B100C475AA /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211061E7201B100C475AA /* Project+CoreDataClass.swift */; };
-		CD72110F1E7201B100C475AA /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211071E7201B100C475AA /* Project+CoreDataProperties.swift */; };
-		CD7211101E7201B100C475AA /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211081E7201B100C475AA /* ToDo+CoreDataClass.swift */; };
-		CD7211111E7201B100C475AA /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211091E7201B100C475AA /* ToDo+CoreDataProperties.swift */; };
-		CD7211121E7201B100C475AA /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72110A1E7201B100C475AA /* NextAction+CoreDataClass.swift */; };
-		CD7211131E7201B100C475AA /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72110B1E7201B100C475AA /* NextAction+CoreDataProperties.swift */; };
-		CD7211141E7201B100C475AA /* Topic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72110C1E7201B100C475AA /* Topic+CoreDataClass.swift */; };
-		CD7211151E7201B100C475AA /* Topic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72110D1E7201B100C475AA /* Topic+CoreDataProperties.swift */; };
 		CD7211171E72033300C475AA /* ToDoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211161E72033300C475AA /* ToDoStore.swift */; };
 		CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211181E72034A00C475AA /* NextActionStore.swift */; };
 		CD72111B1E72035A00C475AA /* ProjectStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72111A1E72035A00C475AA /* ProjectStore.swift */; };
 		CD72111D1E72036800C475AA /* TopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72111C1E72036800C475AA /* TopicStore.swift */; };
 		CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72111E1E72037300C475AA /* CoreDataStack.swift */; };
+		CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */; };
+		CD72113B1E724A7F00C475AA /* Topic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211331E724A7F00C475AA /* Topic+CoreDataClass.swift */; };
+		CD72113C1E724A7F00C475AA /* Topic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211341E724A7F00C475AA /* Topic+CoreDataProperties.swift */; };
+		CD72113D1E724A7F00C475AA /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211351E724A7F00C475AA /* Project+CoreDataClass.swift */; };
+		CD72113E1E724A7F00C475AA /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211361E724A7F00C475AA /* Project+CoreDataProperties.swift */; };
+		CD72113F1E724A7F00C475AA /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211371E724A7F00C475AA /* NextAction+CoreDataClass.swift */; };
+		CD7211401E724A7F00C475AA /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211381E724A7F00C475AA /* NextAction+CoreDataProperties.swift */; };
+		CD7211411E724A7F00C475AA /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211391E724A7F00C475AA /* ToDo+CoreDataClass.swift */; };
+		CD7211421E724A7F00C475AA /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */; };
+		CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211431E72F72D00C475AA /* ToDoDataSource.swift */; };
+		CD7211461E72FA3600C475AA /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211451E72FA3600C475AA /* AddItemViewController.swift */; };
 		CDD68A281E084BD300E32192 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD68A271E084BD300E32192 /* AppDelegate.swift */; };
 		CDD68A2D1E084BD300E32192 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD68A2B1E084BD300E32192 /* Main.storyboard */; };
-		CDD68A301E084BD300E32192 /* GettingThingsDone.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CDD68A2E1E084BD300E32192 /* GettingThingsDone.xcdatamodeld */; };
 		CDD68A321E084BD300E32192 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD68A311E084BD300E32192 /* Assets.xcassets */; };
 		CDD68A351E084BD300E32192 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD68A331E084BD300E32192 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -32,23 +33,24 @@
 /* Begin PBXFileReference section */
 		CD7211011E6FB2F800C475AA /* ToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		CD7211041E71FBDE00C475AA /* GTDModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GTDModel.xcdatamodel; sourceTree = "<group>"; };
-		CD7211061E7201B100C475AA /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7211071E7201B100C475AA /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD7211081E7201B100C475AA /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7211091E7201B100C475AA /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD72110A1E7201B100C475AA /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD72110B1E7201B100C475AA /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD72110C1E7201B100C475AA /* Topic+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD72110D1E7201B100C475AA /* Topic+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD7211161E72033300C475AA /* ToDoStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoStore.swift; sourceTree = "<group>"; };
 		CD7211181E72034A00C475AA /* NextActionStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionStore.swift; sourceTree = "<group>"; };
 		CD72111A1E72035A00C475AA /* ProjectStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectStore.swift; sourceTree = "<group>"; };
 		CD72111C1E72036800C475AA /* TopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStore.swift; sourceTree = "<group>"; };
 		CD72111E1E72037300C475AA /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		CD7211331E724A7F00C475AA /* Topic+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD7211341E724A7F00C475AA /* Topic+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD7211351E724A7F00C475AA /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD7211361E724A7F00C475AA /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD7211371E724A7F00C475AA /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD7211381E724A7F00C475AA /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD7211391E724A7F00C475AA /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD7211431E72F72D00C475AA /* ToDoDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoDataSource.swift; sourceTree = "<group>"; };
+		CD7211451E72FA3600C475AA /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		CDD68A241E084BD300E32192 /* GettingThingsDone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GettingThingsDone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD68A271E084BD300E32192 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDD68A2C1E084BD300E32192 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		CDD68A2F1E084BD300E32192 /* GettingThingsDone.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GettingThingsDone.xcdatamodel; sourceTree = "<group>"; };
 		CDD68A311E084BD300E32192 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CDD68A341E084BD300E32192 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CDD68A361E084BD300E32192 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,27 +86,28 @@
 		CDD68A261E084BD300E32192 /* GettingThingsDone */ = {
 			isa = PBXGroup;
 			children = (
-				CD7211061E7201B100C475AA /* Project+CoreDataClass.swift */,
-				CD7211071E7201B100C475AA /* Project+CoreDataProperties.swift */,
+				CD7211331E724A7F00C475AA /* Topic+CoreDataClass.swift */,
+				CD7211341E724A7F00C475AA /* Topic+CoreDataProperties.swift */,
+				CD7211351E724A7F00C475AA /* Project+CoreDataClass.swift */,
+				CD7211361E724A7F00C475AA /* Project+CoreDataProperties.swift */,
+				CD7211371E724A7F00C475AA /* NextAction+CoreDataClass.swift */,
+				CD7211381E724A7F00C475AA /* NextAction+CoreDataProperties.swift */,
+				CD7211391E724A7F00C475AA /* ToDo+CoreDataClass.swift */,
+				CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */,
 				CD7211161E72033300C475AA /* ToDoStore.swift */,
 				CD7211181E72034A00C475AA /* NextActionStore.swift */,
 				CD72111A1E72035A00C475AA /* ProjectStore.swift */,
 				CD72111C1E72036800C475AA /* TopicStore.swift */,
 				CD72111E1E72037300C475AA /* CoreDataStack.swift */,
-				CD7211081E7201B100C475AA /* ToDo+CoreDataClass.swift */,
-				CD7211091E7201B100C475AA /* ToDo+CoreDataProperties.swift */,
-				CD72110A1E7201B100C475AA /* NextAction+CoreDataClass.swift */,
-				CD72110B1E7201B100C475AA /* NextAction+CoreDataProperties.swift */,
-				CD72110C1E7201B100C475AA /* Topic+CoreDataClass.swift */,
-				CD72110D1E7201B100C475AA /* Topic+CoreDataProperties.swift */,
 				CDD68A271E084BD300E32192 /* AppDelegate.swift */,
 				CD7211011E6FB2F800C475AA /* ToDoViewController.swift */,
+				CD7211431E72F72D00C475AA /* ToDoDataSource.swift */,
 				CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */,
 				CDD68A2B1E084BD300E32192 /* Main.storyboard */,
+				CD7211451E72FA3600C475AA /* AddItemViewController.swift */,
 				CDD68A311E084BD300E32192 /* Assets.xcassets */,
 				CDD68A331E084BD300E32192 /* LaunchScreen.storyboard */,
 				CDD68A361E084BD300E32192 /* Info.plist */,
-				CDD68A2E1E084BD300E32192 /* GettingThingsDone.xcdatamodeld */,
 			);
 			path = GettingThingsDone;
 			sourceTree = "<group>";
@@ -181,23 +184,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD7211131E7201B100C475AA /* NextAction+CoreDataProperties.swift in Sources */,
+				CD72113F1E724A7F00C475AA /* NextAction+CoreDataClass.swift in Sources */,
+				CD72113B1E724A7F00C475AA /* Topic+CoreDataClass.swift in Sources */,
+				CD7211401E724A7F00C475AA /* NextAction+CoreDataProperties.swift in Sources */,
 				CD72111B1E72035A00C475AA /* ProjectStore.swift in Sources */,
 				CD7211171E72033300C475AA /* ToDoStore.swift in Sources */,
-				CD7211141E7201B100C475AA /* Topic+CoreDataClass.swift in Sources */,
-				CD7211121E7201B100C475AA /* NextAction+CoreDataClass.swift in Sources */,
-				CD7211151E7201B100C475AA /* Topic+CoreDataProperties.swift in Sources */,
+				CD7211461E72FA3600C475AA /* AddItemViewController.swift in Sources */,
 				CDD68A281E084BD300E32192 /* AppDelegate.swift in Sources */,
 				CD72111D1E72036800C475AA /* TopicStore.swift in Sources */,
 				CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */,
-				CD7211111E7201B100C475AA /* ToDo+CoreDataProperties.swift in Sources */,
-				CD7211051E71FBDE00C475AA /* GTDModel.xcdatamodeld in Sources */,
+				CD7211411E724A7F00C475AA /* ToDo+CoreDataClass.swift in Sources */,
+				CD7211421E724A7F00C475AA /* ToDo+CoreDataProperties.swift in Sources */,
 				CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */,
 				CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */,
-				CDD68A301E084BD300E32192 /* GettingThingsDone.xcdatamodeld in Sources */,
-				CD72110F1E7201B100C475AA /* Project+CoreDataProperties.swift in Sources */,
-				CD7211101E7201B100C475AA /* ToDo+CoreDataClass.swift in Sources */,
-				CD72110E1E7201B100C475AA /* Project+CoreDataClass.swift in Sources */,
+				CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */,
+				CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */,
+				CD72113D1E724A7F00C475AA /* Project+CoreDataClass.swift in Sources */,
+				CD72113E1E724A7F00C475AA /* Project+CoreDataProperties.swift in Sources */,
+				CD72113C1E724A7F00C475AA /* Topic+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +314,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -336,6 +340,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dlb.GettingThingsDone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -372,16 +377,6 @@
 			currentVersion = CD7211041E71FBDE00C475AA /* GTDModel.xcdatamodel */;
 			name = GTDModel.xcdatamodeld;
 			path = ../GTDModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		CDD68A2E1E084BD300E32192 /* GettingThingsDone.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				CDD68A2F1E084BD300E32192 /* GettingThingsDone.xcdatamodel */,
-			);
-			currentVersion = CDD68A2F1E084BD300E32192 /* GettingThingsDone.xcdatamodel */;
-			path = GettingThingsDone.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

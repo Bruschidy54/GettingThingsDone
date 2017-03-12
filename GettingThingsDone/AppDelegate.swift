@@ -13,10 +13,19 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let toDoStore = ToDoStore()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let tabBarController = window?.rootViewController as! UITabBarController
+        // Look up how to do this
+        let navController = tabBarController.viewControllers?[0] as! UINavigationController
+        let toDoViewController = navController.topViewController as! ToDoViewController
+        
+        toDoViewController.toDoStore = toDoStore
+        
+        
         return true
     }
 
