@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD57ED7E1E78728D000661D5 /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */; };
+		CD57ED7F1E78728D000661D5 /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED7D1E78728D000661D5 /* ToDo+CoreDataProperties.swift */; };
+		CD57ED861E787A85000661D5 /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED801E787A85000661D5 /* Project+CoreDataClass.swift */; };
+		CD57ED871E787A85000661D5 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED811E787A85000661D5 /* Project+CoreDataProperties.swift */; };
+		CD57ED881E787A85000661D5 /* Topic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED821E787A85000661D5 /* Topic+CoreDataClass.swift */; };
+		CD57ED891E787A85000661D5 /* Topic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED831E787A85000661D5 /* Topic+CoreDataProperties.swift */; };
+		CD57ED8A1E787A85000661D5 /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED841E787A85000661D5 /* NextAction+CoreDataClass.swift */; };
+		CD57ED8B1E787A85000661D5 /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */; };
+		CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */; };
+		CD57ED8F1E788071000661D5 /* ItemTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8E1E788071000661D5 /* ItemTextField.swift */; };
 		CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211011E6FB2F800C475AA /* ToDoViewController.swift */; };
 		CD7211171E72033300C475AA /* ToDoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211161E72033300C475AA /* ToDoStore.swift */; };
 		CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211181E72034A00C475AA /* NextActionStore.swift */; };
@@ -14,14 +24,6 @@
 		CD72111D1E72036800C475AA /* TopicStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72111C1E72036800C475AA /* TopicStore.swift */; };
 		CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72111E1E72037300C475AA /* CoreDataStack.swift */; };
 		CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */; };
-		CD72113B1E724A7F00C475AA /* Topic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211331E724A7F00C475AA /* Topic+CoreDataClass.swift */; };
-		CD72113C1E724A7F00C475AA /* Topic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211341E724A7F00C475AA /* Topic+CoreDataProperties.swift */; };
-		CD72113D1E724A7F00C475AA /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211351E724A7F00C475AA /* Project+CoreDataClass.swift */; };
-		CD72113E1E724A7F00C475AA /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211361E724A7F00C475AA /* Project+CoreDataProperties.swift */; };
-		CD72113F1E724A7F00C475AA /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211371E724A7F00C475AA /* NextAction+CoreDataClass.swift */; };
-		CD7211401E724A7F00C475AA /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211381E724A7F00C475AA /* NextAction+CoreDataProperties.swift */; };
-		CD7211411E724A7F00C475AA /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211391E724A7F00C475AA /* ToDo+CoreDataClass.swift */; };
-		CD7211421E724A7F00C475AA /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */; };
 		CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211431E72F72D00C475AA /* ToDoDataSource.swift */; };
 		CD7211461E72FA3600C475AA /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211451E72FA3600C475AA /* AddItemViewController.swift */; };
 		CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211471E74F01500C475AA /* ItemDetailViewController.swift */; };
@@ -32,6 +34,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ToDo+CoreDataClass.swift"; path = "GettingThingsDone/ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD57ED7D1E78728D000661D5 /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ToDo+CoreDataProperties.swift"; path = "GettingThingsDone/ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD57ED801E787A85000661D5 /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataClass.swift"; path = "GettingThingsDone/Project+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD57ED811E787A85000661D5 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataProperties.swift"; path = "GettingThingsDone/Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD57ED821E787A85000661D5 /* Topic+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Topic+CoreDataClass.swift"; path = "GettingThingsDone/Topic+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD57ED831E787A85000661D5 /* Topic+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Topic+CoreDataProperties.swift"; path = "GettingThingsDone/Topic+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD57ED841E787A85000661D5 /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataClass.swift"; path = "GettingThingsDone/NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataProperties.swift"; path = "GettingThingsDone/NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemTextView.swift; path = GettingThingsDone/ItemTextView.swift; sourceTree = "<group>"; };
+		CD57ED8E1E788071000661D5 /* ItemTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTextField.swift; sourceTree = "<group>"; };
 		CD7211011E6FB2F800C475AA /* ToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		CD7211041E71FBDE00C475AA /* GTDModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GTDModel.xcdatamodel; sourceTree = "<group>"; };
 		CD7211161E72033300C475AA /* ToDoStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoStore.swift; sourceTree = "<group>"; };
@@ -39,14 +51,6 @@
 		CD72111A1E72035A00C475AA /* ProjectStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectStore.swift; sourceTree = "<group>"; };
 		CD72111C1E72036800C475AA /* TopicStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicStore.swift; sourceTree = "<group>"; };
 		CD72111E1E72037300C475AA /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
-		CD7211331E724A7F00C475AA /* Topic+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7211341E724A7F00C475AA /* Topic+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD7211351E724A7F00C475AA /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7211361E724A7F00C475AA /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD7211371E724A7F00C475AA /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7211381E724A7F00C475AA /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD7211391E724A7F00C475AA /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD7211431E72F72D00C475AA /* ToDoDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoDataSource.swift; sourceTree = "<group>"; };
 		CD7211451E72FA3600C475AA /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		CD7211471E74F01500C475AA /* ItemDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +76,16 @@
 		CDD68A1B1E084BD200E32192 = {
 			isa = PBXGroup;
 			children = (
+				CD57ED801E787A85000661D5 /* Project+CoreDataClass.swift */,
+				CD57ED811E787A85000661D5 /* Project+CoreDataProperties.swift */,
+				CD57ED821E787A85000661D5 /* Topic+CoreDataClass.swift */,
+				CD57ED831E787A85000661D5 /* Topic+CoreDataProperties.swift */,
+				CD57ED841E787A85000661D5 /* NextAction+CoreDataClass.swift */,
+				CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */,
+				CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */,
+				CD57ED8E1E788071000661D5 /* ItemTextField.swift */,
+				CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */,
+				CD57ED7D1E78728D000661D5 /* ToDo+CoreDataProperties.swift */,
 				CDD68A261E084BD300E32192 /* GettingThingsDone */,
 				CDD68A251E084BD300E32192 /* Products */,
 			);
@@ -88,14 +102,6 @@
 		CDD68A261E084BD300E32192 /* GettingThingsDone */ = {
 			isa = PBXGroup;
 			children = (
-				CD7211331E724A7F00C475AA /* Topic+CoreDataClass.swift */,
-				CD7211341E724A7F00C475AA /* Topic+CoreDataProperties.swift */,
-				CD7211351E724A7F00C475AA /* Project+CoreDataClass.swift */,
-				CD7211361E724A7F00C475AA /* Project+CoreDataProperties.swift */,
-				CD7211371E724A7F00C475AA /* NextAction+CoreDataClass.swift */,
-				CD7211381E724A7F00C475AA /* NextAction+CoreDataProperties.swift */,
-				CD7211391E724A7F00C475AA /* ToDo+CoreDataClass.swift */,
-				CD72113A1E724A7F00C475AA /* ToDo+CoreDataProperties.swift */,
 				CD7211161E72033300C475AA /* ToDoStore.swift */,
 				CD7211181E72034A00C475AA /* NextActionStore.swift */,
 				CD72111A1E72035A00C475AA /* ProjectStore.swift */,
@@ -187,25 +193,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD72113F1E724A7F00C475AA /* NextAction+CoreDataClass.swift in Sources */,
-				CD72113B1E724A7F00C475AA /* Topic+CoreDataClass.swift in Sources */,
-				CD7211401E724A7F00C475AA /* NextAction+CoreDataProperties.swift in Sources */,
+				CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */,
+				CD57ED8A1E787A85000661D5 /* NextAction+CoreDataClass.swift in Sources */,
+				CD57ED7F1E78728D000661D5 /* ToDo+CoreDataProperties.swift in Sources */,
 				CD72111B1E72035A00C475AA /* ProjectStore.swift in Sources */,
 				CD7211171E72033300C475AA /* ToDoStore.swift in Sources */,
+				CD57ED861E787A85000661D5 /* Project+CoreDataClass.swift in Sources */,
 				CD7211461E72FA3600C475AA /* AddItemViewController.swift in Sources */,
 				CDD68A281E084BD300E32192 /* AppDelegate.swift in Sources */,
 				CD72111D1E72036800C475AA /* TopicStore.swift in Sources */,
+				CD57ED8F1E788071000661D5 /* ItemTextField.swift in Sources */,
+				CD57ED881E787A85000661D5 /* Topic+CoreDataClass.swift in Sources */,
+				CD57ED871E787A85000661D5 /* Project+CoreDataProperties.swift in Sources */,
 				CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */,
-				CD7211411E724A7F00C475AA /* ToDo+CoreDataClass.swift in Sources */,
-				CD7211421E724A7F00C475AA /* ToDo+CoreDataProperties.swift in Sources */,
 				CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */,
 				CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */,
 				CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */,
 				CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */,
+				CD57ED8B1E787A85000661D5 /* NextAction+CoreDataProperties.swift in Sources */,
 				CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */,
-				CD72113D1E724A7F00C475AA /* Project+CoreDataClass.swift in Sources */,
-				CD72113E1E724A7F00C475AA /* Project+CoreDataProperties.swift in Sources */,
-				CD72113C1E724A7F00C475AA /* Topic+CoreDataProperties.swift in Sources */,
+				CD57ED891E787A85000661D5 /* Topic+CoreDataProperties.swift in Sources */,
+				CD57ED7E1E78728D000661D5 /* ToDo+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

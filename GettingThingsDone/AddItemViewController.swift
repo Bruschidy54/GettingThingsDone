@@ -194,7 +194,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 let newToDo = NSEntityDescription.insertNewObject(forEntityName: "ToDo", into: context)
             newToDo.setValue(toDoTitle, forKey: "name")
             newToDo.setValue(toDoNotes, forKey: "details")
-            newToDo.setValue(NSDate(), forKey: "datecreated")
             
             do {
                 try self.toDoStore?.coreDataStack.saveChanges()

@@ -2,7 +2,7 @@
 //  ToDo+CoreDataProperties.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/9/17.
+//  Created by Dylan Bruschi on 3/14/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
@@ -20,6 +20,7 @@ extension ToDo {
     @NSManaged public var details: String?
     @NSManaged public var name: String?
     @NSManaged public var review: Bool
+    @NSManaged public var id: String?
     @NSManaged public var reviewtopic: Topic?
 
 }

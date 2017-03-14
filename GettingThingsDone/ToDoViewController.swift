@@ -27,7 +27,6 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         super.viewWillAppear(true)
   
         let allToDos = try! self.toDoStore.fetchMainQueueToDos()
-        print(allToDos)
         
         OperationQueue.main.addOperation {
             self.toDoDataSource.toDos = allToDos

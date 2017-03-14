@@ -7,26 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
-class ItemDetailViewController: UIViewController {
+class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var titleTextField: UITextField!
-    
     @IBOutlet var durationLabel: UILabel!
     @IBOutlet var durationSlider: UISlider!
     @IBOutlet var dueDateLabel: UILabel!
     @IBOutlet var dueDateFullDateLabel: UILabel!
     @IBOutlet var priorityLabel: UILabel!
-    
     @IBOutlet var prioritySlider: UISlider!
-    
     @IBOutlet var notesLabel: UILabel!
-    
     @IBOutlet var notesTextView: UITextView!
-    
     @IBOutlet var relatedToButton: UIButton!
     @IBOutlet var classifyButton: UIButton!
+    @IBOutlet var dueDatePicker: UIDatePicker!
+    
     
     
     var toDo: ToDo?
@@ -35,6 +33,42 @@ class ItemDetailViewController: UIViewController {
     
     @IBAction func onBackButtonTapped(_ sender: Any) {
          self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @IBAction func onEditButtonTapped(_ sender: UIBarButtonItem) {
+        if sender.title == "Edit" {
+        sender.title = "Done"
+        print("Begin editing")
+        titleTextField.isEnabled = true
+            prioritySlider.isEnabled = true
+            durationSlider.isEnabled = true
+            notesTextView.isEditable = true
+            if toDo == nil {
+            dueDatePicker.isHidden = false
+            dueDateFullDateLabel.isHidden = true
+            }
+    }
+        else if sender.title == "Done" {
+            // To do: Save item
+            sender.title = "Edit"
+            print("End editing")
+            titleTextField.isEnabled = false
+            prioritySlider.isEnabled = false
+            durationSlider.isEnabled = false
+            notesTextView.isEditable = false
+            if toDo == nil {
+                dueDatePicker.isHidden = true
+                dueDateFullDateLabel.isHidden = false
+            }
+            let toDoDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "datecreated" : toDo?.datecreated as Any, "review" : toDo?.review as Any, "details": notesTextView.text as Any, "id": toDo?.id]
+            do {
+               try self.toDoStore.updateToDo(toDoDict: toDoDict)
+                print("To Do successfully updated")
+                } catch {
+                    print(error)
+                }
+    }
     }
     
 
@@ -54,6 +88,11 @@ class ItemDetailViewController: UIViewController {
         dueDateLabel.isHidden = true
         dueDateFullDateLabel.isHidden = true
         relatedToButton.isHidden = true
+        dueDatePicker.isHidden = true
+        prioritySlider.isEnabled = false
+        durationSlider.isEnabled = false
+        notesTextView.isEditable = false
+        titleTextField.isEnabled = false
         
         
     }
@@ -62,6 +101,8 @@ class ItemDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+
     
 
     /*

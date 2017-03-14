@@ -37,4 +37,33 @@ class ToDoStore {
         return toDos
     }
     
+    func updateToDo(toDoDict: Dictionary<String, Any>) throws {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDo")
+        fetchRequest.predicate = NSPredicate(format: "id = %@", toDoDict["id"] as! String)
+        let context = coreDataStack.mainQueueContext
+        
+        var mainQueueToDos: [ToDo]?
+        
+        var fetchRequestError: Error?
+        context.performAndWait({
+            do {
+                mainQueueToDos = try context.fetch(fetchRequest) as? [ToDo]
+                let managedObject = mainQueueToDos?.first
+                managedObject?.setValue(toDoDict["name"], forKey: "name")
+                managedObject?.setValue(toDoDict["datecreated"], forKey: "datecreated")
+                managedObject?.setValue(toDoDict["details"], forKey: "details")
+                managedObject?.setValue(toDoDict["review"], forKey: "review")
+                try self.coreDataStack.saveChanges()
+                
+            }
+            catch let error {
+                fetchRequestError = error
+            }
+            
+        })
+        guard let toDos = mainQueueToDos else {
+            throw fetchRequestError!
+        }
+    }
+    
 }

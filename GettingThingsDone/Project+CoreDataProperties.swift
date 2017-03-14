@@ -2,7 +2,7 @@
 //  Project+CoreDataProperties.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/9/17.
+//  Created by Dylan Bruschi on 3/14/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
@@ -20,6 +20,7 @@ extension Project {
     @NSManaged public var details: String?
     @NSManaged public var duedate: NSDate?
     @NSManaged public var name: String?
+    @NSManaged public var id: String?
     @NSManaged public var nextActions: NSSet?
     @NSManaged public var topic: Topic?
 
