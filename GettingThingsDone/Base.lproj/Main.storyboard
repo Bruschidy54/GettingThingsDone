@@ -44,7 +44,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xad-iS-AJe">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xad-iS-AJe" customClass="ItemTextField" customModule="GettingThingsDone" customModuleProvider="target">
                                                 <rect key="frame" x="80.5" y="0.0" width="270.5" height="20.5"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -247,10 +247,10 @@
             </objects>
             <point key="canvasLocation" x="2927.1999999999998" y="1035.832083958021"/>
         </scene>
-        <!--View Controller-->
+        <!--Next Actions-->
         <scene sceneID="dHH-EX-lkZ">
             <objects>
-                <viewController id="tsR-Vh-bVg" sceneMemberID="viewController">
+                <viewController id="tsR-Vh-bVg" customClass="NextActionViewController" customModule="GettingThingsDone" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tmA-qf-faI"/>
                         <viewControllerLayoutGuide type="bottom" id="ZXs-Ek-yj8"/>
@@ -263,15 +263,21 @@
                                 <rect key="frame" x="16" y="64" width="343" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="S1n-PN-FcO">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NextActionCell" id="S1n-PN-FcO">
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S1n-PN-FcO" id="2U2-vH-g7W">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="vQN-a8-b0Q" kind="show" identifier="ViewNextActionSegue" id="SLD-Lm-l6B"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="delegate" destination="tsR-Vh-bVg" id="9aF-e0-H37"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -282,7 +288,16 @@
                             <constraint firstItem="lMh-PL-cZc" firstAttribute="top" secondItem="tmA-qf-faI" secondAttribute="bottom" id="pLO-UH-pLB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="qWc-t0-NgP"/>
+                    <navigationItem key="navigationItem" title="Next Actions" id="qWc-t0-NgP">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="6Q4-8S-mup">
+                            <connections>
+                                <segue destination="mIS-3t-hLE" kind="show" identifier="AddItemSegue" id="6fV-Z0-8CT"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="lMh-PL-cZc" id="e3X-cA-KPm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B53-Ue-8bF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -306,7 +321,7 @@
             </objects>
             <point key="canvasLocation" x="2927.1999999999998" y="211.84407796101951"/>
         </scene>
-        <!--To Do View Controller-->
+        <!--In Tray-->
         <scene sceneID="Owj-xF-gEG">
             <objects>
                 <viewController id="yoR-YO-TbH" customClass="ToDoViewController" customModule="GettingThingsDone" customModuleProvider="target" sceneMemberID="viewController">
@@ -348,7 +363,7 @@
                             <constraint firstItem="XBK-5V-DMi" firstAttribute="leading" secondItem="JUV-AB-90A" secondAttribute="leadingMargin" id="y5S-ks-G0M"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="aER-1w-TbF">
+                    <navigationItem key="navigationItem" title="In Tray" id="aER-1w-TbF">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xXz-yd-2zv">
                             <connections>
                                 <segue destination="mIS-3t-hLE" kind="show" identifier="AddItemSegue" id="r0e-dq-Za4"/>
@@ -708,7 +723,7 @@
                                             </slider>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mFG-pG-Eeq">
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mFG-pG-Eeq">
                                         <rect key="frame" x="0.0" y="94.5" width="351" height="150"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xVC-k2-roa">
@@ -718,7 +733,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ud9-Dg-zY0" customClass="ItemTextView" customModule="GettingThingsDone" customModuleProvider="target">
-                                                <rect key="frame" x="45.5" y="0.0" width="305.5" height="150"/>
+                                                <rect key="frame" x="53.5" y="0.0" width="297.5" height="150"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
@@ -791,12 +806,12 @@
                         <outlet property="dueDateLabel" destination="NWE-DV-w6q" id="vYe-P7-fNU"/>
                         <outlet property="dueDatePicker" destination="g5e-Rt-qbz" id="4Oq-rm-AzV"/>
                         <outlet property="durationLabel" destination="kYa-iN-ug5" id="QeH-rF-ufw"/>
-                        <outlet property="durationSlider" destination="C96-Nr-24a" id="6jb-HB-Cub"/>
+                        <outlet property="durationSlider" destination="C96-Nr-24a" id="wC7-P2-Pbi"/>
                         <outlet property="notesLabel" destination="xVC-k2-roa" id="8j8-we-7zW"/>
                         <outlet property="notesTextView" destination="ud9-Dg-zY0" id="hnc-xZ-YZt"/>
                         <outlet property="pickerView" destination="87f-q4-Uj8" id="nq1-eg-fQC"/>
                         <outlet property="priorityLabel" destination="U3C-0T-J81" id="tIV-B8-V1X"/>
-                        <outlet property="prioritySlider" destination="E7a-Y7-MIg" id="IKI-EE-X8X"/>
+                        <outlet property="prioritySlider" destination="E7a-Y7-MIg" id="EWZ-Jr-tFP"/>
                         <outlet property="relatedToButton" destination="qxQ-jR-HDg" id="WvT-iB-LRY"/>
                         <outlet property="titleLabel" destination="z9d-oV-nv7" id="1fC-G8-gJK"/>
                         <outlet property="titleTextField" destination="dKW-DV-tUz" id="bGz-ji-jUc"/>
@@ -807,4 +822,8 @@
             <point key="canvasLocation" x="-297" y="1168"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="6fV-Z0-8CT"/>
+        <segue reference="SLD-Lm-l6B"/>
+    </inferredMetricsTieBreakers>
 </document>

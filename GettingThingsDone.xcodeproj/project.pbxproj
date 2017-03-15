@@ -17,6 +17,8 @@
 		CD57ED8B1E787A85000661D5 /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */; };
 		CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */; };
 		CD57ED8F1E788071000661D5 /* ItemTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8E1E788071000661D5 /* ItemTextField.swift */; };
+		CD57ED911E78C7EB000661D5 /* NextActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */; };
+		CD57ED931E78CA39000661D5 /* NextActionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */; };
 		CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211011E6FB2F800C475AA /* ToDoViewController.swift */; };
 		CD7211171E72033300C475AA /* ToDoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211161E72033300C475AA /* ToDoStore.swift */; };
 		CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211181E72034A00C475AA /* NextActionStore.swift */; };
@@ -44,6 +46,8 @@
 		CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataProperties.swift"; path = "GettingThingsDone/NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemTextView.swift; path = GettingThingsDone/ItemTextView.swift; sourceTree = "<group>"; };
 		CD57ED8E1E788071000661D5 /* ItemTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTextField.swift; sourceTree = "<group>"; };
+		CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionViewController.swift; sourceTree = "<group>"; };
+		CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionDataSource.swift; sourceTree = "<group>"; };
 		CD7211011E6FB2F800C475AA /* ToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		CD7211041E71FBDE00C475AA /* GTDModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GTDModel.xcdatamodel; sourceTree = "<group>"; };
 		CD7211161E72033300C475AA /* ToDoStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoStore.swift; sourceTree = "<group>"; };
@@ -105,6 +109,7 @@
 				CD7211161E72033300C475AA /* ToDoStore.swift */,
 				CD7211181E72034A00C475AA /* NextActionStore.swift */,
 				CD72111A1E72035A00C475AA /* ProjectStore.swift */,
+				CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */,
 				CD72111C1E72036800C475AA /* TopicStore.swift */,
 				CD72111E1E72037300C475AA /* CoreDataStack.swift */,
 				CDD68A271E084BD300E32192 /* AppDelegate.swift */,
@@ -113,6 +118,7 @@
 				CD7211431E72F72D00C475AA /* ToDoDataSource.swift */,
 				CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */,
 				CDD68A2B1E084BD300E32192 /* Main.storyboard */,
+				CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */,
 				CD7211451E72FA3600C475AA /* AddItemViewController.swift */,
 				CDD68A311E084BD300E32192 /* Assets.xcassets */,
 				CDD68A331E084BD300E32192 /* LaunchScreen.storyboard */,
@@ -194,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */,
+				CD57ED911E78C7EB000661D5 /* NextActionViewController.swift in Sources */,
 				CD57ED8A1E787A85000661D5 /* NextAction+CoreDataClass.swift in Sources */,
 				CD57ED7F1E78728D000661D5 /* ToDo+CoreDataProperties.swift in Sources */,
 				CD72111B1E72035A00C475AA /* ProjectStore.swift in Sources */,
@@ -213,6 +220,7 @@
 				CD57ED8B1E787A85000661D5 /* NextAction+CoreDataProperties.swift in Sources */,
 				CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */,
 				CD57ED891E787A85000661D5 /* Topic+CoreDataProperties.swift in Sources */,
+				CD57ED931E78CA39000661D5 /* NextActionDataSource.swift in Sources */,
 				CD57ED7E1E78728D000661D5 /* ToDo+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,6 +13,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     @IBOutlet var tableView: UITableView!
     
     var toDoStore: ToDoStore!
+    var nextActionStore: NextActionStore!
     let toDoDataSource = ToDoDataSource()
     
 
@@ -25,6 +26,8 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+         self.tabBarController?.tabBar.isHidden = false
   
         let allToDos = try! self.toDoStore.fetchMainQueueToDos()
         
@@ -40,7 +43,9 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "Complete"
+    }
 
     
     // MARK: - Navigation

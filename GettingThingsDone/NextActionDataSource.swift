@@ -1,28 +1,28 @@
 //
-//  ToDoDataSource.swift
+//  NextActionDataStore.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/10/17.
+//  Created by Dylan Bruschi on 3/14/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
 import UIKit
 
-class ToDoDataSource: NSObject, UITableViewDataSource {
+class NextActionDataSource: NSObject, UITableViewDataSource {
     
-    var toDos = [ToDo]()
-    let toDoStore = ToDoStore()
+    var nextActions = [NextAction]()
+    let nextActionStore = NextActionStore()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toDos.count
+        return nextActions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = "ToDoCell"
+        let identifier = "NextActionCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
-        let toDo = toDos[indexPath.row]
-        cell.textLabel?.text = toDo.name
+        let nextAction = nextActions[indexPath.row]
+        cell.textLabel?.text = nextAction.name
         
         return cell
     }
@@ -30,15 +30,15 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-  
     
-     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let id = toDos[indexPath.row].id
-            toDos.remove(at: indexPath.row)
+            let id = nextActions[indexPath.row].id
+            nextActions.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             do {
-            try toDoStore.deleteToDo(id: id!)
+                try nextActionStore.deleteNextAction(id: id!)
             }catch {
                 print("Error deleting To Do: \(error)")
             }

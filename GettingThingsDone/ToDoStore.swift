@@ -50,9 +50,7 @@ class ToDoStore {
                 mainQueueToDos = try context.fetch(fetchRequest) as? [ToDo]
                 let managedObject = mainQueueToDos?.first
                 managedObject?.setValue(toDoDict["name"], forKey: "name")
-                managedObject?.setValue(toDoDict["datecreated"], forKey: "datecreated")
                 managedObject?.setValue(toDoDict["details"], forKey: "details")
-                managedObject?.setValue(toDoDict["review"], forKey: "review")
                 try self.coreDataStack.saveChanges()
                 
             }
@@ -61,9 +59,38 @@ class ToDoStore {
             }
             
         })
-        guard let toDos = mainQueueToDos else {
+        guard mainQueueToDos != nil else {
             throw fetchRequestError!
+      
         }
     }
     
+    
+    func deleteToDo(id: String) throws {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ToDo")
+        fetchRequest.predicate = NSPredicate(format: "id = %@", id)
+        let context = coreDataStack.mainQueueContext
+        
+        var mainQueueToDos: [ToDo]?
+        
+        var fetchRequestError: Error?
+        context.performAndWait({
+            do {
+                mainQueueToDos = try context.fetch(fetchRequest) as? [ToDo]
+              let managedObject = mainQueueToDos?[0]
+                context.delete(managedObject!)
+                try self.coreDataStack.saveChanges()
+                
+            }
+            catch let error {
+                fetchRequestError = error
+            }
+            
+        })
+        guard mainQueueToDos != nil else {
+            throw fetchRequestError!
+            
+        }
+
+    }
 }

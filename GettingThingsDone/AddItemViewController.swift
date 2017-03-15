@@ -25,10 +25,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet var relatedToButton: UIButton!
     
     
+    // Make contexts a Core Data object instead
     let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Topic"]
     var itemType: String = ""
     var toDoStore: ToDoStore!
-    
+    var nextActionStore: NextActionStore!
     
     
     
@@ -182,6 +183,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func createItem() {
+        if titleTextField.text != "" {
         switch itemType {
         case "Choose an Options":
             return
@@ -204,12 +206,49 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             
             break
+        case "Next Action":
+            guard let title = titleTextField.text, let notes = notesTextView.text else {
+                print("Error: Title and/or notes came back as nil")
+                return
+            }
+            let priority = Int(prioritySlider.value)
+            let duration = Int(durationSlider.value)
+            let date = dueDatePicker.date
+            let context = self.nextActionStore.coreDataStack.mainQueueContext
+            let newNextAction = NSEntityDescription.insertNewObject(forEntityName: "NextAction", into: context)
+            newNextAction.setValue(title, forKey: "name")
+            newNextAction.setValue(priority, forKey: "priority")
+            newNextAction.setValue(duration, forKey: "processingtime")
+            newNextAction.setValue(date, forKey: "duedate")
+            newNextAction.setValue(notes, forKey: "details")
+            
+            do {
+                try self.nextActionStore?.coreDataStack.saveChanges()
+                print("Save Complete")
+            }
+            catch let error {
+                print("Core data save failed: \(error)")
+            }
+            
+            break
         case "Project":
             break
         case "Topic":
             break
         default:
             break
+        }
+        }
+        else {
+            let title = "Item not created"
+            let message = "Please enter a title and resubmit"
+            
+            let ac = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            ac.addAction(cancelAction)
+            
+            present(ac, animated: true, completion: nil)
         }
     }
     
