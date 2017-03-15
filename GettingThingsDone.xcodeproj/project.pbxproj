@@ -13,12 +13,12 @@
 		CD57ED871E787A85000661D5 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED811E787A85000661D5 /* Project+CoreDataProperties.swift */; };
 		CD57ED881E787A85000661D5 /* Topic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED821E787A85000661D5 /* Topic+CoreDataClass.swift */; };
 		CD57ED891E787A85000661D5 /* Topic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED831E787A85000661D5 /* Topic+CoreDataProperties.swift */; };
-		CD57ED8A1E787A85000661D5 /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED841E787A85000661D5 /* NextAction+CoreDataClass.swift */; };
-		CD57ED8B1E787A85000661D5 /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */; };
 		CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */; };
 		CD57ED8F1E788071000661D5 /* ItemTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8E1E788071000661D5 /* ItemTextField.swift */; };
 		CD57ED911E78C7EB000661D5 /* NextActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */; };
 		CD57ED931E78CA39000661D5 /* NextActionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */; };
+		CD57ED961E79B7FF000661D5 /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED941E79B7FF000661D5 /* NextAction+CoreDataClass.swift */; };
+		CD57ED971E79B7FF000661D5 /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED951E79B7FF000661D5 /* NextAction+CoreDataProperties.swift */; };
 		CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211011E6FB2F800C475AA /* ToDoViewController.swift */; };
 		CD7211171E72033300C475AA /* ToDoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211161E72033300C475AA /* ToDoStore.swift */; };
 		CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211181E72034A00C475AA /* NextActionStore.swift */; };
@@ -42,12 +42,12 @@
 		CD57ED811E787A85000661D5 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataProperties.swift"; path = "GettingThingsDone/Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD57ED821E787A85000661D5 /* Topic+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Topic+CoreDataClass.swift"; path = "GettingThingsDone/Topic+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CD57ED831E787A85000661D5 /* Topic+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Topic+CoreDataProperties.swift"; path = "GettingThingsDone/Topic+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD57ED841E787A85000661D5 /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataClass.swift"; path = "GettingThingsDone/NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataProperties.swift"; path = "GettingThingsDone/NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemTextView.swift; path = GettingThingsDone/ItemTextView.swift; sourceTree = "<group>"; };
 		CD57ED8E1E788071000661D5 /* ItemTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTextField.swift; sourceTree = "<group>"; };
 		CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionViewController.swift; sourceTree = "<group>"; };
 		CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionDataSource.swift; sourceTree = "<group>"; };
+		CD57ED941E79B7FF000661D5 /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataClass.swift"; path = "GettingThingsDone/NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD57ED951E79B7FF000661D5 /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataProperties.swift"; path = "GettingThingsDone/NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD7211011E6FB2F800C475AA /* ToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		CD7211041E71FBDE00C475AA /* GTDModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GTDModel.xcdatamodel; sourceTree = "<group>"; };
 		CD7211161E72033300C475AA /* ToDoStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoStore.swift; sourceTree = "<group>"; };
@@ -80,12 +80,12 @@
 		CDD68A1B1E084BD200E32192 = {
 			isa = PBXGroup;
 			children = (
+				CD57ED941E79B7FF000661D5 /* NextAction+CoreDataClass.swift */,
+				CD57ED951E79B7FF000661D5 /* NextAction+CoreDataProperties.swift */,
 				CD57ED801E787A85000661D5 /* Project+CoreDataClass.swift */,
 				CD57ED811E787A85000661D5 /* Project+CoreDataProperties.swift */,
 				CD57ED821E787A85000661D5 /* Topic+CoreDataClass.swift */,
 				CD57ED831E787A85000661D5 /* Topic+CoreDataProperties.swift */,
-				CD57ED841E787A85000661D5 /* NextAction+CoreDataClass.swift */,
-				CD57ED851E787A85000661D5 /* NextAction+CoreDataProperties.swift */,
 				CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */,
 				CD57ED8E1E788071000661D5 /* ItemTextField.swift */,
 				CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */,
@@ -199,9 +199,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD57ED971E79B7FF000661D5 /* NextAction+CoreDataProperties.swift in Sources */,
 				CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */,
 				CD57ED911E78C7EB000661D5 /* NextActionViewController.swift in Sources */,
-				CD57ED8A1E787A85000661D5 /* NextAction+CoreDataClass.swift in Sources */,
 				CD57ED7F1E78728D000661D5 /* ToDo+CoreDataProperties.swift in Sources */,
 				CD72111B1E72035A00C475AA /* ProjectStore.swift in Sources */,
 				CD7211171E72033300C475AA /* ToDoStore.swift in Sources */,
@@ -214,10 +214,10 @@
 				CD57ED871E787A85000661D5 /* Project+CoreDataProperties.swift in Sources */,
 				CD7211191E72034A00C475AA /* NextActionStore.swift in Sources */,
 				CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */,
+				CD57ED961E79B7FF000661D5 /* NextAction+CoreDataClass.swift in Sources */,
 				CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */,
 				CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */,
 				CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */,
-				CD57ED8B1E787A85000661D5 /* NextAction+CoreDataProperties.swift in Sources */,
 				CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */,
 				CD57ED891E787A85000661D5 /* Topic+CoreDataProperties.swift in Sources */,
 				CD57ED931E78CA39000661D5 /* NextActionDataSource.swift in Sources */,

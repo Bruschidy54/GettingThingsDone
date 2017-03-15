@@ -28,6 +28,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     // Make contexts a Core Data object instead
     let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Topic"]
     var itemType: String = ""
+    var reclassifiedToDo: ToDo!
+    var reclassifiedNextAction: NextAction!
     var toDoStore: ToDoStore!
     var nextActionStore: NextActionStore!
     
@@ -44,7 +46,27 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         // Show error if form is incomplete or itemType = "Choose an option"
         createItem()
         
-         self.navigationController?.popViewController(animated: true)
+        if reclassifiedToDo != nil {
+            let id = reclassifiedToDo?.id
+            do  {
+                try toDoStore.deleteToDo(id: id!)
+            } catch {
+                print("Error deleting To Do: \(error)")
+            }
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+        else if reclassifiedNextAction != nil {
+            let id = reclassifiedNextAction?.id
+            do  {
+                try nextActionStore.deleteNextAction(id: id!)
+            } catch {
+                print("Error deleting To Do: \(error)")
+            }
+            self.navigationController?.popToRootViewController(animated: true)
+        } else {
+
+     self.navigationController?.popViewController(animated: true)
+        }
     }
 
     override func viewDidLoad() {
@@ -60,8 +82,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        
         if itemType == "" {
-            // Make form hidden
             titleLabel.isHidden = true
             titleTextField.isHidden = true
             priorityLabel.isHidden = true
@@ -73,6 +95,20 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             dueDateLabel.isHidden = true
             dueDatePicker.isHidden = true
             relatedToButton.isHidden = true
+        }
+        
+        if reclassifiedToDo != nil {
+            titleTextField.text = reclassifiedToDo?.name
+            notesTextView.text = reclassifiedToDo?.details
+            
+        }
+        else if reclassifiedNextAction != nil{
+            titleTextField.text = reclassifiedNextAction?.name
+            notesTextView.text = reclassifiedNextAction?.details
+            prioritySlider.value = (reclassifiedNextAction?.priority)!
+            durationSlider.value = (reclassifiedNextAction?.processingtime)!
+            dueDatePicker.date = (reclassifiedNextAction?.duedate)! as Date
+            
         }
     }
 
@@ -211,8 +247,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("Error: Title and/or notes came back as nil")
                 return
             }
-            let priority = Int(prioritySlider.value)
-            let duration = Int(durationSlider.value)
+            let priority = prioritySlider.value
+            let duration = durationSlider.value
             let date = dueDatePicker.date
             let context = self.nextActionStore.coreDataStack.mainQueueContext
             let newNextAction = NSEntityDescription.insertNewObject(forEntityName: "NextAction", into: context)
@@ -253,14 +289,23 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+//    // MARK: - Navigation
+//
+//    // In a storyboard-based application, you will often want to do a little preparation before navigation
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "ToDoSegue" {
+//            let destinationVC = segue.destination as! ToDoViewController
+//            destinationVC.nextActionStore = nextActionStore
+//            destinationVC.toDoStore = toDoStore
+//        }
+//        else if segue.identifier == "NextActionSegue" {
+//            let destinationVC = segue.destination as! NextActionViewController
+//            destinationVC.nextActionStore = nextActionStore
+//            destinationVC.toDoStore = toDoStore
+//        }
+//        
+//        // Complete with Reference Segue
+//    }
 
 }

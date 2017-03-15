@@ -37,9 +37,9 @@ class NextActionStore {
         return nextActions
     }
     
-    func updateNextActions(toDoDict: Dictionary<String, Any>) throws {
+    func updateNextActions(nextActionDict: Dictionary<String, Any>) throws {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "NextAction")
-        fetchRequest.predicate = NSPredicate(format: "id = %@", toDoDict["id"] as! String)
+        fetchRequest.predicate = NSPredicate(format: "id = %@", nextActionDict["id"] as! String)
         let context = coreDataStack.mainQueueContext
         
         var mainQueueNextActions: [NextAction]?
@@ -49,11 +49,11 @@ class NextActionStore {
             do {
                 mainQueueNextActions = try context.fetch(fetchRequest) as? [NextAction]
                 let managedObject = mainQueueNextActions?.first
-                managedObject?.setValue(toDoDict["priority"], forKey: "priority")
-                managedObject?.setValue(toDoDict["processingtime"], forKey: "processingtime")
-                managedObject?.setValue(toDoDict["name"], forKey: "name")
-                    managedObject?.setValue(toDoDict["duedate"], forKey: "duedate")
-                managedObject?.setValue(toDoDict["details"], forKey: "details")
+                managedObject?.setValue(nextActionDict["priority"], forKey: "priority")
+                managedObject?.setValue(nextActionDict["processingtime"], forKey: "processingtime")
+                managedObject?.setValue(nextActionDict["name"], forKey: "name")
+                    managedObject?.setValue(nextActionDict["duedate"], forKey: "duedate")
+                managedObject?.setValue(nextActionDict["details"], forKey: "details")
                 try self.coreDataStack.saveChanges()
                 
             }

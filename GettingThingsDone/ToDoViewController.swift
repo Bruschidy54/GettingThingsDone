@@ -53,6 +53,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         if segue.identifier == "AddItemSegue" {
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.toDoStore = toDoStore
+            destinationVC.nextActionStore = nextActionStore
         }
         else if segue.identifier == "ViewToDoSegue" {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -61,6 +62,8 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
                 let destinationVC = segue.destination as! ItemDetailViewController
                 destinationVC.toDo = toDo
                 destinationVC.toDoStore = toDoStore
+                destinationVC.nextActionStore = nextActionStore
+                destinationVC.itemType = "To Do"
             }
         }
     }

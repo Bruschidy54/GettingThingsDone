@@ -55,7 +55,18 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
     if segue.identifier == "AddItemSegue" {
         let destinationVC = segue.destination as! AddItemViewController
         destinationVC.nextActionStore = nextActionStore
+        destinationVC.toDoStore = toDoStore
  }
+    else if segue.identifier == "ViewNextActionSegue" {
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            let nextAction = nextActionDataSource.nextActions[selectedIndexPath.row]
+            
+            let destinationVC = segue.destination as! ItemDetailViewController
+            destinationVC.nextAction = nextAction
+             destinationVC.toDoStore = toDoStore
+            destinationVC.nextActionStore = nextActionStore
+            destinationVC.itemType = "Next Action"
     }
-
+    }
+    }
 }
