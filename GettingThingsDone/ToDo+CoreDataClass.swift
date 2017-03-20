@@ -16,6 +16,7 @@ public class ToDo: NSManagedObject {
         super.awakeFromInsert()
         name = ""
         details = ""
+        // Create separate review class?
         review = false
         datecreated = NSDate()
         id = NSUUID().uuidString

@@ -11,5 +11,14 @@ import CoreData
 
 @objc(Project)
 public class Project: NSManagedObject {
+    
+    public override func awakeFromInsert() {
+        super.awakeFromInsert()
+        name = ""
+        details = ""
+        createdate = NSDate()
+        id = NSUUID().uuidString
+        duedate = nil
+    }
 
 }

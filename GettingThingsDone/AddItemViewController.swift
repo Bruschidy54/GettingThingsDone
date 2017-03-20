@@ -26,12 +26,21 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     
     // Make contexts a Core Data object instead
-    let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Topic"]
+    let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Topic", "Context"]
     var itemType: String = ""
     var reclassifiedToDo: ToDo!
     var reclassifiedNextAction: NextAction!
     var toDoStore: ToDoStore!
     var nextActionStore: NextActionStore!
+    var projectStore: ProjectStore!
+    var topicStore: TopicStore!
+    var contextStore: ContextStore!
+    var relatedToNextActionsArray: [NextAction]?
+    var relatedToProjectsArray: [Project]?
+    var relatedToTopicArray: [Topic]?
+    var relatedToContextArray: [Context]?
+    
+    
     
     
     
@@ -110,6 +119,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             dueDatePicker.date = (reclassifiedNextAction?.duedate)! as Date
             
         }
+        
+        // Reclassify other objects
     }
 
     override func didReceiveMemoryWarning() {
@@ -179,8 +190,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         case "Project":
             titleLabel.isHidden = false
             titleTextField.isHidden = false
-            priorityLabel.isHidden = false
-            prioritySlider.isHidden = false
+            priorityLabel.isHidden = true
+            prioritySlider.isHidden = true
             durationLabel.isHidden = true
             durationSlider.isHidden = true
             notesLabel.isHidden = false
@@ -202,6 +213,18 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             dueDatePicker.isHidden = true
             relatedToButton.isHidden = true
             break
+        case "Context":
+            titleLabel.isHidden = false
+            titleTextField.isHidden = false
+            priorityLabel.isHidden = true
+            prioritySlider.isHidden = true
+            durationLabel.isHidden = true
+            durationSlider.isHidden = true
+            notesLabel.isHidden = true
+            notesTextView.isHidden = true
+            dueDateLabel.isHidden = true
+            dueDatePicker.isHidden = true
+            relatedToButton.isHidden = true
         default:
             titleLabel.isHidden = true
             titleTextField.isHidden = true
@@ -268,9 +291,61 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             
             break
         case "Project":
+            guard let title = titleTextField.text, let notes = notesTextView.text else {
+                print("Error: Title and/or notes came back as nil")
+                return
+            }
+            let date = dueDatePicker.date
+            let context = self.projectStore.coreDataStack.mainQueueContext
+            let newProject = NSEntityDescription.insertNewObject(forEntityName: "Project", into: context)
+            newProject.setValue(title, forKey: "name")
+            newProject.setValue(date, forKey: "duedate")
+            newProject.setValue(notes, forKey: "details")
+            
+            do {
+                try self.projectStore?.coreDataStack.saveChanges()
+                print("Save Complete")
+            }
+            catch let error {
+                print("Core data save failed: \(error)")
+            }
             break
         case "Topic":
+            guard let title = titleTextField.text, let notes = notesTextView.text else {
+                print("Error: Title and/or notes came back as nil")
+                return
+            }
+            let context = self.topicStore.coreDataStack.mainQueueContext
+            let newTopic = NSEntityDescription.insertNewObject(forEntityName: "Topic", into: context)
+            newTopic.setValue(title, forKey: "name")
+            newTopic.setValue(notes, forKey: "details")
+            
+            do {
+                try self.topicStore?.coreDataStack.saveChanges()
+                print("Save Complete")
+            }
+            catch let error {
+                print("Core data save failed: \(error)")
+            }
             break
+        case "Context":
+            guard let title = titleTextField.text else {
+                print("Error: Title and/or notes came back as nil")
+                return
+            }
+            let context = self.contextStore.coreDataStack.mainQueueContext
+            let newContext = NSEntityDescription.insertNewObject(forEntityName: "Context", into: context)
+            newContext.setValue(title, forKey: "name")
+            
+            do {
+                try self.contextStore?.coreDataStack.saveChanges()
+                print("Save Complete")
+            }
+            catch let error {
+                print("Core data save failed: \(error)")
+            }
+            break
+
         default:
             break
         }
@@ -290,22 +365,19 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
 
     
-//    // MARK: - Navigation
-//
-//    // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "ToDoSegue" {
-//            let destinationVC = segue.destination as! ToDoViewController
-//            destinationVC.nextActionStore = nextActionStore
-//            destinationVC.toDoStore = toDoStore
-//        }
-//        else if segue.identifier == "NextActionSegue" {
-//            let destinationVC = segue.destination as! NextActionViewController
-//            destinationVC.nextActionStore = nextActionStore
-//            destinationVC.toDoStore = toDoStore
-//        }
-//        
-//        // Complete with Reference Segue
-//    }
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "RelatedToSegue" {
+            let destinationVC = segue.destination as! RelatedToViewController
+            destinationVC.nextActionStore = nextActionStore
+            destinationVC.topicStore = topicStore
+            destinationVC.projectStore = projectStore
+            destinationVC.contextStore = contextStore
+            destinationVC.addSegue = true
+            destinationVC.itemType = itemType
+        }
+    
+    }
 
 }

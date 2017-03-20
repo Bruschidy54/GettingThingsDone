@@ -15,6 +15,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let toDoStore = ToDoStore()
     let nextActionStore = NextActionStore()
+    let projectStore = ProjectStore()
+    let topicStore = TopicStore()
+    let contextStore = ContextStore()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -26,12 +29,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         toDoViewController.toDoStore = toDoStore
         toDoViewController.nextActionStore = nextActionStore
+        toDoViewController.projectStore = projectStore
+        toDoViewController.topicStore = topicStore
+        toDoViewController.contextStore = contextStore
         
         let navController2 = tabBarController.viewControllers?[1] as! UINavigationController
         let nextActionController = navController2.topViewController as! NextActionViewController
         
         nextActionController.nextActionStore = nextActionStore
         nextActionController.toDoStore = toDoStore
+        nextActionController.projectStore = projectStore
+        nextActionController.topicStore = topicStore
+        nextActionController.contextStore = contextStore
         return true
     }
 

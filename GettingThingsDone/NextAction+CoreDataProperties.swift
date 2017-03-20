@@ -2,7 +2,7 @@
 //  NextAction+CoreDataProperties.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/15/17.
+//  Created by Dylan Bruschi on 3/16/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
@@ -24,6 +24,6 @@ extension NextAction {
     @NSManaged public var processingtime: Float
     @NSManaged public var id: String?
     @NSManaged public var project: Project?
-    @NSManaged public var topic: Topic?
+    @NSManaged public var context: Context?
 
 }

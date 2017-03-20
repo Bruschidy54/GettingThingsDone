@@ -15,6 +15,9 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     var toDoStore: ToDoStore!
     var nextActionStore: NextActionStore!
     let toDoDataSource = ToDoDataSource()
+    var projectStore: ProjectStore!
+    var topicStore: TopicStore!
+    var contextStore: ContextStore!
     
 
     override func viewDidLoad() {
@@ -38,10 +41,6 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Complete"
@@ -54,6 +53,9 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.toDoStore = toDoStore
             destinationVC.nextActionStore = nextActionStore
+            destinationVC.projectStore = projectStore
+            destinationVC.topicStore = topicStore
+            destinationVC.contextStore = contextStore
         }
         else if segue.identifier == "ViewToDoSegue" {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -63,6 +65,9 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
                 destinationVC.toDo = toDo
                 destinationVC.toDoStore = toDoStore
                 destinationVC.nextActionStore = nextActionStore
+                destinationVC.projectStore = projectStore
+                destinationVC.topicStore = topicStore
+                destinationVC.contextStore = contextStore
                 destinationVC.itemType = "To Do"
             }
         }

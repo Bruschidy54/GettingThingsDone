@@ -15,6 +15,9 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
     
     var nextActionStore: NextActionStore!
     var toDoStore: ToDoStore!
+    var projectStore: ProjectStore!
+    var topicStore: TopicStore!
+    var contextStore: ContextStore!
     let nextActionDataSource = NextActionDataSource()
     
 
@@ -43,10 +46,6 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         return "Complete"
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 
     // MARK: - Navigation
@@ -56,6 +55,9 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         let destinationVC = segue.destination as! AddItemViewController
         destinationVC.nextActionStore = nextActionStore
         destinationVC.toDoStore = toDoStore
+        destinationVC.projectStore = projectStore
+        destinationVC.topicStore = topicStore
+        destinationVC.contextStore = contextStore
  }
     else if segue.identifier == "ViewNextActionSegue" {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -65,6 +67,9 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
             destinationVC.nextAction = nextAction
              destinationVC.toDoStore = toDoStore
             destinationVC.nextActionStore = nextActionStore
+            destinationVC.projectStore = projectStore
+            destinationVC.topicStore = topicStore
+            destinationVC.contextStore = contextStore
             destinationVC.itemType = "Next Action"
     }
     }

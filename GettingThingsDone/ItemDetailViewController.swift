@@ -28,10 +28,15 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     
     var toDo: ToDo?
+    var project: Project?
+    var topic: Topic?
     var toDoStore: ToDoStore!
     var itemType: String = ""
     var nextActionStore: NextActionStore!
     var nextAction: NextAction?
+    var projectStore: ProjectStore!
+    var topicStore: TopicStore!
+    var contextStore: ContextStore!
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -66,7 +71,21 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 notesTextView.isEditable = true
                 dueDatePicker.isHidden = false
                 dueDateFullDateLabel.isHidden = true
-            break
+                break
+            case "Project":
+                titleTextField.isEnabled = true
+                prioritySlider.isEnabled = true
+                durationSlider.isEnabled = true
+                notesTextView.isEditable = true
+                dueDatePicker.isHidden = false
+                dueDateFullDateLabel.isHidden = true
+                break
+            case "Topic":
+                titleTextField.isEnabled = true
+                prioritySlider.isEnabled = true
+                durationSlider.isEnabled = true
+                notesTextView.isEditable = true
+                break
             default:
                 break
             }
@@ -90,6 +109,22 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 notesTextView.isEditable = false
                 dueDatePicker.isHidden = true
                 dueDateFullDateLabel.isHidden = false
+                saveItem()
+                break
+            case "Project":
+                titleTextField.isEnabled = false
+                prioritySlider.isEnabled = false
+                durationSlider.isEnabled = false
+                notesTextView.isEditable = false
+                dueDatePicker.isHidden = true
+                dueDateFullDateLabel.isHidden = false
+                saveItem()
+                break
+            case "Topic":
+                titleTextField.isEnabled = false
+                prioritySlider.isEnabled = false
+                durationSlider.isEnabled = false
+                notesTextView.isEditable = false
                 saveItem()
                 break
             default:
@@ -154,34 +189,40 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             titleTextField.isEnabled = false
             break
         case "Project":
-            
-            //Update after project object is created
+            print(project)
+            titleTextField.text = project?.name
+            notesTextView.text = project?.details
+            dueDateFullDateLabel.text = dateFormatter.string(from: project?.duedate as! Date)
+            dueDatePicker.date = project?.duedate as! Date
             titleLabel.isHidden = false
             titleTextField.isHidden = false
-            priorityLabel.isHidden = false
-            prioritySlider.isHidden = false
+            priorityLabel.isHidden = true
+            prioritySlider.isHidden = true
             durationLabel.isHidden = true
             durationSlider.isHidden = true
             notesLabel.isHidden = false
             notesTextView.isHidden = false
             dueDateLabel.isHidden = false
             dueDatePicker.isHidden = false
+            dueDateFullDateLabel.isHidden = false
             relatedToButton.isHidden = false
             break
         case "Topic":
-            
-            //Update after topic object is created
+           print(topic)
+           titleTextField.text = topic?.name
+           notesTextView.text = topic?.details
             titleLabel.isHidden = false
             titleTextField.isHidden = false
-            priorityLabel.isHidden = false
-            prioritySlider.isHidden = false
+            priorityLabel.isHidden = true
+            prioritySlider.isHidden = true
             durationLabel.isHidden = true
             durationSlider.isHidden = true
             notesLabel.isHidden = false
             notesTextView.isHidden = false
             dueDateLabel.isHidden = true
             dueDatePicker.isHidden = true
-            relatedToButton.isHidden = true
+            dueDateFullDateLabel.isHidden = true
+            relatedToButton.isHidden = false
             break
         default:
             break
@@ -194,6 +235,23 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         super.viewWillAppear(true)
         
       self.tabBarController?.tabBar.isHidden = true
+        
+        switch itemType {
+        case "To Do":
+            print(toDo)
+            break
+        case "Next Action":
+            print(nextAction)
+            break
+        case "Project":
+            print(project)
+            break
+        case "Topic":
+            print(topic)
+            break
+        default:
+            break
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -223,6 +281,28 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 print(error)
             }
             break
+        case "Project":
+            
+            // Update dictionary
+            let projectDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : project?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": project?.id]
+            do {
+                try self.projectStore.updateProject(projectDict: projectDict)
+                print("Project successfully updated")
+            } catch {
+                print(error)
+            }
+            break
+        case "Topic":
+            
+            // Update dictionary
+            let topicDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "review" : topic?.review as Any, "details": notesTextView.text as Any, "id": topic?.id]
+            do {
+                try self.topicStore.updateTopic(topicDict: topicDict)
+                print("Topic successfully updated")
+            } catch {
+                print(error)
+            }
+            break
         default:
             break
         }
@@ -237,6 +317,9 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.toDoStore = toDoStore
             destinationVC.nextActionStore = nextActionStore
+            destinationVC.topicStore = topicStore
+            destinationVC.projectStore = projectStore
+            destinationVC.contextStore = contextStore
             if itemType == "To Do" {
                 destinationVC.reclassifiedToDo = toDo
             
@@ -245,6 +328,19 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 destinationVC.reclassifiedNextAction = nextAction
        
             }
+        }
+        else if segue.identifier == "RelatedToSegue" {
+            let destinationVC = segue.destination as! RelatedToViewController
+            
+            destinationVC.nextActionStore = nextActionStore
+            destinationVC.projectStore = projectStore
+            destinationVC.topicStore = topicStore
+            destinationVC.contextStore = contextStore
+            destinationVC.nextAction = nextAction
+            destinationVC.project = project
+            destinationVC.topic = topic
+            destinationVC.addSegue = false
+            destinationVC.itemType = itemType
         }
     }
 

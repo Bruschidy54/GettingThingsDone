@@ -2,7 +2,7 @@
 //  Topic+CoreDataProperties.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/14/17.
+//  Created by Dylan Bruschi on 3/16/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
@@ -20,26 +20,8 @@ extension Topic {
     @NSManaged public var name: String?
     @NSManaged public var review: Bool
     @NSManaged public var id: String?
-    @NSManaged public var nextActions: NSSet?
     @NSManaged public var projects: NSSet?
     @NSManaged public var reviewnotes: NSSet?
-
-}
-
-// MARK: Generated accessors for nextActions
-extension Topic {
-
-    @objc(addNextActionsObject:)
-    @NSManaged public func addToNextActions(_ value: NextAction)
-
-    @objc(removeNextActionsObject:)
-    @NSManaged public func removeFromNextActions(_ value: NextAction)
-
-    @objc(addNextActions:)
-    @NSManaged public func addToNextActions(_ values: NSSet)
-
-    @objc(removeNextActions:)
-    @NSManaged public func removeFromNextActions(_ values: NSSet)
 
 }
 
