@@ -11,7 +11,7 @@ import UIKit
 class NextActionDataSource: NSObject, UITableViewDataSource {
     
     var nextActions = [NextAction]()
-    let nextActionStore = NextActionStore()
+    let allItemStore = AllItemStore()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return nextActions.count
@@ -38,7 +38,7 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
             nextActions.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             do {
-                try nextActionStore.deleteNextAction(id: id!)
+                try allItemStore.deleteNextAction(id: id!)
             }catch {
                 print("Error deleting To Do: \(error)")
             }

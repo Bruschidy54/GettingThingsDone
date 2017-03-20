@@ -30,13 +30,9 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     var toDo: ToDo?
     var project: Project?
     var topic: Topic?
-    var toDoStore: ToDoStore!
     var itemType: String = ""
-    var nextActionStore: NextActionStore!
     var nextAction: NextAction?
-    var projectStore: ProjectStore!
-    var topicStore: TopicStore!
-    var contextStore: ContextStore!
+    var allItemStore: AllItemStore!
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -264,7 +260,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         case "To Do":
             let toDoDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "datecreated" : toDo?.datecreated as Any, "review" : toDo?.review as Any, "details": notesTextView.text as Any, "id": toDo?.id]
             do {
-                try self.toDoStore.updateToDo(toDoDict: toDoDict)
+                try self.allItemStore.updateToDo(toDoDict: toDoDict)
                 print("To Do successfully updated")
             } catch {
                 print(error)
@@ -275,7 +271,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let nextActionDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : nextAction?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": nextAction?.id, "priority" : prioritySlider.value as Any, "processingtime" : durationSlider.value]
             do {
-                try self.nextActionStore.updateNextActions(nextActionDict: nextActionDict)
+                try self.allItemStore.updateNextActions(nextActionDict: nextActionDict)
                 print("Next Action successfully updated")
             } catch {
                 print(error)
@@ -286,7 +282,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let projectDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : project?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": project?.id]
             do {
-                try self.projectStore.updateProject(projectDict: projectDict)
+                try self.allItemStore.updateProject(projectDict: projectDict)
                 print("Project successfully updated")
             } catch {
                 print(error)
@@ -297,7 +293,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let topicDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "review" : topic?.review as Any, "details": notesTextView.text as Any, "id": topic?.id]
             do {
-                try self.topicStore.updateTopic(topicDict: topicDict)
+                try self.allItemStore.updateTopic(topicDict: topicDict)
                 print("Topic successfully updated")
             } catch {
                 print(error)
@@ -315,11 +311,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ReclassifySegue" {
             let destinationVC = segue.destination as! AddItemViewController
-            destinationVC.toDoStore = toDoStore
-            destinationVC.nextActionStore = nextActionStore
-            destinationVC.topicStore = topicStore
-            destinationVC.projectStore = projectStore
-            destinationVC.contextStore = contextStore
+            destinationVC.allItemStore = allItemStore
             if itemType == "To Do" {
                 destinationVC.reclassifiedToDo = toDo
             
@@ -332,10 +324,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         else if segue.identifier == "RelatedToSegue" {
             let destinationVC = segue.destination as! RelatedToViewController
             
-            destinationVC.nextActionStore = nextActionStore
-            destinationVC.projectStore = projectStore
-            destinationVC.topicStore = topicStore
-            destinationVC.contextStore = contextStore
+            destinationVC.allItemStore = allItemStore
             destinationVC.nextAction = nextAction
             destinationVC.project = project
             destinationVC.topic = topic

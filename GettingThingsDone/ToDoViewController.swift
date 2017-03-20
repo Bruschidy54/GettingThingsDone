@@ -12,12 +12,8 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet var tableView: UITableView!
     
-    var toDoStore: ToDoStore!
-    var nextActionStore: NextActionStore!
     let toDoDataSource = ToDoDataSource()
-    var projectStore: ProjectStore!
-    var topicStore: TopicStore!
-    var contextStore: ContextStore!
+    var allItemStore: AllItemStore!
     
 
     override func viewDidLoad() {
@@ -32,7 +28,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         
          self.tabBarController?.tabBar.isHidden = false
   
-        let allToDos = try! self.toDoStore.fetchMainQueueToDos()
+        let allToDos = try! self.allItemStore.fetchMainQueueToDos()
         
         OperationQueue.main.addOperation {
             self.toDoDataSource.toDos = allToDos
@@ -51,11 +47,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddItemSegue" {
             let destinationVC = segue.destination as! AddItemViewController
-            destinationVC.toDoStore = toDoStore
-            destinationVC.nextActionStore = nextActionStore
-            destinationVC.projectStore = projectStore
-            destinationVC.topicStore = topicStore
-            destinationVC.contextStore = contextStore
+            destinationVC.allItemStore = allItemStore
         }
         else if segue.identifier == "ViewToDoSegue" {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -63,11 +55,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
                 
                 let destinationVC = segue.destination as! ItemDetailViewController
                 destinationVC.toDo = toDo
-                destinationVC.toDoStore = toDoStore
-                destinationVC.nextActionStore = nextActionStore
-                destinationVC.projectStore = projectStore
-                destinationVC.topicStore = topicStore
-                destinationVC.contextStore = contextStore
+                destinationVC.allItemStore = allItemStore
                 destinationVC.itemType = "To Do"
             }
         }

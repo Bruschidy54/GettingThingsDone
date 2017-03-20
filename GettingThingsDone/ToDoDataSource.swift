@@ -11,7 +11,7 @@ import UIKit
 class ToDoDataSource: NSObject, UITableViewDataSource {
     
     var toDos = [ToDo]()
-    let toDoStore = ToDoStore()
+    let allItemStore = AllItemStore()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return toDos.count
@@ -38,7 +38,7 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
             toDos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             do {
-            try toDoStore.deleteToDo(id: id!)
+            try allItemStore.deleteToDo(id: id!)
             }catch {
                 print("Error deleting To Do: \(error)")
             }

@@ -13,10 +13,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet var tableView: UITableView!
 
-    var projectStore: ProjectStore!
-    var topicStore: TopicStore!
-    var contextStore: ContextStore!
-    var nextActionStore: NextActionStore!
+    var allItemStore: AllItemStore!
     var nextAction: NextAction?
     var project: Project?
     var topic: Topic?
@@ -31,6 +28,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     var relatedToContextArray: [Context]?
     var addSegue: Bool = false
     var itemType: String = ""
+    let coreDataStack = CoreDataStack(modelName: "GTDModel")
     
     
     @IBAction func onDoneButtonTapped(_ sender: Any) {
@@ -43,20 +41,16 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         else {
             switch itemType {
             case "Next Action":
-                //Also, remove relationships
-                for context: Context in relatedToContextArray! {
-                    context.addToNextActions(nextAction!)
-                }
-                for project: Project in relatedToProjectsArray! {
-                    project.addToNextActions(nextAction!)
-                }
+                let contextSet = NSSet(array: relatedToContextArray!)
+                nextAction?.contexts = contextSet
+                
+                let projectSet = NSSet(array: relatedToProjectsArray!)
+                nextAction?.projects = projectSet
                 break
             case "Project":
                 let nextActionSet = NSSet(array: relatedToNextActionsArray!)
                 project?.addToNextActions(nextActionSet)
-                for topic: Topic in relatedToTopicArray! {
-                    topic.addToProjects(project!)
-                }
+//                project?.topic = project?.managedObjectContext?.object(with: (relatedToTopic?.objectID)!) as! Topic? 
                 break
             case "Topic":
                 let projectSet = NSSet(array: relatedToProjectsArray!)
@@ -73,23 +67,31 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         relatedToNextActionsArray = []
         relatedToProjectsArray = []
-        relatedToTopicArray = []
+        relatedToNextActionsArray = []
         relatedToContextArray = []
         
         switch itemType {
         case "Next Action":
             let newSections = sections.filter{$0 != "Next Action" && $0 != "Topic"}
             sections = newSections
+            relatedToProjectsArray = nextAction?.projects?.allObjects as! [Project]?
+            relatedToContextArray = nextAction?.contexts?.allObjects as! [Context]?
             break
         case "Project":
             let newSections = sections.filter{$0 != "Project" && $0 != "Context"}
             sections = newSections
+            relatedToNextActionsArray = project?.nextActions?.allObjects as! [NextAction]?
+            // Fix ******
+//            relatedToTopic = project?.topics
+            
             break
         case "Topic":
             let newSections = sections.filter{$0 != "Topic" && $0 != "Context" && $0 != "Next Action"}
             sections = newSections
+            relatedToProjectsArray = topic?.projects?.allObjects as! [Project]?
             break
         default:
             break
@@ -98,10 +100,14 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         
         tableView.allowsMultipleSelection = true
         
-        allNextActions = try! self.nextActionStore.fetchMainQueueNextActions()
-        allProjects = try! self.projectStore.fetchMainQueueProjects()
-        allTopics = try! self.topicStore.fetchMainQueueProjects()
-        allContexts = try! self.contextStore.fetchMainQueueContext()
+        // Should handle error
+        
+        let items = try! allItemStore.fetchMainQueueItems()
+        
+        allNextActions = items.nextActions
+        allProjects = items.projects
+        allTopics = items.topics
+        allContexts = items.contexts
         
     }
     
@@ -149,8 +155,8 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         switch itemType {
         case "Next Action":
             if indexPath.section == 0 {
-                let project = allProjects?[indexPath.row]
-                if (relatedToProjectsArray?.contains(project!))! {
+                let currentProject = allProjects?[indexPath.row]
+                if (relatedToProjectsArray?.contains(currentProject!))! {
                     cell?.accessoryType = .checkmark
                     tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
                 }
@@ -158,11 +164,11 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     cell?.accessoryType = .none
                     
                 }
-                cell?.textLabel?.text = project?.name
+                cell?.textLabel?.text = currentProject?.name
             }
             else if indexPath.section == 1 {
-                let context = allContexts?[indexPath.row]
-                if (relatedToContextArray?.contains(context!))! {
+                let currentContext = allContexts?[indexPath.row]
+                if (relatedToContextArray?.contains(currentContext!))! {
                     cell?.accessoryType = .checkmark
                     tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
                 }
@@ -170,14 +176,14 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     cell?.accessoryType = .none
                     
                 }
-                cell?.textLabel?.text = context?
+                cell?.textLabel?.text = currentContext?
                     .name
             }
             break
         case "Project":
             if indexPath.section == 0 {
-                let nextAction = allNextActions?[indexPath.row]
-                if (relatedToNextActionsArray?.contains(nextAction!))! {
+                let currentNextAction = allNextActions?[indexPath.row]
+                if (relatedToNextActionsArray?.contains(currentNextAction!))! {
                     cell?.accessoryType = .checkmark
                     tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
                 }
@@ -185,11 +191,11 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     cell?.accessoryType = .none
                     
                 }
-                cell?.textLabel?.text = nextAction?.name
+                cell?.textLabel?.text = currentNextAction?.name
             }
             else if indexPath.section == 1 {
-                let topic = allTopics?[indexPath.row]
-                if (relatedToTopicArray?.contains(topic!))! {
+                let currentTopic = allTopics?[indexPath.row]
+                if (relatedToTopicArray?.contains(currentTopic!))! {
                     cell?.accessoryType = .checkmark
                     tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
                 }
@@ -197,12 +203,12 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     cell?.accessoryType = .none
                     
                 }
-                cell?.textLabel?.text = topic?.name
+                cell?.textLabel?.text = currentTopic?.name
             }
             break
         case "Topic":
-            let project = allProjects?[indexPath.row]
-            if (relatedToProjectsArray?.contains(project!))! {
+            let currentProject = allProjects?[indexPath.row]
+            if (relatedToProjectsArray?.contains(currentProject!))! {
                 cell?.accessoryType = .checkmark
                 tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
             }
@@ -210,7 +216,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 cell?.accessoryType = .none
                 
             }
-            cell?.textLabel?.text = project?.name
+            cell?.textLabel?.text = currentProject?.name
             break
 
         default:
@@ -249,6 +255,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             break
         case "Project":
             if indexPath.section == 0 {
+                // Assign only nonsorted Next Actions?
                 let nextAction = allNextActions?[indexPath.row]
                 let indexes = relatedToNextActionsArray?.enumerated().filter({ $0.element == nextAction}).map{ $0.offset }
                 for index in (indexes?.reversed())! {
@@ -266,6 +273,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             }
             break
         case "Topic":
+            // Assign only nonsorted Projects?
             let project = allProjects?[indexPath.row]
             let indexes = relatedToProjectsArray?.enumerated().filter({ $0.element == project}).map{ $0.offset }
             for index in (indexes?.reversed())! {
@@ -293,6 +301,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             else if indexPath.section == 1 {
                 let context = allContexts?[indexPath.row]
                 relatedToContextArray?.append(context!)
+                
                 cell?.accessoryType = .checkmark
             }
             break

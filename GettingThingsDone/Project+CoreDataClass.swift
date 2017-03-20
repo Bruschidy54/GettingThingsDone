@@ -2,7 +2,7 @@
 //  Project+CoreDataClass.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/14/17.
+//  Created by Dylan Bruschi on 3/20/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 

@@ -30,15 +30,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var itemType: String = ""
     var reclassifiedToDo: ToDo!
     var reclassifiedNextAction: NextAction!
-    var toDoStore: ToDoStore!
-    var nextActionStore: NextActionStore!
-    var projectStore: ProjectStore!
-    var topicStore: TopicStore!
-    var contextStore: ContextStore!
     var relatedToNextActionsArray: [NextAction]?
     var relatedToProjectsArray: [Project]?
     var relatedToTopicArray: [Topic]?
     var relatedToContextArray: [Context]?
+    var allItemStore: AllItemStore!
     
     
     
@@ -58,7 +54,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         if reclassifiedToDo != nil {
             let id = reclassifiedToDo?.id
             do  {
-                try toDoStore.deleteToDo(id: id!)
+                try allItemStore.deleteToDo(id: id!)
             } catch {
                 print("Error deleting To Do: \(error)")
             }
@@ -67,7 +63,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         else if reclassifiedNextAction != nil {
             let id = reclassifiedNextAction?.id
             do  {
-                try nextActionStore.deleteNextAction(id: id!)
+                try allItemStore.deleteNextAction(id: id!)
             } catch {
                 print("Error deleting To Do: \(error)")
             }
@@ -251,13 +247,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("Error: Title and/or notes came back as nil")
                 return
             }
-                let context = self.toDoStore.coreDataStack.mainQueueContext
+                let context = self.allItemStore.coreDataStack.mainQueueContext
                 let newToDo = NSEntityDescription.insertNewObject(forEntityName: "ToDo", into: context)
             newToDo.setValue(toDoTitle, forKey: "name")
             newToDo.setValue(toDoNotes, forKey: "details")
             
             do {
-                try self.toDoStore?.coreDataStack.saveChanges()
+                try self.allItemStore?.coreDataStack.saveChanges()
                 print("Save Complete")
             }
             catch let error {
@@ -273,7 +269,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             let priority = prioritySlider.value
             let duration = durationSlider.value
             let date = dueDatePicker.date
-            let context = self.nextActionStore.coreDataStack.mainQueueContext
+            let context = self.allItemStore.coreDataStack.mainQueueContext
             let newNextAction = NSEntityDescription.insertNewObject(forEntityName: "NextAction", into: context)
             newNextAction.setValue(title, forKey: "name")
             newNextAction.setValue(priority, forKey: "priority")
@@ -282,7 +278,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             newNextAction.setValue(notes, forKey: "details")
             
             do {
-                try self.nextActionStore?.coreDataStack.saveChanges()
+                try self.allItemStore.coreDataStack.saveChanges()
                 print("Save Complete")
             }
             catch let error {
@@ -296,14 +292,14 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 return
             }
             let date = dueDatePicker.date
-            let context = self.projectStore.coreDataStack.mainQueueContext
+            let context = self.allItemStore.coreDataStack.mainQueueContext
             let newProject = NSEntityDescription.insertNewObject(forEntityName: "Project", into: context)
             newProject.setValue(title, forKey: "name")
             newProject.setValue(date, forKey: "duedate")
             newProject.setValue(notes, forKey: "details")
             
             do {
-                try self.projectStore?.coreDataStack.saveChanges()
+                try self.allItemStore.coreDataStack.saveChanges()
                 print("Save Complete")
             }
             catch let error {
@@ -315,13 +311,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("Error: Title and/or notes came back as nil")
                 return
             }
-            let context = self.topicStore.coreDataStack.mainQueueContext
+            let context = self.allItemStore.coreDataStack.mainQueueContext
             let newTopic = NSEntityDescription.insertNewObject(forEntityName: "Topic", into: context)
             newTopic.setValue(title, forKey: "name")
             newTopic.setValue(notes, forKey: "details")
             
             do {
-                try self.topicStore?.coreDataStack.saveChanges()
+                try self.allItemStore.coreDataStack.saveChanges()
                 print("Save Complete")
             }
             catch let error {
@@ -333,12 +329,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("Error: Title and/or notes came back as nil")
                 return
             }
-            let context = self.contextStore.coreDataStack.mainQueueContext
+            let context = self.allItemStore.coreDataStack.mainQueueContext
             let newContext = NSEntityDescription.insertNewObject(forEntityName: "Context", into: context)
             newContext.setValue(title, forKey: "name")
             
             do {
-                try self.contextStore?.coreDataStack.saveChanges()
+                try self.allItemStore.coreDataStack.saveChanges()
                 print("Save Complete")
             }
             catch let error {
@@ -370,12 +366,9 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "RelatedToSegue" {
             let destinationVC = segue.destination as! RelatedToViewController
-            destinationVC.nextActionStore = nextActionStore
-            destinationVC.topicStore = topicStore
-            destinationVC.projectStore = projectStore
-            destinationVC.contextStore = contextStore
             destinationVC.addSegue = true
             destinationVC.itemType = itemType
+            destinationVC.allItemStore = allItemStore
         }
     
     }

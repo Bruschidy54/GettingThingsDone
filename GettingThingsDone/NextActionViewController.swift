@@ -13,11 +13,7 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet var tableView: UITableView!
     
-    var nextActionStore: NextActionStore!
-    var toDoStore: ToDoStore!
-    var projectStore: ProjectStore!
-    var topicStore: TopicStore!
-    var contextStore: ContextStore!
+    var allItemStore: AllItemStore!
     let nextActionDataSource = NextActionDataSource()
     
 
@@ -33,7 +29,7 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         
         self.tabBarController?.tabBar.isHidden = false
         
-        let allNextActions = try! self.nextActionStore.fetchMainQueueNextActions()
+        let allNextActions = try! self.allItemStore.fetchMainQueueNextActions()
         
         OperationQueue.main.addOperation {
             self.nextActionDataSource.nextActions = allNextActions
@@ -53,11 +49,7 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "AddItemSegue" {
         let destinationVC = segue.destination as! AddItemViewController
-        destinationVC.nextActionStore = nextActionStore
-        destinationVC.toDoStore = toDoStore
-        destinationVC.projectStore = projectStore
-        destinationVC.topicStore = topicStore
-        destinationVC.contextStore = contextStore
+        destinationVC.allItemStore = allItemStore
  }
     else if segue.identifier == "ViewNextActionSegue" {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -65,11 +57,7 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
             
             let destinationVC = segue.destination as! ItemDetailViewController
             destinationVC.nextAction = nextAction
-             destinationVC.toDoStore = toDoStore
-            destinationVC.nextActionStore = nextActionStore
-            destinationVC.projectStore = projectStore
-            destinationVC.topicStore = topicStore
-            destinationVC.contextStore = contextStore
+            destinationVC.allItemStore = allItemStore
             destinationVC.itemType = "Next Action"
     }
     }
