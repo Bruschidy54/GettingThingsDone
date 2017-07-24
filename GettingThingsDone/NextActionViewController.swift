@@ -29,18 +29,42 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         
         self.tabBarController?.tabBar.isHidden = false
         
-        let allNextActions = try! self.allItemStore.fetchMainQueueNextActions()
+        let allContexts = try! self.allItemStore.fetchMainQueueContext()
         
+        let unsortedNextActions = try! self.allItemStore.fetchUnsortedByContextNextActions()
+        let scoredUnsortedNextActions = unsortedNextActions.sorted{
+            $0.relevanceScore > $1.relevanceScore
+        }
+        
+        
+        var contextArray = [Context]()
+        for context in allContexts {
+            if let nextActionSet = context.nextActions {
+                let nextActionArray = Array(nextActionSet) as! [NextAction]
+                let scoredNextActionArray = nextActionArray.sorted{
+                    $0.relevanceScore > $1.relevanceScore
+                }
+                
+                if !nextActionArray.isEmpty{
+                    contextArray.append(context)
+                    self.nextActionDataSource.sortedNextActions.append(scoredNextActionArray)
+                }
+            }
+        }
         OperationQueue.main.addOperation {
-            self.nextActionDataSource.nextActions = allNextActions
+            self.nextActionDataSource.unsortedNextActions = scoredUnsortedNextActions
+            self.nextActionDataSource.contexts = contextArray
             self.tableView.reloadData()
             
         }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Complete"
     }
+    
     
     
 
@@ -53,10 +77,20 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
  }
     else if segue.identifier == "ViewNextActionSegue" {
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            let nextAction = nextActionDataSource.nextActions[selectedIndexPath.row]
+            // Get proper nextAction and send it to ItemDetailVC
             
             let destinationVC = segue.destination as! ItemDetailViewController
-            destinationVC.nextAction = nextAction
+            
+            if selectedIndexPath.section >= 0 && selectedIndexPath.section < self.nextActionDataSource.contexts.count {
+                let nextActionArray = self.nextActionDataSource.sortedNextActions[selectedIndexPath.section]
+                let nextAction = nextActionArray[selectedIndexPath.row]
+                destinationVC.nextAction = nextAction
+                
+            } else if selectedIndexPath.section == self.nextActionDataSource.contexts.count {
+                let nextAction = self.nextActionDataSource.unsortedNextActions[selectedIndexPath.row]
+                destinationVC.nextAction = nextAction
+            }
+            
             destinationVC.allItemStore = allItemStore
             destinationVC.itemType = "Next Action"
     }

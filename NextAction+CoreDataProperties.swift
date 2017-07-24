@@ -2,7 +2,7 @@
 //  NextAction+CoreDataProperties.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/20/17.
+//  Created by Dylan Bruschi on 6/16/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
@@ -13,7 +13,7 @@ import CoreData
 extension NextAction {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<NextAction> {
-        return NSFetchRequest<NextAction>(entityName: "NextAction");
+        return NSFetchRequest<NextAction>(entityName: "NextAction")
     }
 
     @NSManaged public var createdate: NSDate?
@@ -23,8 +23,14 @@ extension NextAction {
     @NSManaged public var name: String?
     @NSManaged public var priority: Float
     @NSManaged public var processingtime: Float
+    @NSManaged public var contextSorted: Bool
+    @NSManaged public var projectSorted: Bool
     @NSManaged public var contexts: NSSet?
     @NSManaged public var projects: NSSet?
+    
+    var relevanceScore: Float {
+        return ((1.5 * priority) + 0.1)/(processingtime + 0.1)
+    }
 
 }
 

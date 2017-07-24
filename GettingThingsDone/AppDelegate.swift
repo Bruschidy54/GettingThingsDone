@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let tabBarController = window?.rootViewController as! UITabBarController
-        // Look up how to do this
         let navController1 = tabBarController.viewControllers?[0] as! UINavigationController
         let toDoViewController = navController1.topViewController as! ToDoViewController
         toDoViewController.allItemStore = allItemStore
@@ -27,6 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navController2 = tabBarController.viewControllers?[1] as! UINavigationController
         let nextActionController = navController2.topViewController as! NextActionViewController
         nextActionController.allItemStore = allItemStore
+        
+        let navController3 = tabBarController.viewControllers?[2] as! UINavigationController
+        let referenceViewController = navController3.topViewController as! ReferenceViewController
+        referenceViewController.allItemStore = allItemStore
         return true
     }
 

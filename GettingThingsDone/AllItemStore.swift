@@ -122,6 +122,52 @@ class AllItemStore {
         return nextActions
     }
     
+    func fetchUnsortedByProjectNextActions(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [NextAction] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "NextAction")
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.predicate = NSPredicate(format: "projectSorted = false")
+        
+        let mainQueueContext = self.coreDataStack.mainQueueContext
+        var mainQueueNextActions: [NextAction]?
+        var fetchRequestError: Error?
+        mainQueueContext.performAndWait({
+            do {
+                mainQueueNextActions = try mainQueueContext.fetch(fetchRequest) as? [NextAction]
+            }
+            catch let error {
+                fetchRequestError = error
+            }
+            
+        })
+        guard let nextActions = mainQueueNextActions else {
+            throw fetchRequestError!
+        }
+        return nextActions
+    }
+    
+    func fetchUnsortedByContextNextActions(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [NextAction] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "NextAction")
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.predicate = NSPredicate(format: "contextSorted = false")
+        
+        let mainQueueContext = self.coreDataStack.mainQueueContext
+        var mainQueueNextActions: [NextAction]?
+        var fetchRequestError: Error?
+        mainQueueContext.performAndWait({
+            do {
+                mainQueueNextActions = try mainQueueContext.fetch(fetchRequest) as? [NextAction]
+            }
+            catch let error {
+                fetchRequestError = error
+            }
+            
+        })
+        guard let nextActions = mainQueueNextActions else {
+            throw fetchRequestError!
+        }
+        return nextActions
+    }
+    
     func updateNextActions(nextActionDict: Dictionary<String, Any>) throws {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "NextAction")
         fetchRequest.predicate = NSPredicate(format: "id = %@", nextActionDict["id"] as! String)
@@ -139,6 +185,8 @@ class AllItemStore {
                 managedObject?.setValue(nextActionDict["name"], forKey: "name")
                 managedObject?.setValue(nextActionDict["duedate"], forKey: "duedate")
                 managedObject?.setValue(nextActionDict["details"], forKey: "details")
+                managedObject?.setValue(nextActionDict["projects"], forKey: "projects")
+                managedObject?.setValue(nextActionDict["contexts"], forKey: "contexts")
                 try self.coreDataStack.saveChanges()
                 
             }
@@ -222,6 +270,7 @@ class AllItemStore {
                 
                 // Update dictionary
                 managedObject?.setValue(projectDict["name"], forKey: "name")
+                managedObject?.setValue(projectDict["priority"], forKey: "priority")
                 managedObject?.setValue(projectDict["duedate"], forKey: "duedate")
                 managedObject?.setValue(projectDict["details"], forKey: "details")
                 try self.coreDataStack.saveChanges()
@@ -269,47 +318,47 @@ class AllItemStore {
 
 
     
-    // MARK: Topic Core Data Methods
+    // MARK: Review Core Data Methods
     
-    func fetchMainQueueTopics(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [Topic] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Topic")
+    func fetchMainQueueReviews(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> [Review] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Review")
         fetchRequest.sortDescriptors = sortDescriptors
         fetchRequest.predicate = predicate
         
         let mainQueueContext = self.coreDataStack.mainQueueContext
-        var mainQueueTopics: [Topic]?
+        var mainQueueReviews: [Review]?
         var fetchRequestError: Error?
         mainQueueContext.performAndWait({
             do {
-                mainQueueTopics = try mainQueueContext.fetch(fetchRequest) as? [Topic]
+                mainQueueReviews = try mainQueueContext.fetch(fetchRequest) as? [Review]
             }
             catch let error {
                 fetchRequestError = error
             }
             
         })
-        guard let topics = mainQueueTopics else {
+        guard let reviews = mainQueueReviews else {
             throw fetchRequestError!
         }
-        return topics
+        return reviews
     }
     
-    func updateTopic(topicDict: Dictionary<String, Any>) throws {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Topic")
-        fetchRequest.predicate = NSPredicate(format: "id = %@", topicDict["id"] as! String)
+    func updateReview(reviewDict: Dictionary<String, Any>) throws {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Review")
+        fetchRequest.predicate = NSPredicate(format: "id = %@", reviewDict["id"] as! String)
         let context = coreDataStack.mainQueueContext
         
-        var mainQueueTopic: [Topic]?
+        var mainQueueReview: [Review]?
         
         var fetchRequestError: Error?
         context.performAndWait({
             do {
-                mainQueueTopic = try context.fetch(fetchRequest) as? [Topic]
-                let managedObject = mainQueueTopic?.first
+                mainQueueReview = try context.fetch(fetchRequest) as? [Review]
+                let managedObject = mainQueueReview?.first
                 
                 // Update dictionary
-                managedObject?.setValue(topicDict["name"], forKey: "name")
-                managedObject?.setValue(topicDict["details"], forKey: "details")
+                managedObject?.setValue(reviewDict["name"], forKey: "name")
+                managedObject?.setValue(reviewDict["details"], forKey: "details")
                 try self.coreDataStack.saveChanges()
                 
             }
@@ -318,25 +367,25 @@ class AllItemStore {
             }
             
         })
-        guard mainQueueTopic != nil else {
+        guard mainQueueReview != nil else {
             throw fetchRequestError!
             
         }
     }
     
     
-    func deleteTopic(id: String) throws {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Topic")
+    func deleteReview(id: String) throws {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Revie")
         fetchRequest.predicate = NSPredicate(format: "id = %@", id)
         let context = coreDataStack.mainQueueContext
         
-        var mainQueueTopic: [Topic]?
+        var mainQueueReview: [Review]?
         
         var fetchRequestError: Error?
         context.performAndWait({
             do {
-                mainQueueTopic = try context.fetch(fetchRequest) as? [Topic]
-                let managedObject = mainQueueTopic?[0]
+                mainQueueReview = try context.fetch(fetchRequest) as? [Review]
+                let managedObject = mainQueueReview?[0]
                 context.delete(managedObject!)
                 try self.coreDataStack.saveChanges()
                 
@@ -346,7 +395,7 @@ class AllItemStore {
             }
             
         })
-        guard mainQueueTopic != nil else {
+        guard mainQueueReview != nil else {
             throw fetchRequestError!
             
         }
@@ -441,7 +490,7 @@ class AllItemStore {
     // MARK: All Items Core Data Methods
 
 
-    func fetchMainQueueItems(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> (nextActions: [NextAction], projects: [Project], topics: [Topic], contexts: [Context]) {
+    func fetchMainQueueItems(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) throws -> (nextActions: [NextAction], projects: [Project], reviews: [Review], contexts: [Context]) {
         
         let mainQueueContext = self.coreDataStack.mainQueueContext
         
@@ -453,9 +502,9 @@ class AllItemStore {
         projectFetchRequest.sortDescriptors = sortDescriptors
         projectFetchRequest.predicate = predicate
         
-        let topicFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Topic")
-        topicFetchRequest.sortDescriptors = sortDescriptors
-        topicFetchRequest.predicate = predicate
+        let reviewFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Review")
+        reviewFetchRequest.sortDescriptors = sortDescriptors
+        reviewFetchRequest.predicate = predicate
         
         let contextFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Context")
         nextActionFetchRequest.sortDescriptors = sortDescriptors
@@ -463,7 +512,7 @@ class AllItemStore {
         
         var mainQueueNextActions: [NextAction]?
         var mainQueueProjects: [Project]?
-        var mainQueueTopics: [Topic]?
+        var mainQueueReviews: [Review]?
         var mainQueueCons: [Context]?
         
         var fetchRequestError: Error?
@@ -471,7 +520,7 @@ class AllItemStore {
             do {
                 mainQueueNextActions = try mainQueueContext.fetch(nextActionFetchRequest) as? [NextAction]
                 mainQueueProjects = try mainQueueContext.fetch(projectFetchRequest) as? [Project]
-                mainQueueTopics = try mainQueueContext.fetch(topicFetchRequest) as? [Topic]
+                mainQueueReviews = try mainQueueContext.fetch(reviewFetchRequest) as? [Review]
                 mainQueueCons = try mainQueueContext.fetch(contextFetchRequest) as? [Context]
             }
             catch let error {
@@ -479,10 +528,10 @@ class AllItemStore {
             }
             
         }
-        guard let nextActions = mainQueueNextActions, let projects = mainQueueProjects, let topics = mainQueueTopics, let contexts = mainQueueCons else {
+        guard let nextActions = mainQueueNextActions, let projects = mainQueueProjects, let reviews = mainQueueReviews, let contexts = mainQueueCons else {
             throw fetchRequestError!
         }
-        return (nextActions, projects, topics, contexts)
+        return (nextActions, projects, reviews, contexts)
     }
         
 }

@@ -10,36 +10,65 @@ import UIKit
 
 class NextActionDataSource: NSObject, UITableViewDataSource {
     
-    var nextActions = [NextAction]()
+    var sortedNextActions = [[NextAction]]()
+    var unsortedNextActions = [NextAction]()
+    var contexts = [Context]()
     let allItemStore = AllItemStore()
     
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+      
+        if section < contexts.count && section >= 0 {
+            return self.contexts[section].name
+        }  else if section == contexts.count {
+            return "Unsorted"
+        }
+        return ""
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return nextActions.count
+        if section == contexts.count {
+            return unsortedNextActions.count
+        } else {
+            if !sortedNextActions.isEmpty {
+        return (self.sortedNextActions[section].count)
+            } else {
+                return 0
+            }
+    }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "NextActionCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
-        let nextAction = nextActions[indexPath.row]
-        cell.textLabel?.text = nextAction.name
+        if indexPath.section < contexts.count && indexPath.section >= 0 {
+            let sortedNextActionsForContext = sortedNextActions[indexPath.section]
+            let sortedNextAction = sortedNextActionsForContext[indexPath.row]
+            cell.textLabel?.text = "\(indexPath.row + 1): \(sortedNextAction.name!)"
+        }
         
+       else if indexPath.section == contexts.count {
+        let unsortedNextAction = unsortedNextActions[indexPath.row]
+        cell.textLabel?.text = "\(indexPath.row + 1): \(unsortedNextAction.name!)"
+        }
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+   
+        return contexts.count + 1
     }
     
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let id = nextActions[indexPath.row].id
-            nextActions.remove(at: indexPath.row)
+            let id = unsortedNextActions[indexPath.row].id
+            unsortedNextActions.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             do {
                 try allItemStore.deleteNextAction(id: id!)
-            }catch {
+            } catch {
                 print("Error deleting To Do: \(error)")
             }
         }

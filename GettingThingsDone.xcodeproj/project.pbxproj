@@ -7,14 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD57ED7E1E78728D000661D5 /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */; };
-		CD57ED7F1E78728D000661D5 /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED7D1E78728D000661D5 /* ToDo+CoreDataProperties.swift */; };
+		CD0425221EE5123300615D9B /* AccordianCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425211EE5123300615D9B /* AccordianCell.swift */; };
+		CD0425241EE8B2B800615D9B /* ReferenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425231EE8B2B800615D9B /* ReferenceViewController.swift */; };
+		CD0425261EF2EC0500615D9B /* ReferenceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425251EF2EC0500615D9B /* ReferenceTableViewCell.swift */; };
+		CD04252D1EF4447F00615D9B /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425271EF4447F00615D9B /* Project+CoreDataClass.swift */; };
+		CD04252E1EF4447F00615D9B /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425281EF4447F00615D9B /* Project+CoreDataProperties.swift */; };
+		CD04252F1EF4447F00615D9B /* Review+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425291EF4447F00615D9B /* Review+CoreDataClass.swift */; };
+		CD0425301EF4447F00615D9B /* Review+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04252A1EF4447F00615D9B /* Review+CoreDataProperties.swift */; };
+		CD0425311EF4447F00615D9B /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04252B1EF4447F00615D9B /* NextAction+CoreDataClass.swift */; };
+		CD0425321EF4447F00615D9B /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04252C1EF4447F00615D9B /* NextAction+CoreDataProperties.swift */; };
+		CD0425351EF4452600615D9B /* ToDo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425331EF4452600615D9B /* ToDo+CoreDataClass.swift */; };
+		CD0425361EF4452600615D9B /* ToDo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0425341EF4452600615D9B /* ToDo+CoreDataProperties.swift */; };
 		CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */; };
 		CD57ED8F1E788071000661D5 /* ItemTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED8E1E788071000661D5 /* ItemTextField.swift */; };
 		CD57ED911E78C7EB000661D5 /* NextActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */; };
 		CD57ED931E78CA39000661D5 /* NextActionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */; };
-		CD57EDA21E7B2B22000661D5 /* Topic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57EDA01E7B2B22000661D5 /* Topic+CoreDataClass.swift */; };
-		CD57EDA31E7B2B22000661D5 /* Topic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57EDA11E7B2B22000661D5 /* Topic+CoreDataProperties.swift */; };
 		CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7211011E6FB2F800C475AA /* ToDoViewController.swift */; };
 		CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD72111E1E72037300C475AA /* CoreDataStack.swift */; };
 		CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */; };
@@ -24,10 +31,6 @@
 		CD783CD31E7E0B8B0030FE37 /* RelatedToViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD783CD21E7E0B8B0030FE37 /* RelatedToViewController.swift */; };
 		CD7F27EE1E7F85850000B49D /* Context+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27EC1E7F85850000B49D /* Context+CoreDataClass.swift */; };
 		CD7F27EF1E7F85850000B49D /* Context+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27ED1E7F85850000B49D /* Context+CoreDataProperties.swift */; };
-		CD7F27F21E8073D30000B49D /* NextAction+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27F01E8073D30000B49D /* NextAction+CoreDataClass.swift */; };
-		CD7F27F31E8073D30000B49D /* NextAction+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27F11E8073D30000B49D /* NextAction+CoreDataProperties.swift */; };
-		CD7F27F61E8074040000B49D /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27F41E8074040000B49D /* Project+CoreDataClass.swift */; };
-		CD7F27F71E8074040000B49D /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27F51E8074040000B49D /* Project+CoreDataProperties.swift */; };
 		CD7F27F91E808C570000B49D /* AllItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7F27F81E808C570000B49D /* AllItemStore.swift */; };
 		CDD68A281E084BD300E32192 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD68A271E084BD300E32192 /* AppDelegate.swift */; };
 		CDD68A2D1E084BD300E32192 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDD68A2B1E084BD300E32192 /* Main.storyboard */; };
@@ -36,14 +39,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ToDo+CoreDataClass.swift"; path = "GettingThingsDone/ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD57ED7D1E78728D000661D5 /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ToDo+CoreDataProperties.swift"; path = "GettingThingsDone/ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD0425211EE5123300615D9B /* AccordianCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccordianCell.swift; sourceTree = "<group>"; };
+		CD0425231EE8B2B800615D9B /* ReferenceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceViewController.swift; sourceTree = "<group>"; };
+		CD0425251EF2EC0500615D9B /* ReferenceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceTableViewCell.swift; sourceTree = "<group>"; };
+		CD0425271EF4447F00615D9B /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD0425281EF4447F00615D9B /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD0425291EF4447F00615D9B /* Review+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Review+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD04252A1EF4447F00615D9B /* Review+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Review+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD04252B1EF4447F00615D9B /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD04252C1EF4447F00615D9B /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		CD0425331EF4452600615D9B /* ToDo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		CD0425341EF4452600615D9B /* ToDo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToDo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemTextView.swift; path = GettingThingsDone/ItemTextView.swift; sourceTree = "<group>"; };
 		CD57ED8E1E788071000661D5 /* ItemTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTextField.swift; sourceTree = "<group>"; };
 		CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionViewController.swift; sourceTree = "<group>"; };
 		CD57ED921E78CA39000661D5 /* NextActionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NextActionDataSource.swift; sourceTree = "<group>"; };
-		CD57EDA01E7B2B22000661D5 /* Topic+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD57EDA11E7B2B22000661D5 /* Topic+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Topic+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD7211011E6FB2F800C475AA /* ToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoViewController.swift; sourceTree = "<group>"; };
 		CD7211041E71FBDE00C475AA /* GTDModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GTDModel.xcdatamodel; sourceTree = "<group>"; };
 		CD72111E1E72037300C475AA /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -53,10 +63,6 @@
 		CD783CD21E7E0B8B0030FE37 /* RelatedToViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelatedToViewController.swift; sourceTree = "<group>"; };
 		CD7F27EC1E7F85850000B49D /* Context+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Context+CoreDataClass.swift"; path = "GettingThingsDone/Context+CoreDataClass.swift"; sourceTree = "<group>"; };
 		CD7F27ED1E7F85850000B49D /* Context+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Context+CoreDataProperties.swift"; path = "GettingThingsDone/Context+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD7F27F01E8073D30000B49D /* NextAction+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataClass.swift"; path = "GettingThingsDone/NextAction+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7F27F11E8073D30000B49D /* NextAction+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NextAction+CoreDataProperties.swift"; path = "GettingThingsDone/NextAction+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		CD7F27F41E8074040000B49D /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataClass.swift"; path = "GettingThingsDone/Project+CoreDataClass.swift"; sourceTree = "<group>"; };
-		CD7F27F51E8074040000B49D /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Project+CoreDataProperties.swift"; path = "GettingThingsDone/Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		CD7F27F81E808C570000B49D /* AllItemStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllItemStore.swift; sourceTree = "<group>"; };
 		CDD68A241E084BD300E32192 /* GettingThingsDone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GettingThingsDone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD68A271E084BD300E32192 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -80,18 +86,18 @@
 		CDD68A1B1E084BD200E32192 = {
 			isa = PBXGroup;
 			children = (
-				CD7F27F41E8074040000B49D /* Project+CoreDataClass.swift */,
-				CD7F27F51E8074040000B49D /* Project+CoreDataProperties.swift */,
-				CD7F27F01E8073D30000B49D /* NextAction+CoreDataClass.swift */,
-				CD7F27F11E8073D30000B49D /* NextAction+CoreDataProperties.swift */,
+				CD0425331EF4452600615D9B /* ToDo+CoreDataClass.swift */,
+				CD0425341EF4452600615D9B /* ToDo+CoreDataProperties.swift */,
+				CD0425271EF4447F00615D9B /* Project+CoreDataClass.swift */,
+				CD0425281EF4447F00615D9B /* Project+CoreDataProperties.swift */,
+				CD0425291EF4447F00615D9B /* Review+CoreDataClass.swift */,
+				CD04252A1EF4447F00615D9B /* Review+CoreDataProperties.swift */,
+				CD04252B1EF4447F00615D9B /* NextAction+CoreDataClass.swift */,
+				CD04252C1EF4447F00615D9B /* NextAction+CoreDataProperties.swift */,
 				CD7F27EC1E7F85850000B49D /* Context+CoreDataClass.swift */,
 				CD7F27ED1E7F85850000B49D /* Context+CoreDataProperties.swift */,
-				CD57EDA01E7B2B22000661D5 /* Topic+CoreDataClass.swift */,
-				CD57EDA11E7B2B22000661D5 /* Topic+CoreDataProperties.swift */,
 				CD57ED8C1E787B3C000661D5 /* ItemTextView.swift */,
 				CD57ED8E1E788071000661D5 /* ItemTextField.swift */,
-				CD57ED7C1E78728D000661D5 /* ToDo+CoreDataClass.swift */,
-				CD57ED7D1E78728D000661D5 /* ToDo+CoreDataProperties.swift */,
 				CDD68A261E084BD300E32192 /* GettingThingsDone */,
 				CDD68A251E084BD300E32192 /* Products */,
 			);
@@ -115,8 +121,11 @@
 				CD7211011E6FB2F800C475AA /* ToDoViewController.swift */,
 				CD7211471E74F01500C475AA /* ItemDetailViewController.swift */,
 				CD7211431E72F72D00C475AA /* ToDoDataSource.swift */,
+				CD0425211EE5123300615D9B /* AccordianCell.swift */,
 				CD7211031E71FBDE00C475AA /* GTDModel.xcdatamodeld */,
 				CDD68A2B1E084BD300E32192 /* Main.storyboard */,
+				CD0425251EF2EC0500615D9B /* ReferenceTableViewCell.swift */,
+				CD0425231EE8B2B800615D9B /* ReferenceViewController.swift */,
 				CD783CD21E7E0B8B0030FE37 /* RelatedToViewController.swift */,
 				CD57ED901E78C7EB000661D5 /* NextActionViewController.swift */,
 				CD7211451E72FA3600C475AA /* AddItemViewController.swift */,
@@ -153,8 +162,11 @@
 		CDD68A1C1E084BD200E32192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					DatePickerStackView,
+				);
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Dylan Bruschi";
 				TargetAttributes = {
 					CDD68A231E084BD200E32192 = {
@@ -199,29 +211,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD7F27F21E8073D30000B49D /* NextAction+CoreDataClass.swift in Sources */,
+				CD0425321EF4447F00615D9B /* NextAction+CoreDataProperties.swift in Sources */,
 				CD57ED8D1E787B3C000661D5 /* ItemTextView.swift in Sources */,
+				CD04252E1EF4447F00615D9B /* Project+CoreDataProperties.swift in Sources */,
 				CD57ED911E78C7EB000661D5 /* NextActionViewController.swift in Sources */,
-				CD57ED7F1E78728D000661D5 /* ToDo+CoreDataProperties.swift in Sources */,
 				CD7F27F91E808C570000B49D /* AllItemStore.swift in Sources */,
+				CD0425241EE8B2B800615D9B /* ReferenceViewController.swift in Sources */,
+				CD0425301EF4447F00615D9B /* Review+CoreDataProperties.swift in Sources */,
 				CD7F27EE1E7F85850000B49D /* Context+CoreDataClass.swift in Sources */,
-				CD7F27F71E8074040000B49D /* Project+CoreDataProperties.swift in Sources */,
-				CD7F27F61E8074040000B49D /* Project+CoreDataClass.swift in Sources */,
+				CD04252F1EF4447F00615D9B /* Review+CoreDataClass.swift in Sources */,
+				CD0425311EF4447F00615D9B /* NextAction+CoreDataClass.swift in Sources */,
 				CD7211461E72FA3600C475AA /* AddItemViewController.swift in Sources */,
-				CD7F27F31E8073D30000B49D /* NextAction+CoreDataProperties.swift in Sources */,
 				CDD68A281E084BD300E32192 /* AppDelegate.swift in Sources */,
 				CD57ED8F1E788071000661D5 /* ItemTextField.swift in Sources */,
+				CD0425361EF4452600615D9B /* ToDo+CoreDataProperties.swift in Sources */,
+				CD0425351EF4452600615D9B /* ToDo+CoreDataClass.swift in Sources */,
 				CD7211021E6FB2F800C475AA /* ToDoViewController.swift in Sources */,
 				CD72111F1E72037300C475AA /* CoreDataStack.swift in Sources */,
 				CD7F27EF1E7F85850000B49D /* Context+CoreDataProperties.swift in Sources */,
-				CD57EDA21E7B2B22000661D5 /* Topic+CoreDataClass.swift in Sources */,
+				CD0425261EF2EC0500615D9B /* ReferenceTableViewCell.swift in Sources */,
 				CD7211441E72F72D00C475AA /* ToDoDataSource.swift in Sources */,
 				CD7211221E72084100C475AA /* GTDModel.xcdatamodeld in Sources */,
-				CD57EDA31E7B2B22000661D5 /* Topic+CoreDataProperties.swift in Sources */,
+				CD0425221EE5123300615D9B /* AccordianCell.swift in Sources */,
 				CD7211481E74F01500C475AA /* ItemDetailViewController.swift in Sources */,
 				CD57ED931E78CA39000661D5 /* NextActionDataSource.swift in Sources */,
 				CD783CD31E7E0B8B0030FE37 /* RelatedToViewController.swift in Sources */,
-				CD57ED7E1E78728D000661D5 /* ToDo+CoreDataClass.swift in Sources */,
+				CD04252D1EF4447F00615D9B /* Project+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,7 +349,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -360,7 +375,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dlb.GettingThingsDone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

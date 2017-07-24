@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16E195" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Context" representedClassName="Context" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="nextActions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NextAction" inverseName="contexts" inverseEntity="NextAction" syncable="YES"/>
     </entity>
     <entity name="NextAction" representedClassName="NextAction" syncable="YES">
+        <attribute name="contextSorted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="createdate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="duedate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -12,6 +13,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="priority" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="processingtime" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="projectSorted" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="contexts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Context" inverseName="nextActions" inverseEntity="Context" syncable="YES"/>
         <relationship name="projects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Project" inverseName="nextActions" inverseEntity="Project" syncable="YES"/>
     </entity>
@@ -21,30 +23,26 @@
         <attribute name="duedate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="priority" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="nextActions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NextAction" inverseName="projects" inverseEntity="NextAction" syncable="YES"/>
-        <relationship name="topics" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Topic" inverseName="projects" inverseEntity="Topic" syncable="YES"/>
+    </entity>
+    <entity name="Review" representedClassName="Review" syncable="YES">
+        <attribute name="createDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="ToDo" representedClassName="ToDo" syncable="YES">
         <attribute name="datecreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="review" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="reviewtopic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Topic" inverseName="reviewnotes" inverseEntity="Topic" syncable="YES"/>
-    </entity>
-    <entity name="Topic" representedClassName="Topic" syncable="YES">
-        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="review" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="projects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Project" inverseName="topics" inverseEntity="Project" syncable="YES"/>
-        <relationship name="reviewnotes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ToDo" inverseName="reviewtopic" inverseEntity="ToDo" syncable="YES"/>
     </entity>
     <elements>
         <element name="Context" positionX="-9" positionY="90" width="128" height="75"/>
-        <element name="NextAction" positionX="-18" positionY="27" width="128" height="180"/>
+        <element name="NextAction" positionX="-18" positionY="27" width="128" height="210"/>
         <element name="Project" positionX="9" positionY="54" width="128" height="150"/>
-        <element name="ToDo" positionX="-45" positionY="0" width="128" height="135"/>
-        <element name="Topic" positionX="27" positionY="72" width="128" height="135"/>
+        <element name="Review" positionX="-18" positionY="90" width="128" height="105"/>
+        <element name="ToDo" positionX="-45" positionY="0" width="128" height="105"/>
     </elements>
 </model>
