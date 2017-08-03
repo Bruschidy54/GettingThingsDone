@@ -2,7 +2,7 @@
 //  Context+CoreDataProperties.swift
 //  GettingThingsDone
 //
-//  Created by Dylan Bruschi on 3/19/17.
+//  Created by Dylan Bruschi on 8/2/17.
 //  Copyright © 2017 Dylan Bruschi. All rights reserved.
 //
 
@@ -13,10 +13,11 @@ import CoreData
 extension Context {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Context> {
-        return NSFetchRequest<Context>(entityName: "Context");
+        return NSFetchRequest<Context>(entityName: "Context")
     }
 
     @NSManaged public var name: String?
+    @NSManaged public var id: String?
     @NSManaged public var nextActions: NSSet?
 
 }

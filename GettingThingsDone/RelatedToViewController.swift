@@ -29,10 +29,10 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     var relatedToProjectsArray: [Project]?
     var relatedToContextArray: [Context]?
     var addSegue: Bool = false
-    var itemType: String = ""
+    var itemType: ItemType = .nextAction
     let coreDataStack = CoreDataStack(modelName: "GTDModel")
     weak var delegate:RelatedToViewControllerDelegate?
-    
+        
     
     @IBAction func onDoneButtonTapped(_ sender: Any) {
         
@@ -45,7 +45,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         else {
             switch itemType {
-            case "Next Action":
+            case .nextAction:
                 
                let contextSet = NSSet(array: relatedToContextArray!)
                 nextAction?.contexts = contextSet
@@ -66,7 +66,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 nextAction?.projectSorted = false
                }
                 break
-            case "Project":
+            case .project:
                 let nextActionSet = NSSet(array: relatedToNextActionsArray!)
                 project?.nextActions = nextActionSet
                 project?.addToNextActions(nextActionSet)
@@ -99,7 +99,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         relatedToContextArray = []
         
         switch itemType {
-        case "Next Action":
+        case .nextAction:
             let newSections = sections.filter{$0 != "Next Action"}
             sections = newSections
             if !addSegue{
@@ -112,7 +112,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 relatedToContextArray = relatedContexts.allObjects as! [Context]
             }
             break
-        case "Project":
+        case .project:
             let newSections = sections.filter{$0 != "Project" && $0 != "Context"}
             sections = newSections
             if !addSegue{
@@ -142,7 +142,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         
         var count = 0
         switch itemType {
-        case "Next Action":
+        case .nextAction:
             if section == 0 {
                 count = (allProjects?.count)!
             }
@@ -150,7 +150,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 count = (allContexts?.count)!
             }
             break
-        case "Project":
+        case .project:
             if section == 0 {
                 count = (allNextActions?.count)!
             }
@@ -169,7 +169,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCell(withIdentifier: "RelatedToCell")
         
         switch itemType {
-        case "Next Action":
+        case .nextAction:
             if indexPath.section == 0 {
                 let currentProject = allProjects?[indexPath.row]
                 if (relatedToProjectsArray?.contains(currentProject!))! {
@@ -196,7 +196,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     .name
             }
             break
-        case "Project":
+        case .project:
             if indexPath.section == 0 {
                 let currentNextAction = allNextActions?[indexPath.row]
                 if (relatedToNextActionsArray?.contains(currentNextAction!))! {
@@ -227,7 +227,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.cellForRow(at: indexPath as IndexPath)
         
         switch itemType {
-        case "Next Action":
+        case .nextAction:
             if indexPath.section == 0 {
                 let project = allProjects?[indexPath.row]
                 let indexes = relatedToProjectsArray?.enumerated().filter({ $0.element == project}).map{ $0.offset }
@@ -245,7 +245,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 cell?.accessoryType = .none
             }
             break
-        case "Project":
+        case .project:
             if indexPath.section == 0 {
                 // Assign only nonsorted Next Actions?
                 let nextAction = allNextActions?[indexPath.row]
@@ -267,7 +267,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableView.cellForRow(at: indexPath)
         
         switch itemType {
-        case "Next Action":
+        case .nextAction:
             if indexPath.section == 0 {
                 let project = allProjects?[indexPath.row]
                 relatedToProjectsArray?.append(project!)
@@ -280,7 +280,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 cell?.accessoryType = .checkmark
             }
             break
-        case "Project":
+        case .project:
             if indexPath.section == 0 {
                 let nextAction = allNextActions?[indexPath.row]
                 relatedToNextActionsArray?.append(nextAction!)
@@ -292,6 +292,79 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         }
 
         
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        switch itemType {
+        case .nextAction:
+            if indexPath.section == 0 {
+                return "Complete"
+            } else if indexPath.section == 1 {
+                return "Delete"
+            }
+            break
+        case .project:
+            return "Complete"
+            break
+        default:
+            return "Complete"
+            break
+        }
+        return "What?"
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        switch itemType {
+        case .nextAction:
+            if indexPath.section == 0 {
+                if let project: Project? = allProjects?[indexPath.row] {
+                    let id = project?.id
+                    allProjects?.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    let nextActionSet = project?.nextActions
+                    let nextActions = Array(nextActionSet!) as! [NextAction]
+                    for nextAction in nextActions {
+                        nextAction.projectSorted = false
+                    }
+                    do {
+                        try allItemStore.deleteProject(id: id!)
+                    } catch {
+                        print("Error deleting Project: \(error)")
+                    }
+                }
+            } else if indexPath.section == 1 {
+                if let context: Context? = allContexts?[indexPath.row] {
+                    let id = context?.id
+                    allContexts?.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    let nextActionSet = context?.nextActions
+                    let nextActions = Array(nextActionSet!) as! [NextAction]
+                    for nextAction in nextActions {
+                        nextAction.contextSorted = false
+                    }
+                    do {
+                        try allItemStore.deleteContext(id: id!)
+                    } catch {
+                        print("Error deleting Project: \(error)")
+                    }
+                }
+            }
+            break
+        case .project:
+            if let nextAction: NextAction? = allNextActions?[indexPath.row] {
+                let id = nextAction?.id
+                allNextActions?.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                do {
+                    try allItemStore.deleteNextAction(id: id!)
+                } catch {
+                    print("Error deleting Next Action: \(error)")
+                }
+            }
+            break
+        default:
+            break
+        }
     }
 
     /*

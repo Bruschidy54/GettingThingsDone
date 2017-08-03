@@ -38,22 +38,25 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         
         
         var contextArray = [Context]()
+        var scoredNextActionArrays = [[NextAction]]()
         for context in allContexts {
             if let nextActionSet = context.nextActions {
                 let nextActionArray = Array(nextActionSet) as! [NextAction]
-                let scoredNextActionArray = nextActionArray.sorted{
-                    $0.relevanceScore > $1.relevanceScore
-                }
+                
                 
                 if !nextActionArray.isEmpty{
+                    let scoredNextActionArray = nextActionArray.sorted{
+                        $0.relevanceScore > $1.relevanceScore
+                    }
                     contextArray.append(context)
-                    self.nextActionDataSource.sortedNextActions.append(scoredNextActionArray)
+                    scoredNextActionArrays.append(scoredNextActionArray)
                 }
             }
         }
         OperationQueue.main.addOperation {
             self.nextActionDataSource.unsortedNextActions = scoredUnsortedNextActions
             self.nextActionDataSource.contexts = contextArray
+            self.nextActionDataSource.sortedNextActions = scoredNextActionArrays
             self.tableView.reloadData()
             
         }
@@ -92,7 +95,7 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
             }
             
             destinationVC.allItemStore = allItemStore
-            destinationVC.itemType = "Next Action"
+            destinationVC.itemType = .nextAction
     }
     }
     }

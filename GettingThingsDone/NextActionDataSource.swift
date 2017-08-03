@@ -42,15 +42,26 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         let identifier = "NextActionCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
+        
         if indexPath.section < contexts.count && indexPath.section >= 0 {
             let sortedNextActionsForContext = sortedNextActions[indexPath.section]
             let sortedNextAction = sortedNextActionsForContext[indexPath.row]
             cell.textLabel?.text = "\(indexPath.row + 1): \(sortedNextAction.name!)"
+            if (sortedNextAction.duedate! as Date) < Date() {
+                cell.textLabel?.textColor = UIColor.red
+            } else {
+                cell.textLabel?.textColor = UIColor.black
+            }
         }
         
        else if indexPath.section == contexts.count {
         let unsortedNextAction = unsortedNextActions[indexPath.row]
         cell.textLabel?.text = "\(indexPath.row + 1): \(unsortedNextAction.name!)"
+            if (unsortedNextAction.duedate! as Date) < Date() {
+                cell.textLabel?.textColor = UIColor.red
+            } else {
+                cell.textLabel?.textColor = UIColor.black
+            }
         }
         return cell
     }
@@ -63,15 +74,37 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let id = unsortedNextActions[indexPath.row].id
+            if indexPath.section < contexts.count && indexPath.section >= 0 {
+                let sortedNextActionsForContext = sortedNextActions[indexPath.section]
+                if let sortedNextAction: NextAction? = sortedNextActionsForContext[indexPath.row] {
+                let id = sortedNextAction?.id
+                sortedNextActions[indexPath.section].remove(at: indexPath.row)
+                    if let contexts = sortedNextAction?.contexts {
+                    sortedNextAction?.removeFromContexts(contexts)
+                    }
+                    if let projects = sortedNextAction?.projects {
+                        sortedNextAction?.removeFromProjects(projects)
+                    }
+                tableView.reloadData()
+                do {
+                    try allItemStore.deleteNextAction(id: id!)
+                } catch {
+                    print("Error deleting Next Action: \(error)")
+                }
+            }
+            } else if indexPath.section == contexts.count {
+                if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
+            let id = unsortedNextAction?.id
             unsortedNextActions.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
             do {
                 try allItemStore.deleteNextAction(id: id!)
             } catch {
-                print("Error deleting To Do: \(error)")
+                print("Error deleting Next Action: \(error)")
             }
+                }
         }
+    }
     }
     
 }

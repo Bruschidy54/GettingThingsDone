@@ -9,7 +9,7 @@
 import Foundation
 
 class AccordionCell {
-    fileprivate (set) var items = [Item]()
+    var items = [Item]()
     
     class Item {
         var isHidden: Bool

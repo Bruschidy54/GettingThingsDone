@@ -34,7 +34,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
        // Create enum for itemType instead of string
     let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Review", "Context"]
-    var itemType: String = ""
+    var itemType: ItemType = .none
     var reclassifiedToDo: ToDo?
     var reclassifiedNextAction: NextAction?
     var reclassifiedProject: Project?
@@ -45,8 +45,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     // Make screensize orthogonal?
     var screenSize: CGRect = UIScreen.main.bounds
-    
-    
     
     
     
@@ -166,14 +164,14 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.dueDatePicker.datePickerMode = .date
         
         pickerView.delegate = self
         pickerView.dataSource = self
-        print(durationSliderWidthConstraint.constant)
-        
         
         prioritySliderWidthConstraint.constant = (screenSize.width)/2
         durationSliderWidthConstraint.constant = (screenSize.width)/2
+        
         
         if UIDevice.current.orientation.isLandscape {
             
@@ -187,7 +185,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         dueDatePickerHeightConstraint.constant = (screenSize.height)/5
         notesTextViewHeightConstraint.constant = (screenSize.height)/4
         }
-        
+
         updateForm()
         
 
@@ -201,7 +199,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         print(relatedToProjectsArray)
         
         
-        if itemType == "" {
+        if itemType == .none {
             titleLabel.isHidden = true
             titleTextField.isHidden = true
             priorityLabel.isHidden = true
@@ -213,7 +211,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             dueDateLabel.isHidden = true
             dueDatePicker.isHidden = true
             relatedToButton.isHidden = true
+            priorityLevelLabel.isHidden = true
+            durationLevelLabel.isHidden = true
         }
+        
+        
         
         
         // Rework reclassified object so I don't have initially unwrap stuff****
@@ -270,8 +272,32 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        itemType = pickerData[row]
-        print(itemType)
+        
+        let pickerSelection = pickerData[row]
+        
+        switch pickerSelection {
+        case "Choose an Option":
+            itemType = .chooseAnOption
+            break
+        case "To Do":
+            itemType = .toDo
+            break
+        case "Next Action":
+            itemType = .nextAction
+            break
+        case "Project":
+            itemType = .project
+            break
+        case "Review":
+            itemType = .review
+            break
+        case "Context":
+            itemType = .context
+            break
+        default:
+            break
+        }
+        
         updateForm()
     }
     
@@ -283,7 +309,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         screenSize = newScreenSize
         
         switch itemType {
-        case "Choose an Option":
+        case .none:
             titleLabel.isHidden = true
             titleTextField.isHidden = true
             priorityLabel.isHidden = true
@@ -297,8 +323,25 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
             break
-        case "To Do":
+        case .chooseAnOption:
+            titleLabel.isHidden = true
+            titleTextField.isHidden = true
+            priorityLabel.isHidden = true
+            prioritySlider.isHidden = true
+            durationLabel.isHidden = true
+            durationSlider.isHidden = true
+            notesLabel.isHidden = true
+            notesTextView.isHidden = true
+            dueDateLabel.isHidden = true
+            dueDatePicker.isHidden = true
+            relatedToButton.isHidden = true
+            priorityLevelLabel.isHidden = true
+            durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
+            break
+        case .toDo:
             titleLabel.isHidden = false
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
@@ -312,6 +355,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
             
             if UIDevice.current.orientation.isLandscape {
                 
@@ -321,7 +365,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             
             break
-        case "Next Action":
+        case .nextAction:
             titleLabel.isHidden = false
             titleTextField.isHidden = false
             priorityLabel.isHidden = false
@@ -335,6 +379,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = false
             priorityLevelLabel.isHidden = false
             durationLevelLabel.isHidden = false
+            notesLabel.text = "How I Know I'm Done"
             
             if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height)/5
@@ -398,7 +443,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
 
             break
-        case "Project":
+        case .project:
             titleLabel.isHidden = false
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
@@ -412,17 +457,18 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = false
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Planning"
             
             if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height)/4
                 dueDatePickerHeightConstraint.constant = (screenSize.height)/5
             } else {
                 notesTextViewHeightConstraint.constant = (screenSize.height)/3
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/4
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/5
             }
             
             break
-        case "Review":
+        case .review:
             titleLabel.isHidden = false
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
@@ -436,6 +482,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
             
             if UIDevice.current.orientation.isLandscape {
                 
@@ -445,7 +492,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             
             break
-        case "Context":
+        case .context:
             titleLabel.isHidden = false
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
@@ -459,6 +506,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
         default:
             titleLabel.isHidden = true
             titleTextField.isHidden = true
@@ -473,6 +521,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
             break
         }
     }
@@ -480,9 +529,9 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     func createItem() {
         if titleTextField.text != "" {
         switch itemType {
-        case "Choose an Options":
+        case .chooseAnOption:
             return
-        case "To Do":
+        case .toDo:
             guard let toDoTitle = titleTextField.text, let toDoNotes = notesTextView.text else {
                 print("Error: Title and/or notes came back as nil")
                 return
@@ -501,7 +550,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             
             break
-        case "Next Action":
+        case .nextAction:
             guard let title = titleTextField.text, let notes = notesTextView.text else {
                 print("Error: Title and/or notes came back as nil")
                 return
@@ -540,7 +589,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             
             break
-        case "Project":
+        case .project:
             guard let title = titleTextField.text, let notes = notesTextView.text else {
                 print("Error: Title and/or notes came back as nil")
                 return
@@ -564,7 +613,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("Core data save failed: \(error)")
             }
             break
-        case "Review":
+        case .review:
             guard let title = titleTextField.text, let notes = notesTextView.text else {
                 print("Error: Title and/or notes came back as nil")
                 return
@@ -583,7 +632,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("Core data save failed: \(error)")
             }
             break
-        case "Context":
+        case .context:
             guard let title = titleTextField.text else {
                 print("Error: Title and/or notes came back as nil")
                 return
@@ -658,6 +707,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             destinationVC.itemType = itemType
             destinationVC.allItemStore = allItemStore
             destinationVC.delegate = self
+            
             
             // Will readd reclassify feature if necessary
             if reclassifiedNextAction != nil {

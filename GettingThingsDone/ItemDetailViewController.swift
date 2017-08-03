@@ -39,7 +39,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     var toDo: ToDo?
     var project: Project?
     var review: Review?
-    var itemType: String = ""
+    var itemType: ItemType = .nextAction
     var nextAction: NextAction?
     var allItemStore: AllItemStore!
     var screenSize: CGRect = UIScreen.main.bounds
@@ -132,6 +132,8 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         self.dueDatePicker.datePickerMode = .date
+        
         
         prioritySliderConstraint.constant = (screenSize.width)/2
         durationSliderContraint.constant = (screenSize.width)/2
@@ -191,7 +193,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         screenSize = newScreenSize
         
         switch itemType {
-        case "To Do":
+        case .toDo:
             titleTextField.text = toDo?.name
             notesTextView.text = toDo?.details
             titleLabel.isHidden = false
@@ -208,6 +210,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             dueDatePicker.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
             
             if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
@@ -216,13 +219,14 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             }
             
             break
-        case "Next Action":
+        case .nextAction:
             titleTextField.text = nextAction?.name
             notesTextView.text = nextAction?.details
             prioritySlider.value = (nextAction?.priority)!
             durationSlider.value = (nextAction?.processingtime)!
             dueDateFullDateLabel.text = dateFormatter.string(from: nextAction?.duedate as! Date)
             dueDatePicker.date = nextAction?.duedate as! Date
+            notesLabel.text = "How I Know I'm Done"
             
             if UIDevice.current.orientation.isLandscape {
                 datePickerHeightConstraint.constant = (screenSize.height)/6
@@ -300,7 +304,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             priorityLevelLabel.isHidden = false
             durationLevelLabel.isHidden = false
             break
-        case "Project":
+        case .project:
             titleTextField.text = project?.name
             notesTextView.text = project?.details
             dueDateFullDateLabel.text = dateFormatter.string(from: project?.duedate as! Date)
@@ -320,6 +324,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             classifyButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Planning"
             
             if UIDevice.current.orientation.isLandscape {
                 datePickerHeightConstraint.constant = (screenSize.height)/6
@@ -329,7 +334,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
             }
             break
-        case "Review":
+        case .review:
             titleTextField.text = review?.name
             notesTextView.text = review?.details
             titleLabel.isHidden = false
@@ -347,6 +352,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             classifyButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
+            notesLabel.text = "Notes"
             
             if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
@@ -355,6 +361,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             }
             break
         default:
+            notesLabel.text = "Notes"
             break
         }
     }
@@ -367,7 +374,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     func saveItem(){
         switch self.itemType {
-        case "To Do":
+        case .toDo:
             let toDoDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "datecreated" : toDo?.datecreated as Any, "details": notesTextView.text as Any, "id": toDo?.id]
             do {
                 try self.allItemStore.updateToDo(toDoDict: toDoDict)
@@ -376,7 +383,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 print(error)
             }
             break
-        case "Next Action":
+        case .nextAction:
             
             
             // Update dictionary
@@ -388,7 +395,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 print(error)
             }
             break
-        case "Project":
+        case .project:
             
             // Update dictionary
             let projectDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : project?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": project?.id]
@@ -399,17 +406,16 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 print(error)
             }
             break
-//        case "Review":
+        case .review:
             
-            // **** Change into review data model
-//            let reviewDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "review" : topic?.review as Any, "details": notesTextView.text as Any, "id": topic?.id]
-//            do {
-//                try self.allItemStore.updateTopic(topicDict: topicDict)
-//                print("Topic successfully updated")
-//            } catch {
-//                print(error)
-//            }
-//            break
+            let reviewDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createDate" : review?.createDate as Any, "details": notesTextView.text as Any, "id": review?.id]
+            do {
+                try self.allItemStore.updateReview(reviewDict: reviewDict)
+                print("Topic successfully updated")
+            } catch {
+                print(error)
+            }
+            break
         default:
             break
         }
@@ -423,14 +429,14 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         if segue.identifier == "ReclassifySegue" {
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.allItemStore = allItemStore
-            if itemType == "To Do" {
+            if itemType == .toDo {
                 destinationVC.reclassifiedToDo = toDo
             }
-            else if itemType == "Next Action" {
+            else if itemType == .nextAction{
                 destinationVC.reclassifiedNextAction = nextAction
        
             }
-            else if itemType == "Project" {
+            else if itemType == .project {
                 destinationVC.reclassifiedProject = project
             }
         }

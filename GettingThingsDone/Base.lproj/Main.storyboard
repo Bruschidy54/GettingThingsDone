@@ -70,7 +70,7 @@
                                                     <action selector="onPrioritySliderSlid:" destination="mIS-3t-hLE" eventType="valueChanged" id="GRD-RX-3PF"/>
                                                 </connections>
                                             </slider>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4JX-RL-zm3" userLabel="Level Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9H-fN-Gzk" userLabel="PriorityLevelLabel">
                                                 <rect key="frame" x="242.33333333333337" y="0.0" width="147.66666666666663" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -96,7 +96,7 @@
                                                     <action selector="onDurationSliderSlid:" destination="mIS-3t-hLE" eventType="valueChanged" id="izN-3W-NGj"/>
                                                 </connections>
                                             </slider>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gut-3a-fN1" userLabel="Level Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ws-3T-YC1" userLabel="DurationLevelLabel">
                                                 <rect key="frame" x="245.33333333333337" y="0.0" width="144.66666666666663" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -196,7 +196,7 @@
                         <outlet property="dueDatePicker" destination="hl2-Wa-gE4" id="RRM-cA-c6g"/>
                         <outlet property="dueDatePickerHeightConstraint" destination="Wqf-Pc-hOo" id="DRI-Wt-1rc"/>
                         <outlet property="durationLabel" destination="XdQ-P3-5gy" id="WfW-7A-O0e"/>
-                        <outlet property="durationLevelLabel" destination="gut-3a-fN1" id="k5y-sC-sOz"/>
+                        <outlet property="durationLevelLabel" destination="1ws-3T-YC1" id="omp-KQ-05i"/>
                         <outlet property="durationSlider" destination="mdc-E3-lcx" id="gCy-TG-zfs"/>
                         <outlet property="durationSliderWidthConstraint" destination="uGh-dM-l20" id="16f-jg-yZl"/>
                         <outlet property="itemTypePickerHeightConstraint" destination="uuS-CE-QZP" id="d5g-Tz-yP1"/>
@@ -205,7 +205,7 @@
                         <outlet property="notesTextViewHeightConstraint" destination="Uql-kf-41h" id="qR3-lK-E2c"/>
                         <outlet property="pickerView" destination="TUa-zp-ZFK" id="XS4-Qb-Gmc"/>
                         <outlet property="priorityLabel" destination="Fyv-JB-dXl" id="GdC-cC-yEX"/>
-                        <outlet property="priorityLevelLabel" destination="4JX-RL-zm3" id="eir-zJ-15M"/>
+                        <outlet property="priorityLevelLabel" destination="j9H-fN-Gzk" id="P24-eS-ZM5"/>
                         <outlet property="prioritySlider" destination="fUb-Ic-JcV" id="GWt-9s-UYN"/>
                         <outlet property="prioritySliderWidthConstraint" destination="PqN-bu-oJj" id="jkf-3Q-5wd"/>
                         <outlet property="relatedToButton" destination="p8m-ol-Ew8" id="0S7-BU-yf8"/>
@@ -217,7 +217,7 @@
             </objects>
             <point key="canvasLocation" x="-297" y="1168"/>
         </scene>
-        <!--Track Projects And Progress-->
+        <!--Track Projects And Review Progress-->
         <scene sceneID="uM4-bN-I7m">
             <objects>
                 <viewController id="Skk-lD-lUo" customClass="ReferenceViewController" customModule="GettingThingsDone" customModuleProvider="target" sceneMemberID="viewController">
@@ -282,10 +282,10 @@
                             <constraint firstItem="ccZ-Bb-stQ" firstAttribute="top" secondItem="ihP-pS-fkS" secondAttribute="bottom" id="w5m-Q8-aN9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Track Projects And Progress" id="gsO-yE-plA">
+                    <navigationItem key="navigationItem" title="Track Projects And Review Progress" id="gsO-yE-plA">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="CFt-d8-m7y">
                             <connections>
-                                <segue destination="FHW-Ai-IkK" kind="show" identifier="AddItemSegue" id="wtp-Z3-lbI"/>
+                                <segue destination="mIS-3t-hLE" kind="show" identifier="AddItemSegue" id="YaU-O7-9HF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -298,7 +298,7 @@
             </objects>
             <point key="canvasLocation" x="1922" y="1036"/>
         </scene>
-        <!--Clarify Next Actions-->
+        <!--Clarify Bite-Size Next Actions-->
         <scene sceneID="dHH-EX-lkZ">
             <objects>
                 <viewController id="tsR-Vh-bVg" customClass="NextActionViewController" customModule="GettingThingsDone" customModuleProvider="target" sceneMemberID="viewController">
@@ -339,7 +339,7 @@
                             <constraint firstItem="lMh-PL-cZc" firstAttribute="top" secondItem="tmA-qf-faI" secondAttribute="bottom" id="pLO-UH-pLB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Clarify Next Actions" id="qWc-t0-NgP">
+                    <navigationItem key="navigationItem" title="Clarify Bite-Size Next Actions" id="qWc-t0-NgP">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="6Q4-8S-mup">
                             <connections>
                                 <segue destination="mIS-3t-hLE" kind="show" identifier="AddItemSegue" id="6fV-Z0-8CT"/>
@@ -769,198 +769,10 @@
             </objects>
             <point key="canvasLocation" x="912.79999999999995" y="1035.832083958021"/>
         </scene>
-        <!--Add an Item-->
-        <scene sceneID="3YM-E5-O8X">
-            <objects>
-                <viewController id="FHW-Ai-IkK" customClass="AddItemViewController" customModule="GettingThingsDone" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="kg1-5w-sgm"/>
-                        <viewControllerLayoutGuide type="bottom" id="4jh-fT-Na6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="owy-G3-al3">
-                        <rect key="frame" x="0.0" y="64" width="414" height="672"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="87f-q4-Uj8">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="VN4-7p-WEb"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="FHW-Ai-IkK" id="Qk8-RH-Lfa"/>
-                                    <outlet property="delegate" destination="FHW-Ai-IkK" id="2mw-li-6vh"/>
-                                </connections>
-                            </pickerView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="FKz-lm-X1A" userLabel="FullStackView">
-                                <rect key="frame" x="8" y="158" width="398" height="475"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZN0-uD-nJw" userLabel="TitleStackView">
-                                        <rect key="frame" x="0.0" y="0.0" width="390" height="30"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9d-oV-nv7">
-                                                <rect key="frame" x="0.0" y="0.0" width="33.333333333333336" height="30"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dKW-DV-tUz" customClass="ItemTextField" customModule="GettingThingsDone" customModuleProvider="target">
-                                                <rect key="frame" x="43.333333333333343" y="0.0" width="346.66666666666663" height="30"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="duc-LG-SKq" userLabel="PriorityStackView">
-                                        <rect key="frame" x="0.0" y="41" width="317" height="30"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U3C-0T-J81">
-                                                <rect key="frame" x="0.0" y="0.0" width="55" height="30"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="E7a-Y7-MIg">
-                                                <rect key="frame" x="65" y="0.0" width="254" height="31"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="250" id="ZXd-ht-Waa"/>
-                                                </constraints>
-                                            </slider>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="W0m-ab-cMz" userLabel="DurationStackView">
-                                        <rect key="frame" x="0.0" y="82" width="330.33333333333331" height="30"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYa-iN-ug5">
-                                                <rect key="frame" x="0.0" y="0.0" width="65.333333333333329" height="30"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="C96-Nr-24a">
-                                                <rect key="frame" x="78.333333333333314" y="0.0" width="254" height="31"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="250" id="ZpT-ZI-Xdf"/>
-                                                </constraints>
-                                            </slider>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aE1-Qe-4OJ" userLabel="DueDateStackView">
-                                        <rect key="frame" x="0.0" y="123" width="391.33333333333331" height="150"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWE-DV-w6q">
-                                                <rect key="frame" x="0.0" y="0.0" width="71.333333333333329" height="150"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="g5e-Rt-qbz">
-                                                <rect key="frame" x="71.333333333333314" y="0.0" width="320" height="150"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="150" id="dYy-9S-O7a"/>
-                                                </constraints>
-                                                <date key="date" timeIntervalSinceReferenceDate="510852698.91760302">
-                                                    <!--2017-03-10 15:31:38 +0000-->
-                                                </date>
-                                            </datePicker>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="BJ4-Vs-RI1"/>
-                                        </constraints>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mFG-pG-Eeq" userLabel="NotesStackView">
-                                        <rect key="frame" x="0.0" y="284" width="390" height="150"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xVC-k2-roa">
-                                                <rect key="frame" x="0.0" y="0.0" width="45.666666666666664" height="150"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ud9-Dg-zY0" customClass="ItemTextView" customModule="GettingThingsDone" customModuleProvider="target">
-                                                <rect key="frame" x="53.666666666666657" y="0.0" width="336.33333333333337" height="150"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="cuh-aH-AtT"/>
-                                        </constraints>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dfA-J5-aUh" userLabel="RelatedToStackView">
-                                        <rect key="frame" x="0.0" y="445" width="85" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qxQ-jR-HDg">
-                                                <rect key="frame" x="0.0" y="0.0" width="85" height="30"/>
-                                                <state key="normal" title="Related To..."/>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="mFG-pG-Eeq" secondAttribute="trailing" constant="8" id="fVx-tL-Tvj"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZN0-uD-nJw" secondAttribute="trailing" constant="8" id="qxz-Ta-0Mt"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="FKz-lm-X1A" firstAttribute="leading" secondItem="owy-G3-al3" secondAttribute="leading" constant="8" id="37f-AZ-e3t"/>
-                            <constraint firstItem="87f-q4-Uj8" firstAttribute="leading" secondItem="owy-G3-al3" secondAttribute="leading" id="Lr4-Bp-F99"/>
-                            <constraint firstAttribute="trailing" secondItem="FKz-lm-X1A" secondAttribute="trailing" constant="8" id="Npk-1V-p57"/>
-                            <constraint firstItem="87f-q4-Uj8" firstAttribute="top" secondItem="kg1-5w-sgm" secondAttribute="bottom" id="PsI-yO-5pA"/>
-                            <constraint firstItem="FKz-lm-X1A" firstAttribute="top" secondItem="87f-q4-Uj8" secondAttribute="bottom" constant="8" id="co6-rW-lOv"/>
-                            <constraint firstAttribute="trailing" secondItem="87f-q4-Uj8" secondAttribute="trailing" id="ev9-ey-fOY"/>
-                            <constraint firstItem="4jh-fT-Na6" firstAttribute="top" relation="greaterThanOrEqual" secondItem="FKz-lm-X1A" secondAttribute="bottom" constant="8" id="kMG-5m-AR4"/>
-                        </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="i1e-1s-bHw" appends="YES" id="Eqz-6D-vh9"/>
-                        </connections>
-                    </view>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Add an Item" id="OUI-hc-VMK">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="4Q9-fW-MJR">
-                            <connections>
-                                <action selector="onCancelButtonTapped:" destination="FHW-Ai-IkK" id="iTE-TR-uPF"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="II2-J3-O6P">
-                            <connections>
-                                <action selector="onDoneButtonTapped:" destination="FHW-Ai-IkK" id="3X6-gD-s9b"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="dueDateLabel" destination="NWE-DV-w6q" id="vYe-P7-fNU"/>
-                        <outlet property="dueDatePicker" destination="g5e-Rt-qbz" id="4Oq-rm-AzV"/>
-                        <outlet property="durationLabel" destination="kYa-iN-ug5" id="QeH-rF-ufw"/>
-                        <outlet property="durationSlider" destination="C96-Nr-24a" id="wC7-P2-Pbi"/>
-                        <outlet property="notesLabel" destination="xVC-k2-roa" id="8j8-we-7zW"/>
-                        <outlet property="notesTextView" destination="ud9-Dg-zY0" id="hnc-xZ-YZt"/>
-                        <outlet property="pickerView" destination="87f-q4-Uj8" id="nq1-eg-fQC"/>
-                        <outlet property="priorityLabel" destination="U3C-0T-J81" id="tIV-B8-V1X"/>
-                        <outlet property="prioritySlider" destination="E7a-Y7-MIg" id="EWZ-Jr-tFP"/>
-                        <outlet property="relatedToButton" destination="qxQ-jR-HDg" id="WvT-iB-LRY"/>
-                        <outlet property="titleLabel" destination="z9d-oV-nv7" id="1fC-G8-gJK"/>
-                        <outlet property="titleTextField" destination="dKW-DV-tUz" id="bGz-ji-jUc"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iEs-lw-wMT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="i1e-1s-bHw">
-                    <connections>
-                        <action selector="backgroundTapped:" destination="FHW-Ai-IkK" id="bjG-iS-FWr"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="-297" y="1168"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="YaU-O7-9HF"/>
         <segue reference="S3A-fW-dcc"/>
-        <segue reference="Fhm-IP-zBk"/>
         <segue reference="KYd-YL-GUU"/>
     </inferredMetricsTieBreakers>
 </document>

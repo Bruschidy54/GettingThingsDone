@@ -23,7 +23,6 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
         
         let toDo = toDos[indexPath.row]
         cell.textLabel?.text = toDo.name
-        
         return cell
     }
     
@@ -34,7 +33,8 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let id = toDos[indexPath.row].id
+            if let toDo: ToDo? = toDos[indexPath.row] {
+            let id = toDo?.id
             toDos.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             do {
@@ -42,6 +42,7 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
             }catch {
                 print("Error deleting To Do: \(error)")
             }
+        }
         }
     }
     

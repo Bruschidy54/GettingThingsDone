@@ -56,7 +56,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
                 let destinationVC = segue.destination as! ItemDetailViewController
                 destinationVC.toDo = toDo
                 destinationVC.allItemStore = allItemStore
-                destinationVC.itemType = "To Do"
+                destinationVC.itemType = .toDo
             }
         }
     }
