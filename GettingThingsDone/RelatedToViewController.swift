@@ -93,6 +93,9 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+
+        
         relatedToNextActionsArray = []
         relatedToProjectsArray = []
         relatedToNextActionsArray = []
@@ -167,6 +170,9 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RelatedToCell")
+        
+        cell?.textLabel?.numberOfLines = 0
+        cell?.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         
         switch itemType {
         case .nextAction:

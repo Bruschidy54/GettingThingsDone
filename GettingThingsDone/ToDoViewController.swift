@@ -21,6 +21,9 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
 
         tableView.delegate = self
         tableView.dataSource = toDoDataSource
+
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,6 +35,8 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         
         OperationQueue.main.addOperation {
             self.toDoDataSource.toDos = allToDos
+//            ** Set background table view to view with label
+//            tableView.backgroundView
             self.tableView.reloadData()
         }
         
@@ -40,6 +45,10 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Complete"
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
 
     
@@ -62,4 +71,17 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     }
     
 
+}
+
+extension UIImage{
+    
+    func alpha(_ value:CGFloat)->UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: CGPoint.zero, blendMode: .normal, alpha: value)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+        
+    }
 }

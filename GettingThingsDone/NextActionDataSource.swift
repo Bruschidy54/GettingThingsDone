@@ -41,6 +41,8 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "NextActionCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        cell.textLabel?.numberOfLines = 0
+        cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
         
         
         if indexPath.section < contexts.count && indexPath.section >= 0 {
@@ -55,6 +57,10 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         }
         
        else if indexPath.section == contexts.count {
+            if unsortedNextActions.isEmpty {
+                cell.textLabel?.text = "No Unsorted Next Actions"
+                cell.textLabel?.textColor = UIColor.black
+            } else {
         let unsortedNextAction = unsortedNextActions[indexPath.row]
         cell.textLabel?.text = "\(indexPath.row + 1): \(unsortedNextAction.name!)"
             if (unsortedNextAction.duedate! as Date) < Date() {
@@ -63,6 +69,7 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
                 cell.textLabel?.textColor = UIColor.black
             }
         }
+    }
         return cell
     }
     

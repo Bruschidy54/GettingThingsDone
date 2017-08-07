@@ -20,9 +20,14 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "ToDoCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        
+        if toDos.isEmpty == true {
+            cell.textLabel?.text = "In Tray Is Empty"
+        } else{
         let toDo = toDos[indexPath.row]
         cell.textLabel?.text = toDo.name
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        }
         return cell
     }
     

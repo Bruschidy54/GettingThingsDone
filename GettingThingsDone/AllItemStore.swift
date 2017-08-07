@@ -375,7 +375,7 @@ class AllItemStore {
     
     
     func deleteReview(id: String) throws {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Revie")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Review")
         fetchRequest.predicate = NSPredicate(format: "id = %@", id)
         let context = coreDataStack.mainQueueContext
         

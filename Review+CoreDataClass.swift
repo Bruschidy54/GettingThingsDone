@@ -18,5 +18,7 @@ public class Review: NSManagedObject {
         createDate = NSDate()
         id = NSUUID().uuidString
     }
+    
+    // Set up weekly review time
 
 }

@@ -18,6 +18,8 @@ class ReferenceTableViewCell: UITableViewCell {
     
     var delegate: ReferenceTableViewCellDelegate?
     
+
+    @IBOutlet var backgroundCloudImage: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var segueButton: UIButton!
     

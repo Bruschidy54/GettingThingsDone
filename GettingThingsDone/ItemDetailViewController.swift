@@ -32,7 +32,10 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBOutlet var datePickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var notesTextViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet var titleTextFieldWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var priorityLevelLabelWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
     
     // Create enum for itemType instead of string
     
@@ -132,11 +135,17 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+
+        
          self.dueDatePicker.datePickerMode = .date
         
         
-        prioritySliderConstraint.constant = (screenSize.width)/2
-        durationSliderContraint.constant = (screenSize.width)/2
+        prioritySliderConstraint.constant = (screenSize.width * 11)/30
+        durationSliderContraint.constant = (screenSize.width * 11)/30
+        titleTextFieldWidthConstraint.constant = (screenSize.width * 3)/5
+        priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+        durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
         
         
         formatPage()
@@ -149,23 +158,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         super.viewWillAppear(true)
         
       self.tabBarController?.tabBar.isHidden = true
-        
-//        switch itemType {
-//        case "To Do":
-//            print(toDo)
-//            break
-//        case "Next Action":
-//            print(nextAction)
-//            break
-//        case "Project":
-//            print(project)
-//            break
-//        case "Review":
-//            print(review)
-//            break
-//        default:
-//            break
-//        }
+
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -194,9 +187,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         switch itemType {
         case .toDo:
+            self.navigationItem.title = toDo?.name
             titleTextField.text = toDo?.name
             notesTextView.text = toDo?.details
             titleLabel.isHidden = false
+            titleLabel.text = "What's on my mind?"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -220,13 +215,15 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             
             break
         case .nextAction:
+            self.navigationItem.title = nextAction?.name
+            titleLabel.text = "Action to take"
             titleTextField.text = nextAction?.name
             notesTextView.text = nextAction?.details
             prioritySlider.value = (nextAction?.priority)!
             durationSlider.value = (nextAction?.processingtime)!
             dueDateFullDateLabel.text = dateFormatter.string(from: nextAction?.duedate as! Date)
             dueDatePicker.date = nextAction?.duedate as! Date
-            notesLabel.text = "How I Know I'm Done"
+            notesLabel.text = "How I know I'm done"
             
             if UIDevice.current.orientation.isLandscape {
                 datePickerHeightConstraint.constant = (screenSize.height)/6
@@ -305,6 +302,8 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = false
             break
         case .project:
+            self.navigationItem.title = project?.name
+            titleLabel.text = "Project"
             titleTextField.text = project?.name
             notesTextView.text = project?.details
             dueDateFullDateLabel.text = dateFormatter.string(from: project?.duedate as! Date)
@@ -335,6 +334,8 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             }
             break
         case .review:
+            self.navigationItem.title = "Review Your Progress"
+            titleLabel.text = "What I've accomplished"
             titleTextField.text = review?.name
             notesTextView.text = review?.details
             titleLabel.isHidden = false
@@ -352,7 +353,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             classifyButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
-            notesLabel.text = "Notes"
+            notesLabel.text = "How can I improve?"
             
             if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)

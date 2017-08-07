@@ -32,6 +32,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet var prioritySliderWidthConstraint: NSLayoutConstraint!
     @IBOutlet var durationSliderWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet var titleTextFieldWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var priorityLevelLabelWidthContraint: NSLayoutConstraint!
+    
+    @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
+    
        // Create enum for itemType instead of string
     let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Review", "Context"]
     var itemType: ItemType = .none
@@ -164,13 +169,19 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+
+        
         self.dueDatePicker.datePickerMode = .date
         
         pickerView.delegate = self
         pickerView.dataSource = self
         
-        prioritySliderWidthConstraint.constant = (screenSize.width)/2
-        durationSliderWidthConstraint.constant = (screenSize.width)/2
+        prioritySliderWidthConstraint.constant = (screenSize.width * 11)/30
+        durationSliderWidthConstraint.constant = (screenSize.width * 11)/30
+        titleTextFieldWidthConstraint.constant = (screenSize.width * 19)/30
+        priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
+        durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
         
         
         if UIDevice.current.orientation.isLandscape {
@@ -343,6 +354,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         case .toDo:
             titleLabel.isHidden = false
+            titleLabel.text = "What's on my mind?"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -367,6 +379,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         case .nextAction:
             titleLabel.isHidden = false
+            titleLabel.text = "Action to take"
             titleTextField.isHidden = false
             priorityLabel.isHidden = false
             prioritySlider.isHidden = false
@@ -379,7 +392,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = false
             priorityLevelLabel.isHidden = false
             durationLevelLabel.isHidden = false
-            notesLabel.text = "How I Know I'm Done"
+            notesLabel.text = "How I know I'm done"
             
             if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height)/5
@@ -445,6 +458,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         case .project:
             titleLabel.isHidden = false
+            titleLabel.text = "Project"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -470,6 +484,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         case .review:
             titleLabel.isHidden = false
+            titleLabel.text = "What I've accomplished"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -482,7 +497,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             relatedToButton.isHidden = true
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
-            notesLabel.text = "Notes"
+            notesLabel.text = "How can I improve?"
             
             if UIDevice.current.orientation.isLandscape {
                 
@@ -494,6 +509,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         case .context:
             titleLabel.isHidden = false
+            titleLabel.text = "Context"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -509,6 +525,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             notesLabel.text = "Notes"
         default:
             titleLabel.isHidden = true
+            titleLabel.text = "Title"
             titleTextField.isHidden = true
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -527,7 +544,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func createItem() {
-        if titleTextField.text != "" {
+        if titleTextField.text != "" || itemType == .chooseAnOption {
         switch itemType {
         case .chooseAnOption:
             return
@@ -678,8 +695,19 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 print("error \(error)")
                 
                 let event:EKEvent = EKEvent(eventStore: eventStore)
-                
-                event.title = "\(self.itemType) Due: \(item)"
+                switch self.itemType {
+                case .nextAction:
+                    event.title = "Next Action Due: \(item)"
+                    break
+                case .project:
+                    event.title = "Project Due: \(item)"
+                    break
+                default:
+                    event.title = "Item Due: \(item)"
+                    break
+                }
+                event.notes = self.notesTextView.text
+                event.isAllDay = true
                 event.startDate = date
                 event.endDate = date
                 event.calendar = eventStore.defaultCalendarForNewEvents

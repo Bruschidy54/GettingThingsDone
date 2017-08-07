@@ -41,6 +41,9 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+
+        
         tableView.allowsSelection = false
         cells = AccordionCell()
         self.tableView.estimatedRowHeight = 45
@@ -63,6 +66,13 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
         
         self.reviews = try! self.allItemStore.fetchMainQueueReviews()
         
+        if !self.reviews.isEmpty{
+            let sortedReviews = self.reviews.sorted{
+                ($0.createDate as! Date) > ($1.createDate as! Date)
+            }
+            self.reviews = sortedReviews
+        }
+        
         for project in allProjects {
             self.cells.append(AccordionCell.HeaderProject(project: project))
             if project.nextActions != nil {
@@ -77,7 +87,9 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction))
         }
       
-        self.tableView.reloadData()
+        OperationQueue.main.addOperation {
+            self.tableView.reloadData()
+        }
         
     }
     
@@ -105,20 +117,34 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    // Add Section for Reviews. Append Date to Review Title
+
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
         let item = self.cells.items[(indexPath as NSIndexPath).row]
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: "ReferenceCell") as! ReferenceTableViewCell? {
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
             
             cell.delegate = self
-            
-            // Update format to make more maintainable?
+           
+            if self.cells.items.count == 1 {
+                cell.titleLabel.text = "No Projects"
+                cell.selectionStyle = .none
+                cell.titleLabel.textColor = UIColor.black
+                cell.segueButton.isHidden = true
+                cell.backgroundCloudImage.isHidden = true
+                cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 17)
+                return cell
+            } else {
             if item is AccordionCell.HeaderProject {
-                if item.unsorted == true{
+                cell.backgroundCloudImage.isHidden = false
+                  cell.backgroundCloudImage.image = UIImage(named:"MiddleCloud")?.alpha(0.4)
+                cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 24)
+                if item.unsorted {
                     cell.titleLabel?.text = "Unsorted Next Actions"
+                    cell.titleLabel.textColor = UIColor.black
                     cell.segueButton.isHidden = true
                 }else {
                 let project = item.project!
@@ -132,28 +158,39 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             }
             }else {
                 let nextAction = item.nextAction!
+                cell.backgroundCloudImage.isHidden = true
                 cell.titleLabel.text = "\t\(nextAction.name!)"
-                cell.segueButton.isHidden = !item.isChecked
+                cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 17)
+                if (nextAction.duedate! as Date) < Date() {
+                    cell.titleLabel.textColor = UIColor.red
+                } else {
+                    cell.titleLabel.textColor = UIColor.black
+                }
+                cell.segueButton.isHidden = true
             }
             
-            if item as? AccordionCell.HeaderProject != nil {
-                    cell.backgroundColor = UIColor.lightGray
-                }
-            else {
-                    cell.backgroundColor = UIColor.white
-                }
             cell.selectionStyle = .none
             return cell
         }
+            }
         }
         else if indexPath.section == 1 {
             
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ReferenceCell") as! ReferenceTableViewCell? {
+                cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 17)
+                
+                if reviews.isEmpty {
+                    cell.titleLabel.text = "No Review Notes"
+                    cell.segueButton.isHidden = true
+                    cell.backgroundCloudImage.isHidden = true
+                    return cell
+                } else {
                 let review = reviews[indexPath.row]
                 let date = dateFormatter.string(from: review.createDate as! Date)
                 cell.titleLabel?.text = "\(date): \(review.name!)"
                 cell.segueButton.isHidden = true
                 return cell
+                }
             }
         }
         return UITableViewCell()
@@ -163,7 +200,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
         let item = self.cells.items[(indexPath as NSIndexPath).row]
         
         if item is AccordionCell.HeaderProject {
-            return 60
+            return UITableViewAutomaticDimension
         } else if (item.isHidden) {
             return 0
         } else {
@@ -215,7 +252,6 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             segueType = .subItemType
             if (indexPath as NSIndexPath).row != self.selectedItemIndex {
                 let cell = self.tableView.cellForRow(at: indexPath) as! ReferenceTableViewCell
-                cell.segueButton.isHidden = false
                 
                 if let selectedItemIndex = self.selectedItemIndex {
                     let previousCell = self.tableView.cellForRow(at: IndexPath(row: selectedItemIndex, section: 0)) as! ReferenceTableViewCell
@@ -231,6 +267,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.selectedItemIndex = (indexPath as NSIndexPath).row
                 cells.items[self.selectedItemIndex!].isChecked = true
             }
+            performSegue(withIdentifier: "ViewItemSegue", sender: self)
             
         }
         tableView.deselectRow(at: indexPath, animated: false)
@@ -363,6 +400,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                         destinationVC.project = selectedItemProject
                     }
                 }
+                break
             case.subItemType:
                 if let selectedItemIndex = self.selectedItemIndex {
                     if self.cells.items[selectedItemIndex] is AccordionCell.SubNextAction {
@@ -370,8 +408,9 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                         destinationVC.itemType = .nextAction
                         destinationVC.nextAction = selectedItemNextAction
                     }
-                    break
+                    
                 }
+                break
             }
         } else if segue.identifier == "AddItemSegue" {
             let destinationVC = segue.destination as! AddItemViewController
