@@ -15,13 +15,13 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     let toDoDataSource = ToDoDataSource()
     var allItemStore: AllItemStore!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.delegate = self
         tableView.dataSource = toDoDataSource
-
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
         
     }
@@ -29,28 +29,29 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-         self.tabBarController?.tabBar.isHidden = false
-  
+        self.tabBarController?.tabBar.isHidden = false
+        
         let allToDos = try! self.allItemStore.fetchMainQueueToDos()
         
+        self.toDoDataSource.toDos = allToDos
+        
         OperationQueue.main.addOperation {
-            self.toDoDataSource.toDos = allToDos
-//            ** Set background table view to view with label
-//            tableView.backgroundView
             self.tableView.reloadData()
         }
         
     }
-
-
+    
+    
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return "Complete"
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        
         return UITableViewAutomaticDimension
+        
     }
-
+    
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -70,7 +71,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         }
     }
     
-
+    
 }
 
 extension UIImage{

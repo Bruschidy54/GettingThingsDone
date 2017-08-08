@@ -31,13 +31,10 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet var dueDatePickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var prioritySliderWidthConstraint: NSLayoutConstraint!
     @IBOutlet var durationSliderWidthConstraint: NSLayoutConstraint!
-    
     @IBOutlet var titleTextFieldWidthConstraint: NSLayoutConstraint!
     @IBOutlet var priorityLevelLabelWidthContraint: NSLayoutConstraint!
-    
     @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
     
-       // Create enum for itemType instead of string
     let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Review", "Context"]
     var itemType: ItemType = .none
     var reclassifiedToDo: ToDo?
@@ -48,7 +45,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var relatedToContextArray: [Context] = []
     var allItemStore: AllItemStore!
     
-    // Make screensize orthogonal?
     var screenSize: CGRect = UIScreen.main.bounds
     
     
@@ -58,7 +54,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         self.navigationController?.popViewController(animated: true)
     }
     
-
+    
     @IBAction func onDoneButtonTapped(_ sender: Any) {
         createItem()
         
@@ -71,6 +67,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             self.navigationController?.popToRootViewController(animated: true)
         }
+            
+            // Integrate reclassified next actions and projects in a later patch
         else if reclassifiedNextAction != nil {
             let id = reclassifiedNextAction?.id
             do  {
@@ -88,10 +86,10 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             }
             self.navigationController?.popToRootViewController(animated: true)
         }
-        
+            
         else {
-
-     self.navigationController?.popViewController(animated: true)
+            
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -124,9 +122,9 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             self.priorityLevelLabel.text = "Very High"
             
         }
-
+        
     }
-
+    
     @IBAction func onDurationSliderSlid(_ sender: Any) {
         var sliderValue = (sender as! UISlider).value
         
@@ -159,24 +157,26 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             self.durationLevelLabel.text = ">8 Hr"
             
         }
-
+        
     }
-   
- 
     
     
-
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
-
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        
         
         self.dueDatePicker.datePickerMode = .date
         
         pickerView.delegate = self
         pickerView.dataSource = self
         
+        
+        // Set UI horizontal constraints proportional to screen width
         prioritySliderWidthConstraint.constant = (screenSize.width * 11)/30
         durationSliderWidthConstraint.constant = (screenSize.width * 11)/30
         titleTextFieldWidthConstraint.constant = (screenSize.width * 19)/30
@@ -184,6 +184,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
         
         
+        // Adjust vertical constraint proporations based on device orientation
         if UIDevice.current.orientation.isLandscape {
             
             itemTypePickerHeightConstraint.constant = (screenSize.height)/6
@@ -191,23 +192,19 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             notesTextViewHeightConstraint.constant = (screenSize.height)/5
         }
         else {
-        
-        itemTypePickerHeightConstraint.constant = (screenSize.height)/5
-        dueDatePickerHeightConstraint.constant = (screenSize.height)/5
-        notesTextViewHeightConstraint.constant = (screenSize.height)/4
+            
+            itemTypePickerHeightConstraint.constant = (screenSize.height)/5
+            dueDatePickerHeightConstraint.constant = (screenSize.height)/5
+            notesTextViewHeightConstraint.constant = (screenSize.height)/4
         }
-
+        
         updateForm()
         
-
-        // Do any additional setup after loading the view.
         self.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        print(relatedToProjectsArray)
         
         
         if itemType == .none {
@@ -227,31 +224,21 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
         
         
-        
-        
-        // Rework reclassified object so I don't have initially unwrap stuff****
-        if reclassifiedToDo != nil {
-            titleTextField.text = reclassifiedToDo?.name
-            notesTextView.text = reclassifiedToDo?.details
-            
-        }
-        else if reclassifiedNextAction != nil{
-            titleTextField.text = reclassifiedNextAction?.name
-            notesTextView.text = reclassifiedNextAction?.details
-            prioritySlider.value = (reclassifiedNextAction?.priority)!
-            durationSlider.value = (reclassifiedNextAction?.processingtime)!
-            dueDatePicker.date = (reclassifiedNextAction?.duedate)! as Date
+
+        if let toDo = reclassifiedToDo {
+            titleTextField.text = toDo.name
+            notesTextView.text = toDo.details
             
         }
         
-        // Reclassify other objects
     }
 
-
+    
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        // Update constraints based on device orientation changes
         if UIDevice.current.orientation.isLandscape {
-            
-            
             let point = CGPoint(x: 0, y: 0)
             screenSize = CGRect(origin: point, size: size)
             itemTypePickerHeightConstraint.constant = (screenSize.height)/6
@@ -270,6 +257,14 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
     }
     
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // MARK: - PickerView Delegate methods
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -277,11 +272,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerData.count
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerData[row]
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         let pickerSelection = pickerData[row]
@@ -312,8 +307,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         updateForm()
     }
     
-    
-    //Change name of func to formatPage()
     func updateForm() {
         
         let newScreenSize = UIScreen.main.bounds
@@ -423,7 +416,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 
             }
             
-            // Localize units of time for other countries
             
             if Double(durationSlider.value) == 0 {
                 
@@ -454,7 +446,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 self.durationLevelLabel.text = ">8 Hr"
                 
             }
-
+            
             break
         case .project:
             titleLabel.isHidden = false
@@ -523,6 +515,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
             notesLabel.text = "Notes"
+            break
         default:
             titleLabel.isHidden = true
             titleLabel.text = "Title"
@@ -545,131 +538,131 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     func createItem() {
         if titleTextField.text != "" || itemType == .chooseAnOption {
-        switch itemType {
-        case .chooseAnOption:
-            return
-        case .toDo:
-            guard let toDoTitle = titleTextField.text, let toDoNotes = notesTextView.text else {
-                print("Error: Title and/or notes came back as nil")
+            switch itemType {
+            case .chooseAnOption:
                 return
-            }
+            case .toDo:
+                guard let toDoTitle = titleTextField.text, let toDoNotes = notesTextView.text else {
+                    print("Error: Title and/or notes came back as nil")
+                    return
+                }
                 let context = self.allItemStore.coreDataStack.mainQueueContext
                 let newToDo = NSEntityDescription.insertNewObject(forEntityName: "ToDo", into: context)
-            newToDo.setValue(toDoTitle, forKey: "name")
-            newToDo.setValue(toDoNotes, forKey: "details")
-            
-            do {
-                try self.allItemStore?.coreDataStack.saveChanges()
-                print("Save Complete")
-            }
-            catch let error {
-                print("Core data save failed: \(error)")
-            }
-            
-            break
-        case .nextAction:
-            guard let title = titleTextField.text, let notes = notesTextView.text else {
-                print("Error: Title and/or notes came back as nil")
-                return
-            }
-            let priority = prioritySlider.value
-            let duration = durationSlider.value
-            let date = dueDatePicker.date
-            
-            createCalendarEvent(forItem: title, forDate: date)
-            let context = self.allItemStore.coreDataStack.mainQueueContext
-            let newNextAction = NSEntityDescription.insertNewObject(forEntityName: "NextAction", into: context)
-            newNextAction.setValue(title, forKey: "name")
-            newNextAction.setValue(priority, forKey: "priority")
-            newNextAction.setValue(duration, forKey: "processingtime")
-            newNextAction.setValue(date, forKey: "duedate")
-            newNextAction.setValue(notes, forKey: "details")
-            newNextAction.setValue(NSSet(array: relatedToProjectsArray), forKey: "projects")
-            if relatedToProjectsArray.isEmpty {
-                newNextAction.setValue(false, forKey: "projectSorted")
-            } else {
-                newNextAction.setValue(true, forKey: "projectSorted")
-            }
-            newNextAction.setValue(NSSet(array: relatedToContextArray), forKey: "contexts")
-            if relatedToContextArray.isEmpty {
-                newNextAction.setValue(false, forKey: "contextSorted")
-            } else {
-                newNextAction.setValue(true, forKey: "contextSorted")
-            }
-            
-            do {
-                try self.allItemStore.coreDataStack.saveChanges()
-                print("Save Complete")
-            }
-            catch let error {
-                print("Core data save failed: \(error)")
-            }
-            
-            break
-        case .project:
-            guard let title = titleTextField.text, let notes = notesTextView.text else {
-                print("Error: Title and/or notes came back as nil")
-                return
-            }
-            let date = dueDatePicker.date
-            createCalendarEvent(forItem: title, forDate: date)
-            let context = self.allItemStore.coreDataStack.mainQueueContext
-            let newProject = NSEntityDescription.insertNewObject(forEntityName: "Project", into: context)
-            newProject.setValue(title, forKey: "name")
-            newProject.setValue(date, forKey: "duedate")
-            newProject.setValue(notes, forKey: "details")
-            let nextActions = newProject.mutableSetValue(forKey: "nextActions")
-            for nextAction in relatedToNextActionsArray {
-                nextActions.add(nextAction)
+                newToDo.setValue(toDoTitle, forKey: "name")
+                newToDo.setValue(toDoNotes, forKey: "details")
+                
+                do {
+                    try self.allItemStore?.coreDataStack.saveChanges()
+                    print("Save Complete")
                 }
-            do {
-                try self.allItemStore.coreDataStack.saveChanges()
-                print("Save Complete")
+                catch let error {
+                    print("Core data save failed: \(error)")
+                }
+                
+                break
+            case .nextAction:
+                guard let title = titleTextField.text, let notes = notesTextView.text else {
+                    print("Error: Title and/or notes came back as nil")
+                    return
+                }
+                let priority = prioritySlider.value
+                let duration = durationSlider.value
+                let date = dueDatePicker.date
+                
+                createCalendarEvent(forItem: title, forDate: date)
+                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let newNextAction = NSEntityDescription.insertNewObject(forEntityName: "NextAction", into: context)
+                newNextAction.setValue(title, forKey: "name")
+                newNextAction.setValue(priority, forKey: "priority")
+                newNextAction.setValue(duration, forKey: "processingtime")
+                newNextAction.setValue(date, forKey: "duedate")
+                newNextAction.setValue(notes, forKey: "details")
+                newNextAction.setValue(NSSet(array: relatedToProjectsArray), forKey: "projects")
+                if relatedToProjectsArray.isEmpty {
+                    newNextAction.setValue(false, forKey: "projectSorted")
+                } else {
+                    newNextAction.setValue(true, forKey: "projectSorted")
+                }
+                newNextAction.setValue(NSSet(array: relatedToContextArray), forKey: "contexts")
+                if relatedToContextArray.isEmpty {
+                    newNextAction.setValue(false, forKey: "contextSorted")
+                } else {
+                    newNextAction.setValue(true, forKey: "contextSorted")
+                }
+                
+                do {
+                    try self.allItemStore.coreDataStack.saveChanges()
+                    print("Save Complete")
+                }
+                catch let error {
+                    print("Core data save failed: \(error)")
+                }
+                
+                break
+            case .project:
+                guard let title = titleTextField.text, let notes = notesTextView.text else {
+                    print("Error: Title and/or notes came back as nil")
+                    return
+                }
+                let date = dueDatePicker.date
+                createCalendarEvent(forItem: title, forDate: date)
+                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let newProject = NSEntityDescription.insertNewObject(forEntityName: "Project", into: context)
+                newProject.setValue(title, forKey: "name")
+                newProject.setValue(date, forKey: "duedate")
+                newProject.setValue(notes, forKey: "details")
+                let nextActions = newProject.mutableSetValue(forKey: "nextActions")
+                for nextAction in relatedToNextActionsArray {
+                    nextActions.add(nextAction)
+                }
+                do {
+                    try self.allItemStore.coreDataStack.saveChanges()
+                    print("Save Complete")
+                }
+                catch let error {
+                    print("Core data save failed: \(error)")
+                }
+                break
+            case .review:
+                guard let title = titleTextField.text, let notes = notesTextView.text else {
+                    print("Error: Title and/or notes came back as nil")
+                    return
+                }
+                
+                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let newReview = NSEntityDescription.insertNewObject(forEntityName: "Review", into: context)
+                newReview.setValue(title, forKey: "name")
+                newReview.setValue(notes, forKey: "details")
+                
+                do {
+                    try self.allItemStore.coreDataStack.saveChanges()
+                    print("Save Complete")
+                }
+                catch let error {
+                    print("Core data save failed: \(error)")
+                }
+                break
+            case .context:
+                guard let title = titleTextField.text else {
+                    print("Error: Title and/or notes came back as nil")
+                    return
+                }
+                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let newContext = NSEntityDescription.insertNewObject(forEntityName: "Context", into: context)
+                newContext.setValue(title, forKey: "name")
+                
+                do {
+                    try self.allItemStore.coreDataStack.saveChanges()
+                    print("Save Complete")
+                }
+                catch let error {
+                    print("Core data save failed: \(error)")
+                }
+                break
+                
+            default:
+                break
             }
-            catch let error {
-                print("Core data save failed: \(error)")
-            }
-            break
-        case .review:
-            guard let title = titleTextField.text, let notes = notesTextView.text else {
-                print("Error: Title and/or notes came back as nil")
-                return
-            }
-            
-            let context = self.allItemStore.coreDataStack.mainQueueContext
-            let newReview = NSEntityDescription.insertNewObject(forEntityName: "Review", into: context)
-            newReview.setValue(title, forKey: "name")
-            newReview.setValue(notes, forKey: "details")
-         
-            do {
-                try self.allItemStore.coreDataStack.saveChanges()
-                print("Save Complete")
-            }
-            catch let error {
-                print("Core data save failed: \(error)")
-            }
-            break
-        case .context:
-            guard let title = titleTextField.text else {
-                print("Error: Title and/or notes came back as nil")
-                return
-            }
-            let context = self.allItemStore.coreDataStack.mainQueueContext
-            let newContext = NSEntityDescription.insertNewObject(forEntityName: "Context", into: context)
-            newContext.setValue(title, forKey: "name")
-            
-            do {
-                try self.allItemStore.coreDataStack.saveChanges()
-                print("Save Complete")
-            }
-            catch let error {
-                print("Core data save failed: \(error)")
-            }
-            break
-
-        default:
-            break
-        }
         }
         else {
             let title = "Item not created"
@@ -684,6 +677,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
     }
     
+    
+    // MARK: - Calendar method
     func createCalendarEvent(forItem item: String, forDate date: Date) {
         
         let eventStore : EKEventStore = EKEventStore()
@@ -721,13 +716,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             } else {
                 print("Failed to save event with error: \(error) or access not granted")
             }
-            })
+        })
     }
     
-
+    
     
     // MARK: - Navigation
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "RelatedToSegue" {
             let destinationVC = segue.destination as! RelatedToViewController
@@ -737,24 +732,15 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             destinationVC.delegate = self
             
             
-            // Will readd reclassify feature if necessary
-            if reclassifiedNextAction != nil {
-                destinationVC.nextAction = reclassifiedNextAction
-            } else if reclassifiedProject != nil {
-                destinationVC.project = reclassifiedProject
-            }
+            
         }
-    
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
     
-
+    
 }
 
+// Use custom delegation to send relationships information from relatedToVC to AddItemVC
 extension AddItemViewController: RelatedToViewControllerDelegate {
     func didUpdateRelatedTo(sender: RelatedToViewController) {
         if sender.relatedToNextActionsArray != nil {

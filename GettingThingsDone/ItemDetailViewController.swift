@@ -68,7 +68,10 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     
     @IBAction func onPrioritySliderSlid(_ sender: Any) {
-        var sliderValue = (sender as! UISlider).value
+        
+        
+        // Set the priority level label
+         let sliderValue = (sender as! UISlider).value
         
         if sliderValue >= 0 && sliderValue < 0.2  {
             
@@ -95,7 +98,9 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     @IBAction func onDurationSliderSlid(_ sender: Any) {
         
-        var sliderValue = (sender as! UISlider).value
+        
+        // Set the duration level label
+        let sliderValue = (sender as! UISlider).value
         
         if sliderValue == 0 {
             
@@ -135,12 +140,14 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        // Set the navigation bar imageview to "TopCloud" image
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
 
-        
          self.dueDatePicker.datePickerMode = .date
         
+        self.tabBarController?.tabBar.isHidden = true
         
+        // Adjust the horizaontal contraints for UI
         prioritySliderConstraint.constant = (screenSize.width * 11)/30
         durationSliderContraint.constant = (screenSize.width * 11)/30
         titleTextFieldWidthConstraint.constant = (screenSize.width * 3)/5
@@ -149,21 +156,18 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         
         formatPage()
+        
+        //  Tap gesture to switch between full date label and date picker
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.datePickerTapped(gestureRecognizer:)))
         datePickerStackView.addGestureRecognizer(tapGesture)
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-      self.tabBarController?.tabBar.isHidden = true
 
-    }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        // Adjust UI size constraints based on orientation
         if UIDevice.current.orientation.isLandscape {
-            
         let point = CGPoint(x: 0, y: 0)
         screenSize = CGRect(origin: point, size: size)
             prioritySliderConstraint.constant = (screenSize.width)/2
@@ -222,6 +226,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             prioritySlider.value = (nextAction?.priority)!
             durationSlider.value = (nextAction?.processingtime)!
             dueDateFullDateLabel.text = dateFormatter.string(from: nextAction?.duedate as! Date)
+          if (nextAction?.duedate! as! Date) < Date() {
+                dueDateFullDateLabel.textColor = UIColor.red
+          } else {
+            dueDateFullDateLabel.textColor = UIColor.black
+            }
             dueDatePicker.date = nextAction?.duedate as! Date
             notesLabel.text = "How I know I'm done"
             
@@ -233,7 +242,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
             }
             
-            if Double((nextAction?.priority)!) >= 0.2 && Double((nextAction?.priority)!) < 0.4 {
+            if Double((nextAction?.priority)!) >= 0 && Double((nextAction?.priority)!) < 0.2 {
+                
+                self.priorityLevelLabel.text = "Very Low"
+                
+            } else if Double((nextAction?.priority)!) >= 0.2 && Double((nextAction?.priority)!) < 0.4 {
                 
                 self.priorityLevelLabel.text = "Low"
                 
@@ -251,8 +264,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 
             }
             
-            
-            // Localize units of time for other countries
             
             if Double((nextAction?.processingtime)!) == 0 {
                 
@@ -307,6 +318,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             titleTextField.text = project?.name
             notesTextView.text = project?.details
             dueDateFullDateLabel.text = dateFormatter.string(from: project?.duedate as! Date)
+            if (project?.duedate! as! Date) < Date() {
+                dueDateFullDateLabel.textColor = UIColor.red
+            } else {
+                dueDateFullDateLabel.textColor = UIColor.black
+            }
             dueDatePicker.date = project?.duedate as! Date
             titleLabel.isHidden = false
             titleTextField.isHidden = false
@@ -368,14 +384,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     }
     
     
-    // Add delegate method and tap gesture recognizer to resign first responder
-    
-    
-    //Change update dictionaries to reflect new data model
-    
     func saveItem(){
         switch self.itemType {
         case .toDo:
+            
+            // Update dictionary
             let toDoDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "datecreated" : toDo?.datecreated as Any, "details": notesTextView.text as Any, "id": toDo?.id]
             do {
                 try self.allItemStore.updateToDo(toDoDict: toDoDict)
@@ -385,7 +398,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             }
             break
         case .nextAction:
-            
             
             // Update dictionary
             let nextActionDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : nextAction?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": nextAction?.id, "priority" : prioritySlider.value as Any, "processingtime" : durationSlider.value, "projects" : nextAction?.projects, "contexts" : nextAction?.contexts]
@@ -409,6 +421,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             break
         case .review:
             
+            // Update dictionary
             let reviewDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createDate" : review?.createDate as Any, "details": notesTextView.text as Any, "id": review?.id]
             do {
                 try self.allItemStore.updateReview(reviewDict: reviewDict)
@@ -422,11 +435,27 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         }
     }
     
+    func datePickerTapped(gestureRecognizer: UITapGestureRecognizer) {
+        if dueDatePicker.isHidden == true {
+            dueDatePicker.isHidden = false
+            dueDateFullDateLabel.isHidden = true
+        }
+        else if dueDatePicker.isHidden == false {
+            dueDateFullDateLabel.text = dateFormatter.string(from: dueDatePicker.date)
+            dueDatePicker.isHidden = true
+            dueDateFullDateLabel.isHidden = false
+        }
+        else {
+            return
+        }
+    }
+    
 
     
 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "ReclassifySegue" {
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.allItemStore = allItemStore
@@ -452,20 +481,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         }
     }
 
-    func datePickerTapped(gestureRecognizer: UITapGestureRecognizer) {
-        if dueDatePicker.isHidden == true {
-            dueDatePicker.isHidden = false
-            dueDateFullDateLabel.isHidden = true
-        }
-        else if dueDatePicker.isHidden == false {
-            dueDateFullDateLabel.text = dateFormatter.string(from: dueDatePicker.date)
-            dueDatePicker.isHidden = true
-            dueDateFullDateLabel.isHidden = false
-        }
-        else {
-            return
-        }
-    }
 
 
 }

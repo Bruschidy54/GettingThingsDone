@@ -37,13 +37,13 @@ class AccordionCell {
         }
     }
     
-        class SubNextAction: Item {
-            init(nextAction: NextAction) {
-                super.init(true, project: nil, nextAction: nextAction, unsorted: false, checked: false)
-            }
+    class SubNextAction: Item {
+        init(nextAction: NextAction) {
+            super.init(true, project: nil, nextAction: nextAction, unsorted: false, checked: false)
+        }
     }
     
-
+    
     
     
     func append(_ item: Item) {

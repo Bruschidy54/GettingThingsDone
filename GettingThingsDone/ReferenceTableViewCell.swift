@@ -13,12 +13,11 @@ protocol ReferenceTableViewCellDelegate {
 }
 
 
-// Update middle cell contraints
 class ReferenceTableViewCell: UITableViewCell {
     
     var delegate: ReferenceTableViewCellDelegate?
     
-
+    
     @IBOutlet var backgroundCloudImage: UIImageView!
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var segueButton: UIButton!
@@ -28,16 +27,16 @@ class ReferenceTableViewCell: UITableViewCell {
     }
     
     
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
 }

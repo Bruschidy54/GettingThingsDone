@@ -13,11 +13,10 @@ protocol RelatedToViewControllerDelegate: class {
     func didUpdateRelatedTo(sender: RelatedToViewController)
 }
 
-// Remove section if it is empty or add "No project/context" and add ability to delete items on menu
 class RelatedToViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var tableView: UITableView!
-
+    
     var allItemStore: AllItemStore!
     var nextAction: NextAction?
     var project: Project?
@@ -32,7 +31,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     var itemType: ItemType = .nextAction
     let coreDataStack = CoreDataStack(modelName: "GTDModel")
     weak var delegate:RelatedToViewControllerDelegate?
-        
+    
     
     @IBAction func onDoneButtonTapped(_ sender: Any) {
         
@@ -40,31 +39,34 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         
         if addSegue{
             
-            
+            // Send the relationships to AddItemVC using custom delegation
             delegate?.didUpdateRelatedTo(sender: self)
         }
         else {
             switch itemType {
             case .nextAction:
                 
-               let contextSet = NSSet(array: relatedToContextArray!)
+                let contextSet = NSSet(array: relatedToContextArray!)
                 nextAction?.contexts = contextSet
                 nextAction?.addToContexts(contextSet)
-               if relatedToContextArray != nil {
-                nextAction?.contextSorted = true
-               } else {
-                nextAction?.contextSorted = false
-               }
-                // Need to add to other items
+                
+                // Next action is context sorted
+                if relatedToContextArray != nil {
+                    nextAction?.contextSorted = true
+                } else {
+                    nextAction?.contextSorted = false
+                }
                 
                 let projectSet = NSSet(array: relatedToProjectsArray!)
                 nextAction?.projects = projectSet
                 nextAction?.addToProjects(projectSet)
-               if relatedToProjectsArray != nil {
-                nextAction?.projectSorted = true
-               } else {
-                nextAction?.projectSorted = false
-               }
+                
+                // Next action is project sorted
+                if relatedToProjectsArray != nil {
+                    nextAction?.projectSorted = true
+                } else {
+                    nextAction?.projectSorted = false
+                }
                 break
             case .project:
                 let nextActionSet = NSSet(array: relatedToNextActionsArray!)
@@ -89,17 +91,20 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         self.navigationController?.popViewController(animated: true)
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-  self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
-
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        
         
         relatedToNextActionsArray = []
         relatedToProjectsArray = []
         relatedToNextActionsArray = []
         relatedToContextArray = []
+        
+        // Set back button color to match theme
+        self.navigationController?.navigationBar.tintColor = UIColor(red: 1, green: 153/255, blue: 0, alpha: 1)
         
         switch itemType {
         case .nextAction:
@@ -119,7 +124,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             let newSections = sections.filter{$0 != "Project" && $0 != "Context"}
             sections = newSections
             if !addSegue{
-            relatedToNextActionsArray = project?.nextActions?.allObjects as! [NextAction]?
+                relatedToNextActionsArray = project?.nextActions?.allObjects as! [NextAction]?
             }
             break
         default:
@@ -129,7 +134,6 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         
         tableView.allowsMultipleSelection = true
         
-        // Should handle error
         
         let items = try! allItemStore.fetchMainQueueItems()
         
@@ -139,7 +143,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     
-
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -216,12 +220,12 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 cell?.textLabel?.text = currentNextAction?.name
             }
             break
-
+            
         default:
             break
         }
         
-      
+        
         return cell!
     }
     
@@ -253,7 +257,6 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             break
         case .project:
             if indexPath.section == 0 {
-                // Assign only nonsorted Next Actions?
                 let nextAction = allNextActions?[indexPath.row]
                 let indexes = relatedToNextActionsArray?.enumerated().filter({ $0.element == nextAction}).map{ $0.offset }
                 for index in (indexes?.reversed())! {
@@ -267,7 +270,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
     }
-   
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let cell = tableView.cellForRow(at: indexPath)
@@ -296,7 +299,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         default:
             break
         }
-
+        
         
     }
     
@@ -308,13 +311,10 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             } else if indexPath.section == 1 {
                 return "Delete"
             }
-            break
         case .project:
             return "Complete"
-            break
         default:
             return "Complete"
-            break
         }
         return "What?"
     }
@@ -329,13 +329,19 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     tableView.deleteRows(at: [indexPath], with: .fade)
                     let nextActionSet = project?.nextActions
                     let nextActions = Array(nextActionSet!) as! [NextAction]
-                    for nextAction in nextActions {
-                        nextAction.projectSorted = false
-                    }
+                    
+                    // Delete from core data
                     do {
                         try allItemStore.deleteProject(id: id!)
                     } catch {
                         print("Error deleting Project: \(error)")
+                    }
+                    
+                    // Unsort relevant next actions
+                    for nextAction in nextActions {
+                        if nextAction.projects?.count == 0 {
+                            nextAction.projectSorted = false
+                        }
                     }
                 }
             } else if indexPath.section == 1 {
@@ -345,13 +351,19 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     tableView.deleteRows(at: [indexPath], with: .fade)
                     let nextActionSet = context?.nextActions
                     let nextActions = Array(nextActionSet!) as! [NextAction]
-                    for nextAction in nextActions {
-                        nextAction.contextSorted = false
-                    }
+                    
+                    // Delete from core data
                     do {
                         try allItemStore.deleteContext(id: id!)
                     } catch {
-                        print("Error deleting Project: \(error)")
+                        print("Error deleting Context: \(error)")
+                    }
+                    
+                    // Unsort relevant next actions
+                    for nextAction in nextActions {
+                        if nextAction.contexts?.count == 0 {
+                            nextAction.contextSorted = false
+                        }
                     }
                 }
             }
@@ -361,6 +373,8 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                 let id = nextAction?.id
                 allNextActions?.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                // Delete from core data
                 do {
                     try allItemStore.deleteNextAction(id: id!)
                 } catch {
@@ -372,15 +386,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             break
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
+    
+    
 }
