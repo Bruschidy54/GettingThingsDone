@@ -140,10 +140,13 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the navigation bar imageview to "TopCloud" image
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
+        classifyButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
+        
 
          self.dueDatePicker.datePickerMode = .date
+        
+        dueDatePicker.setValue(UIColor.darkGray, forKeyPath: "textColor")
         
         self.tabBarController?.tabBar.isHidden = true
         
@@ -229,7 +232,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
           if (nextAction?.duedate! as! Date) < Date() {
                 dueDateFullDateLabel.textColor = UIColor.red
           } else {
-            dueDateFullDateLabel.textColor = UIColor.black
+            dueDateFullDateLabel.textColor = UIColor.darkGray
             }
             dueDatePicker.date = nextAction?.duedate as! Date
             notesLabel.text = "How I know I'm done"
@@ -321,7 +324,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             if (project?.duedate! as! Date) < Date() {
                 dueDateFullDateLabel.textColor = UIColor.red
             } else {
-                dueDateFullDateLabel.textColor = UIColor.black
+                dueDateFullDateLabel.textColor = UIColor.darkGray
             }
             dueDatePicker.date = project?.duedate as! Date
             titleLabel.isHidden = false

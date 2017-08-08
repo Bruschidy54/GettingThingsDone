@@ -40,7 +40,6 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
         
         
         tableView.allowsSelection = false
@@ -85,10 +84,10 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         // Add a blank header project to serve as a header for unsorted next actions
-        self.cells.append(AccordionCell.HeaderProject())
-        for nextAction in unsortedNextActions {
-            self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction))
-        }
+            self.cells.append(AccordionCell.HeaderProject())
+            for nextAction in unsortedNextActions {
+                self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction))
+            }
         
         OperationQueue.main.addOperation {
             self.tableView.reloadData()
@@ -141,36 +140,42 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             let item = self.cells.items[(indexPath as NSIndexPath).row]
             
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ReferenceCell") as! ReferenceTableViewCell? {
-                cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+                cell.titleLabel?.numberOfLines = 0
+                cell.titleLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+                cell.dueDateLabel?.font = UIFont(name: "GillSans", size: 10)
+                cell.titleLabel.textColor = UIColor.darkGray
                 
                 cell.delegate = self
                 
                 // Check if cells has any relevant data in it
-                if self.cells.items.count == 1 {
+                if self.cells.items.count == 0 {
                     cell.titleLabel.text = "No Projects"
+                    cell.dueDateLabel.text = ""
                     cell.selectionStyle = .none
-                    cell.titleLabel.textColor = UIColor.black
+                    cell.dueDateLabel.textColor = UIColor.darkGray
                     cell.segueButton.isHidden = true
                     cell.backgroundCloudImage.isHidden = true
-                    cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 15)
+                    cell.titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 17)
                     return cell
                 } else {
                     if item is AccordionCell.HeaderProject {
                         cell.backgroundCloudImage.isHidden = false
                         cell.backgroundCloudImage.image = UIImage(named:"MiddleCloud")?.alpha(0.4)
-                        cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 20)
+                        cell.titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 17)
                         if item.unsorted {
                             cell.titleLabel?.text = "Unsorted Next Actions"
-                            cell.titleLabel.textColor = UIColor.black
+                            cell.dueDateLabel.textColor = UIColor.darkGray
+                            cell.dueDateLabel.text = ""
                             cell.segueButton.isHidden = true
                         } else {
                             let project = item.project!
                             cell.titleLabel.text = project.name
+                            let dueDate = dateFormatter.string(from: project.duedate as! Date)
+                            cell.dueDateLabel.text = "  Due \(dueDate)"
                             if (project.duedate! as Date) < Date() {
-                                cell.titleLabel.textColor = UIColor.red
+                                cell.dueDateLabel.textColor = UIColor.red
                             } else {
-                                cell.titleLabel.textColor = UIColor.black
+                                cell.dueDateLabel.textColor = UIColor.darkGray
                             }
                             cell.segueButton.isHidden = !item.isChecked
                         }
@@ -178,11 +183,13 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                         let nextAction = item.nextAction!
                         cell.backgroundCloudImage.isHidden = true
                         cell.titleLabel.text = "\t\(nextAction.name!)"
-                        cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 15)
+                        cell.titleLabel.font = UIFont(name: "GillSans", size: 17)
+                        let dueDate = dateFormatter.string(from: nextAction.duedate as! Date)
+                        cell.dueDateLabel.text = "\t  Due \(dueDate)"
                         if (nextAction.duedate! as Date) < Date() {
-                            cell.titleLabel.textColor = UIColor.red
+                            cell.dueDateLabel.textColor = UIColor.red
                         } else {
-                            cell.titleLabel.textColor = UIColor.black
+                            cell.dueDateLabel.textColor = UIColor.darkGray
                         }
                         cell.segueButton.isHidden = true
                     }
@@ -198,7 +205,8 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                     let review = reviews[indexPath.row]
                     let date = dateFormatter.string(from: review.createDate as! Date)
                     cell.backgroundCloudImage.isHidden = true
-                    cell.titleLabel.font = UIFont(name: cell.titleLabel.font.fontName, size: 15)
+                    cell.dueDateLabel.text = ""
+                    cell.titleLabel.font = UIFont(name: "GillSans", size: 17)
                     cell.titleLabel?.text = "\(date): \(review.name!)"
                     cell.segueButton.isHidden = true
                     return cell
@@ -445,6 +453,20 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             let destinationVC = segue.destination as! AddItemViewController
             destinationVC.allItemStore = allItemStore
         }
+    }
+    
+}
+
+extension UIImage{
+    
+    func alpha(_ value:CGFloat)->UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: CGPoint.zero, blendMode: .normal, alpha: value)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+        
     }
     
 }

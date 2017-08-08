@@ -1,7 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,7 +21,26 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CloudBackground" translatesAutoresizingMaskIntoConstraints="NO" id="1ma-Nz-0IC">
+                                <rect key="frame" x="-4" y="20" width="383" height="647"/>
+                            </imageView>
+                            <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIj-4G-V0P">
+                                <rect key="frame" x="-4" y="20" width="383" height="647"/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="1ma-Nz-0IC" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-20" id="Rfd-Om-DVv"/>
+                            <constraint firstItem="UIj-4G-V0P" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-20" id="Vy3-eb-tIm"/>
+                            <constraint firstItem="1ma-Nz-0IC" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="Xfb-CL-rtB"/>
+                            <constraint firstItem="UIj-4G-V0P" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="XsF-7k-gI2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="UIj-4G-V0P" secondAttribute="trailing" constant="-20" id="nyG-pa-Cpn"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1ma-Nz-0IC" secondAttribute="trailing" constant="-20" id="qBc-Gf-Aby"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="1ma-Nz-0IC" secondAttribute="bottom" id="qWO-2g-AAa"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="UIj-4G-V0P" secondAttribute="bottom" id="u33-pN-Xif"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -24,4 +48,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="CloudBackground" width="375" height="667"/>
+    </resources>
 </document>

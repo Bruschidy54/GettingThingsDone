@@ -167,8 +167,10 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
         
+
+        dueDatePicker.setValue(UIColor.darkGray, forKeyPath: "textColor")
         
         self.dueDatePicker.datePickerMode = .date
         
@@ -272,10 +274,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerData.count
     }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
+        
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let title = pickerData[row]
+        let attributedTitle = NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName : UIColor.darkGray])
+        return attributedTitle
     }
+    
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         

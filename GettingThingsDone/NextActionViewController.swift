@@ -20,8 +20,6 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
-        
         
         tableView.delegate = self
         tableView.dataSource = nextActionDataSource

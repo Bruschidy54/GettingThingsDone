@@ -21,10 +21,13 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
         let identifier = "ToDoCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
+        
         let toDo = toDos[indexPath.row]
         cell.textLabel?.text = toDo.name
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        cell.textLabel?.font = UIFont(name: "GillSans", size: 17)
+        cell.textLabel?.textColor = UIColor.darkGray
         return cell
     }
     
@@ -37,7 +40,7 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
         } else {
             let noToDoLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noToDoLabel.text = "In Tray Is Empty"
-            noToDoLabel.textColor = UIColor.black
+            noToDoLabel.textColor = UIColor.darkGray
             noToDoLabel.textAlignment = .center
             tableView.backgroundView = noToDoLabel
             tableView.separatorStyle = .none

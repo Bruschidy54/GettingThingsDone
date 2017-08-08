@@ -18,6 +18,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
        
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSFontAttributeName: UIFont(name: "GillSans-SemiBold", size: 17)!
+        ]
+        
+        UIBarButtonItem.appearance().setTitleTextAttributes([
+            NSFontAttributeName: UIFont(name: "GillSans-SemiBold", size: 17)!
+            ], for: .normal)
+        
+        UITabBarItem.appearance().setTitleTextAttributes([
+            NSFontAttributeName: UIFont(name: "GillSans", size: 10)!
+            ], for: .normal)
+        
+        UITextView.appearance().font = UIFont(name: "GillSans", size: 17)
+        
+        UITextField.appearance().font = UIFont(name: "GillSans", size: 17)
+        
+         UILabel.appearance().font = UIFont(name: "GillSans-SemiBold", size: 17)
         
         let tabBarController = window?.rootViewController as! UITabBarController
         let navController1 = tabBarController.viewControllers?[0] as! UINavigationController

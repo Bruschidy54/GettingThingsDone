@@ -20,6 +20,7 @@ class ReferenceTableViewCell: UITableViewCell {
     
     @IBOutlet var backgroundCloudImage: UIImageView!
     @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var dueDateLabel: UILabel!
     @IBOutlet var segueButton: UIButton!
     
     @IBAction func onSegueButtonTapped(_ sender: Any) {

@@ -15,6 +15,13 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
     var contexts = [Context]()
     let allItemStore = AllItemStore()
     
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
@@ -43,16 +50,20 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
-        
+        cell.textLabel?.font = UIFont(name: "GillSans", size: 17)
+        cell.textLabel?.textColor = UIColor.darkGray
+        cell.detailTextLabel?.font = UIFont(name: "GillSans", size: 10)
         
         if indexPath.section < contexts.count && indexPath.section >= 0 {
             if let sortedNextActionsForContext: [NextAction] = sortedNextActions[indexPath.section] {
                 let sortedNextAction = sortedNextActionsForContext[indexPath.row]
                 cell.textLabel?.text = "\(indexPath.row + 1): \(sortedNextAction.name!)"
+                let dueDate = dateFormatter.string(from: sortedNextAction.duedate as! Date)
+                cell.detailTextLabel?.text = "     Due \(dueDate)"
                 if (sortedNextAction.duedate! as Date) < Date() {
-                    cell.textLabel?.textColor = UIColor.red
+                    cell.detailTextLabel?.textColor = UIColor.red
                 } else {
-                    cell.textLabel?.textColor = UIColor.black
+                    cell.detailTextLabel?.textColor = UIColor.darkGray
                 }
             }
         }
@@ -60,10 +71,12 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         else if indexPath.section == contexts.count {
                 if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
                     cell.textLabel?.text = "\(indexPath.row + 1): \(unsortedNextAction!.name!)"
+                    let dueDate = dateFormatter.string(from: unsortedNextAction?.duedate as! Date)
+                    cell.detailTextLabel?.text = "     Due \(dueDate)"
                     if (unsortedNextAction?.duedate! as! Date) < Date() {
-                        cell.textLabel?.textColor = UIColor.red
+                        cell.detailTextLabel?.textColor = UIColor.red
                     } else {
-                        cell.textLabel?.textColor = UIColor.black
+                        cell.detailTextLabel?.textColor = UIColor.darkGray
                     }
                 }
             }
@@ -79,7 +92,7 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         } else {
             let noNextActionLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noNextActionLabel.text = "No Next Actions"
-            noNextActionLabel.textColor = UIColor.black
+            noNextActionLabel.textColor = UIColor.darkGray
             noNextActionLabel.textAlignment = .center
             tableView.backgroundView = noNextActionLabel
             tableView.separatorStyle = .none
@@ -101,23 +114,28 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
                     if let projects = sortedNextAction?.projects {
                         sortedNextAction?.removeFromProjects(projects)
                     }
-                    tableView.reloadData()
+                    
+                    // Delete from core data
                     do {
                         try allItemStore.deleteNextAction(id: id!)
                     } catch {
                         print("Error deleting Next Action: \(error)")
                     }
+                    
+                    tableView.reloadData()
                 }
             } else if indexPath.section == contexts.count {
                 if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
                     let id = unsortedNextAction?.id
                     unsortedNextActions.remove(at: indexPath.row)
-                    tableView.reloadData()
+                    
+                    // Delete from core data
                     do {
                         try allItemStore.deleteNextAction(id: id!)
                     } catch {
                         print("Error deleting Next Action: \(error)")
                     }
+                    tableView.reloadData()
                 }
             }
         }

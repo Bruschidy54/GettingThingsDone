@@ -21,8 +21,7 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         
         tableView.delegate = self
         tableView.dataSource = toDoDataSource
-        
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+     
         
     }
     
@@ -74,15 +73,3 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     
 }
 
-extension UIImage{
-    
-    func alpha(_ value:CGFloat)->UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        draw(at: CGPoint.zero, blendMode: .normal, alpha: value)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage!
-        
-    }
-}

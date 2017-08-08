@@ -95,7 +95,19 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "TopCloud")!.alpha(0.4).resizableImage(withCapInsets: UIEdgeInsets.zero, resizingMode: .stretch), for: .default)
+        
+        // Set back button color to match theme
+        self.navigationController?.navigationBar.tintColor = UIColor(red: 1, green: 153/255, blue: 0, alpha: 1)
+        
+        
+        
+        tableView.allowsMultipleSelection = true
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
         
         relatedToNextActionsArray = []
@@ -103,8 +115,6 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         relatedToNextActionsArray = []
         relatedToContextArray = []
         
-        // Set back button color to match theme
-        self.navigationController?.navigationBar.tintColor = UIColor(red: 1, green: 153/255, blue: 0, alpha: 1)
         
         switch itemType {
         case .nextAction:
@@ -132,15 +142,12 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         
-        tableView.allowsMultipleSelection = true
-        
-        
         let items = try! allItemStore.fetchMainQueueItems()
         
         allNextActions = items.nextActions
         allProjects = items.projects
         allContexts = items.contexts
-        
+
     }
     
     
@@ -177,6 +184,8 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
         
         cell?.textLabel?.numberOfLines = 0
         cell?.textLabel?.lineBreakMode = NSLineBreakMode.byWordWrapping
+        cell?.textLabel?.font = UIFont(name: "GillSans", size: 17)
+        cell?.textLabel?.textColor = UIColor.darkGray
         
         switch itemType {
         case .nextAction:
