@@ -932,7 +932,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="WOF-4X-OWV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.31022273760000002" green="0.13008353580000001" blue="0.59000061879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.30980392156862746" green="0.12941176470588234" blue="0.58823529411764708" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" red="0.90980392160000001" green="0.5568627451" blue="0.047058823530000002" alpha="1" colorSpace="calibratedRGB"/>
                         </textAttributes>
@@ -978,8 +978,8 @@
         <image name="RightArrow" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YaU-O7-9HF"/>
-        <segue reference="S3A-fW-dcc"/>
+        <segue reference="6fV-Z0-8CT"/>
+        <segue reference="SLD-Lm-l6B"/>
         <segue reference="T0G-iW-Nas"/>
     </inferredMetricsTieBreakers>
 </document>

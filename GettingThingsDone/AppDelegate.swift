@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSFontAttributeName: UIFont(name: "GillSans-SemiBold", size: 17)!
             ], for: .normal)
         
+        
+        
         UITabBarItem.appearance().setTitleTextAttributes([
             NSFontAttributeName: UIFont(name: "GillSans", size: 10)!
             ], for: .normal)
@@ -35,18 +37,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITextField.appearance().font = UIFont(name: "GillSans", size: 17)
         
          UILabel.appearance().font = UIFont(name: "GillSans-SemiBold", size: 17)
+        UILabel.appearance().textColor = UIColor.darkGray
         
         let tabBarController = window?.rootViewController as! UITabBarController
         let navController1 = tabBarController.viewControllers?[0] as! UINavigationController
         let toDoViewController = navController1.topViewController as! ToDoViewController
+        navController1.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 232/255, green: 142/255, blue: 12/255, alpha: 1)]
         toDoViewController.allItemStore = allItemStore
         
         let navController2 = tabBarController.viewControllers?[1] as! UINavigationController
         let nextActionController = navController2.topViewController as! NextActionViewController
+         navController2.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 232/255, green: 142/255, blue: 12/255, alpha: 1)]
         nextActionController.allItemStore = allItemStore
         
         let navController3 = tabBarController.viewControllers?[2] as! UINavigationController
         let referenceViewController = navController3.topViewController as! ReferenceViewController
+         navController3.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 232/255, green: 142/255, blue: 12/255, alpha: 1)]
         referenceViewController.allItemStore = allItemStore
         return true
     }

@@ -206,6 +206,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                     let date = dateFormatter.string(from: review.createDate as! Date)
                     cell.backgroundCloudImage.isHidden = true
                     cell.dueDateLabel.text = ""
+                    cell.titleLabel.textColor = UIColor.darkGray
                     cell.titleLabel.font = UIFont(name: "GillSans", size: 17)
                     cell.titleLabel?.text = "\(date): \(review.name!)"
                     cell.segueButton.isHidden = true
