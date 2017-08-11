@@ -171,9 +171,9 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-            self.hideKeyboardWhenTappedAround()
+        self.hideKeyboardWhenTappedAround()
         
-         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         
         titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
         notesLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
@@ -185,7 +185,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
         
-
+        
         dueDatePicker.setValue(UIColor.darkGray, forKeyPath: "textColor")
         
         self.dueDatePicker.datePickerMode = .date
@@ -243,7 +243,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
         
         
-
+        
         if let toDo = reclassifiedToDo {
             titleTextField.text = toDo.name
             notesTextView.text = toDo.details
@@ -251,7 +251,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
         
     }
-
+    
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -281,7 +281,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 break
             }
             titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
-             itemTypePickerHeightConstraint.constant = (screenSize.height)/5
+            itemTypePickerHeightConstraint.constant = (screenSize.height)/5
         } else {
             let point = CGPoint(x: 0, y: 0)
             screenSize = CGRect(origin: point, size: size)
@@ -321,7 +321,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerData.count
     }
-        
+    
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let title = pickerData[row]
         let attributedTitle = NSAttributedString(string: title, attributes: [NSForegroundColorAttributeName : UIColor.darkGray])
@@ -439,10 +439,10 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             durationLevelLabel.isHidden = false
             notesLabel.text = "How I know I'm done"
             
-              if UIDevice.current.orientation.isLandscape {
+            if UIDevice.current.orientation.isLandscape {
                 dueDatePickerHeightConstraint.constant = (screenSize.height)/7
                 notesTextViewHeightConstraint.constant = (screenSize.height)/7
-              } else {
+            } else {
                 dueDatePickerHeightConstraint.constant = (screenSize.height)/6
                 notesTextViewHeightConstraint.constant = (screenSize.height)/6
             }
@@ -749,30 +749,32 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if notesTextViewIsEditing {
-            var buffer: CGFloat = 0
-            switch itemType {
-            case .nextAction, .project:
-                buffer = 100
-                break
-            case .toDo, .review, .chooseAnOption, .none, .context:
-                buffer = 140
-                break
-            default:
-                buffer = 100
-            }
-            let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + relatedToButton.frame.height
-            
-            print(targetOffsetForTopConstraint)
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
-                self.pickerViewTopConstraint.constant = targetOffsetForTopConstraint
+        if !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) {
+            if notesTextViewIsEditing {
+                var buffer: CGFloat = 0
+                switch itemType {
+                case .nextAction, .project:
+                    buffer = 100
+                    break
+                case .toDo, .review, .chooseAnOption, .none, .context:
+                    buffer = 140
+                    break
+                default:
+                    buffer = 100
+                }
+                let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + relatedToButton.frame.height
+                
+                print(targetOffsetForTopConstraint)
                 self.view.layoutIfNeeded()
-            })
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.pickerViewTopConstraint.constant = targetOffsetForTopConstraint
+                    self.view.layoutIfNeeded()
+                })
+            }
         }
     }
-
+    
     
     
     // MARK: - Calendar method

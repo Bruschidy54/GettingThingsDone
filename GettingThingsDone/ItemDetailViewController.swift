@@ -64,12 +64,12 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     
     @IBAction func onBackButtonTapped(_ sender: Any) {
-         self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func onSaveButtonTapped(_ sender: Any) {
         saveItem()
-         self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -78,7 +78,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         
         // Set the priority level label
-         let sliderValue = (sender as! UISlider).value
+        let sliderValue = (sender as! UISlider).value
         
         if sliderValue >= 0 && sliderValue < 0.2  {
             
@@ -143,11 +143,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     
     // MARK: View Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         self.hideKeyboardWhenTappedAround()
+        self.hideKeyboardWhenTappedAround()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         
@@ -161,8 +161,8 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         classifyButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
         notesLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
         
-
-         self.dueDatePicker.datePickerMode = .date
+        
+        self.dueDatePicker.datePickerMode = .date
         
         dueDatePicker.setValue(UIColor.darkGray, forKeyPath: "textColor")
         
@@ -185,19 +185,19 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
     }
     
-
+    
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         // Adjust UI size constraints based on orientation
         if UIDevice.current.orientation.isLandscape {
-        let point = CGPoint(x: 0, y: 0)
-        screenSize = CGRect(origin: point, size: size)
+            let point = CGPoint(x: 0, y: 0)
+            screenSize = CGRect(origin: point, size: size)
             switch itemType {
             case .toDo, .review:
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
                 break
             case .nextAction:
-                 notesTextViewHeightConstraint.constant = (screenSize.height/3)
+                notesTextViewHeightConstraint.constant = (screenSize.height/3)
                 durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
                 priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
                 datePickerHeightConstraint.constant = (screenSize.height)/6
@@ -225,11 +225,11 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 durationSliderContraint.constant = (screenSize.width * 15)/30
                 priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
                 durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
-                    datePickerHeightConstraint.constant = (screenSize.height)/6
+                datePickerHeightConstraint.constant = (screenSize.height)/6
                 break
             case .project:
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
-                    datePickerHeightConstraint.constant = (screenSize.height)/6
+                datePickerHeightConstraint.constant = (screenSize.height)/6
                 break
             default:
                 break
@@ -237,7 +237,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
         }
     }
-
+    
     
     func formatPage() {
         let newScreenSize = UIScreen.main.bounds
@@ -265,8 +265,8 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "Notes"
             
-                notesTextViewHeightConstraint.constant = (screenSize.height/2)
-        
+            notesTextViewHeightConstraint.constant = (screenSize.height/2)
+            
             break
         case .nextAction:
             self.navigationItem.title = nextAction?.name
@@ -276,10 +276,10 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             prioritySlider.value = (nextAction?.priority)!
             durationSlider.value = (nextAction?.processingtime)!
             dueDateFullDateLabel.text = dateFormatter.string(from: nextAction?.duedate as! Date)
-          if (nextAction?.duedate! as! Date) < Date() {
+            if (nextAction?.duedate! as! Date) < Date() {
                 dueDateFullDateLabel.textColor = UIColor.red
-          } else {
-            dueDateFullDateLabel.textColor = UIColor.darkGray
+            } else {
+                dueDateFullDateLabel.textColor = UIColor.darkGray
             }
             dueDatePicker.date = nextAction?.duedate as! Date
             notesLabel.text = "How I know I'm done"
@@ -344,7 +344,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                 self.durationLevelLabel.text = ">8 Hr"
                 
             }
-
+            
             
             titleLabel.isHidden = false
             titleTextField.isHidden = false
@@ -503,27 +503,29 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if notesTextViewIsEditing {
-            var buffer: CGFloat = 0
-            switch itemType {
-            case .nextAction, .project:
-                buffer = 100
-                break
-            case .toDo, .review:
-                buffer = 180
-                break
-            default:
-                buffer = 100
-            }
-            let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + buttonStackView.frame.height
-            
-            self.view.layoutIfNeeded()
-            
-            UIView.animate(withDuration: 0.25, animations: {
+        if !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) {
+            if notesTextViewIsEditing {
+                var buffer: CGFloat = 0
+                switch itemType {
+                case .nextAction, .project:
+                    buffer = 100
+                    break
+                case .toDo, .review:
+                    buffer = 180
+                    break
+                default:
+                    buffer = 100
+                }
+                let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + buttonStackView.frame.height
                 
-                self.fullStackViewTopConstaint.constant = targetOffsetForTopConstraint
                 self.view.layoutIfNeeded()
-            })
+                
+                UIView.animate(withDuration: 0.25, animations: {
+                    
+                    self.fullStackViewTopConstaint.constant = targetOffsetForTopConstraint
+                    self.view.layoutIfNeeded()
+                })
+            }
         }
     }
     
@@ -542,9 +544,9 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         }
     }
     
-
     
-
+    
+    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -556,7 +558,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             }
             else if itemType == .nextAction{
                 destinationVC.reclassifiedNextAction = nextAction
-       
+                
             }
             else if itemType == .project {
                 destinationVC.reclassifiedProject = project
@@ -572,7 +574,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             destinationVC.itemType = itemType
         }
     }
-
-
-
+    
+    
+    
 }
