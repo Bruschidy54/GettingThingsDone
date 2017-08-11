@@ -104,10 +104,24 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: - TableView Methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
+        if self.cells.items.count == 1 && reviews.count == 0 {
+            let noItemsLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noItemsLabel.text = "No Projects Or Reviews"
+            noItemsLabel.textColor = UIColor.darkGray
+            noItemsLabel.textAlignment = .center
+            tableView.backgroundView = noItemsLabel
+            tableView.separatorStyle = .none
+            return 0
+        } else {
         if reviews.isEmpty {
+            tableView.separatorStyle = .singleLine
+            tableView.backgroundView = nil
             return 1
         } else {
+            tableView.separatorStyle = .singleLine
+            tableView.backgroundView = nil
             return 2
+        }
         }
     }
     
@@ -136,6 +150,8 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
         if indexPath.section == 0 {
             let item = self.cells.items[(indexPath as NSIndexPath).row]
             
@@ -148,7 +164,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                 cell.delegate = self
                 
                 // Check if cells has any relevant data in it
-                if self.cells.items.count == 0 {
+                if self.cells.items.count == 1 {
                     cell.titleLabel.text = "No Projects"
                     cell.dueDateLabel.text = ""
                     cell.selectionStyle = .none

@@ -34,6 +34,10 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet var titleTextFieldWidthConstraint: NSLayoutConstraint!
     @IBOutlet var priorityLevelLabelWidthContraint: NSLayoutConstraint!
     @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var fullStackViewTopConstraint: NSLayoutConstraint!
+    
+    @IBOutlet var pickerViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet var notesStackView: UIStackView!
     
     let pickerData = ["Choose an Option", "To Do", "Next Action", "Project", "Review", "Context"]
     var itemType: ItemType = .none
@@ -44,7 +48,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var relatedToProjectsArray: [Project] = []
     var relatedToContextArray: [Context] = []
     var allItemStore: AllItemStore!
-    
+    var notesTextViewIsEditing: Bool = false
     var screenSize: CGRect = UIScreen.main.bounds
     
     
@@ -167,6 +171,18 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+            self.hideKeyboardWhenTappedAround()
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        
+        titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        notesLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        priorityLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
+        durationLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
+        dueDateLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        priorityLevelLabel.font = UIFont(name: "GillSans", size: 15)
+        durationLevelLabel.font = UIFont(name: "GillSans", size: 15)
+        
         relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
         
 
@@ -176,12 +192,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         pickerView.delegate = self
         pickerView.dataSource = self
+        notesTextView.delegate = self
         
         
         // Set UI horizontal constraints proportional to screen width
-        prioritySliderWidthConstraint.constant = (screenSize.width * 11)/30
-        durationSliderWidthConstraint.constant = (screenSize.width * 11)/30
-        titleTextFieldWidthConstraint.constant = (screenSize.width * 19)/30
+        prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
+        durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
+        titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
         priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
         durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
         
@@ -189,15 +206,15 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         // Adjust vertical constraint proporations based on device orientation
         if UIDevice.current.orientation.isLandscape {
             
-            itemTypePickerHeightConstraint.constant = (screenSize.height)/6
+            itemTypePickerHeightConstraint.constant = (screenSize.height)/5
             dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-            notesTextViewHeightConstraint.constant = (screenSize.height)/5
+            notesTextViewHeightConstraint.constant = (screenSize.height)/2
         }
         else {
             
-            itemTypePickerHeightConstraint.constant = (screenSize.height)/5
+            itemTypePickerHeightConstraint.constant = (screenSize.height)/4
             dueDatePickerHeightConstraint.constant = (screenSize.height)/5
-            notesTextViewHeightConstraint.constant = (screenSize.height)/4
+            notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
         }
         
         updateForm()
@@ -243,27 +260,57 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         if UIDevice.current.orientation.isLandscape {
             let point = CGPoint(x: 0, y: 0)
             screenSize = CGRect(origin: point, size: size)
-            itemTypePickerHeightConstraint.constant = (screenSize.height)/6
-            notesTextViewHeightConstraint.constant = (screenSize.height)/5
-            dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-            prioritySliderWidthConstraint.constant = (screenSize.width)/2
-            durationSliderWidthConstraint.constant = (screenSize.width)/2
+            switch itemType {
+            case .chooseAnOption, .toDo, .review, .context:
+                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
+                break
+            case .nextAction:
+                notesTextViewHeightConstraint.constant = (screenSize.height)/7
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/7
+                prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
+                durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
+                priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
+                durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+                
+                break
+            case .project:
+                notesTextViewHeightConstraint.constant = (screenSize.height)/4
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
+                break
+            default:
+                break
+            }
+            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+             itemTypePickerHeightConstraint.constant = (screenSize.height)/5
         } else {
             let point = CGPoint(x: 0, y: 0)
             screenSize = CGRect(origin: point, size: size)
-            itemTypePickerHeightConstraint.constant = (screenSize.height)/5
-            notesTextViewHeightConstraint.constant = (screenSize.height)/4
-            dueDatePickerHeightConstraint.constant = (screenSize.height)/5
-            prioritySliderWidthConstraint.constant = (screenSize.width)/2
-            durationSliderWidthConstraint.constant = (screenSize.width)/2
+            switch itemType {
+            case .chooseAnOption, .toDo, .review, .context:
+                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
+                break
+            case .nextAction:
+                notesTextViewHeightConstraint.constant = (screenSize.height)/6
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
+                prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
+                durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
+                priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
+                durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+                
+                break
+            case .project:
+                notesTextViewHeightConstraint.constant = (screenSize.height)/4
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
+                break
+            default:
+                break
+            }
+            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+            itemTypePickerHeightConstraint.constant = (screenSize.height)/4
         }
     }
     
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
     
     // MARK: - PickerView Delegate methods
     
@@ -352,7 +399,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         case .toDo:
             titleLabel.isHidden = false
-            titleLabel.text = "What's on my mind?"
+            titleLabel.text = "To Do"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -371,13 +418,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 
                 notesTextViewHeightConstraint.constant = (screenSize.height)/3
             } else {
-                notesTextViewHeightConstraint.constant = (screenSize.height)/2
+                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
             }
             
             break
         case .nextAction:
             titleLabel.isHidden = false
-            titleLabel.text = "Action to take"
+            titleLabel.text = "Action"
             titleTextField.isHidden = false
             priorityLabel.isHidden = false
             prioritySlider.isHidden = false
@@ -392,12 +439,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             durationLevelLabel.isHidden = false
             notesLabel.text = "How I know I'm done"
             
-            if UIDevice.current.orientation.isLandscape {
-                notesTextViewHeightConstraint.constant = (screenSize.height)/5
+              if UIDevice.current.orientation.isLandscape {
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/7
+                notesTextViewHeightConstraint.constant = (screenSize.height)/7
+              } else {
                 dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-            } else {
-                notesTextViewHeightConstraint.constant = (screenSize.height)/4
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/5
+                notesTextViewHeightConstraint.constant = (screenSize.height)/6
             }
             
             if Double(prioritySlider.value) >= 0 && Double(prioritySlider.value) < 0.2 {
@@ -469,19 +516,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             priorityLevelLabel.isHidden = true
             durationLevelLabel.isHidden = true
             notesLabel.text = "Planning"
-            
-            if UIDevice.current.orientation.isLandscape {
-                notesTextViewHeightConstraint.constant = (screenSize.height)/4
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/5
-            } else {
-                notesTextViewHeightConstraint.constant = (screenSize.height)/3
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/5
-            }
+            notesTextViewHeightConstraint.constant = (screenSize.height)/4
+            dueDatePickerHeightConstraint.constant = (screenSize.height)/6
             
             break
         case .review:
             titleLabel.isHidden = false
-            titleLabel.text = "What I've accomplished"
+            titleLabel.text = "Wins"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -500,7 +541,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 
                 notesTextViewHeightConstraint.constant = (screenSize.height)/3
             } else {
-                notesTextViewHeightConstraint.constant = (screenSize.height)/2
+                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
             }
             
             break
@@ -682,6 +723,57 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         }
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.notesTextViewIsEditing = true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.notesTextViewIsEditing = false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        titleTextField.resignFirstResponder()
+        notesTextView.resignFirstResponder()
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.pickerViewTopConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if notesTextViewIsEditing {
+            var buffer: CGFloat = 0
+            switch itemType {
+            case .nextAction, .project:
+                buffer = 100
+                break
+            case .toDo, .review, .chooseAnOption, .none, .context:
+                buffer = 140
+                break
+            default:
+                buffer = 100
+            }
+            let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + relatedToButton.frame.height
+            
+            print(targetOffsetForTopConstraint)
+            self.view.layoutIfNeeded()
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                self.pickerViewTopConstraint.constant = targetOffsetForTopConstraint
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+
+    
     
     // MARK: - Calendar method
     func createCalendarEvent(forItem item: String, forDate date: Date) {
@@ -768,6 +860,18 @@ extension AddItemViewController: RelatedToViewControllerDelegate {
         else {
             self.relatedToContextArray = []
         }
+    }
+}
+
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

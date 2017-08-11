@@ -31,11 +31,17 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBOutlet var durationSliderContraint: NSLayoutConstraint!
     @IBOutlet var datePickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var notesTextViewHeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet var titleTextFieldWidthConstraint: NSLayoutConstraint!
     @IBOutlet var priorityLevelLabelWidthConstraint: NSLayoutConstraint!
-    
     @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var fullStackViewBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet var fullStackViewTopConstaint: NSLayoutConstraint!
+    @IBOutlet var titleStackView: UIStackView!
+    @IBOutlet var outerStackView: UIStackView!
+    @IBOutlet var notesStackView: UIStackView!
+    @IBOutlet var buttonStackView: UIStackView!
+    
     
     // Create enum for itemType instead of string
     
@@ -46,6 +52,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     var nextAction: NextAction?
     var allItemStore: AllItemStore!
     var screenSize: CGRect = UIScreen.main.bounds
+    var notesTextViewIsEditing: Bool = false
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -140,8 +147,19 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         self.hideKeyboardWhenTappedAround()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        
+        titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        priorityLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
+        durationLabel.font = UIFont(name: "GillSans-SemiBold", size: 10)
+        dueDateLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        priorityLevelLabel.font = UIFont(name: "GillSans", size: 15)
+        durationLevelLabel.font = UIFont(name: "GillSans", size: 15)
         relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
         classifyButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
+        notesLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
         
 
          self.dueDatePicker.datePickerMode = .date
@@ -151,11 +169,12 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         self.tabBarController?.tabBar.isHidden = true
         
         // Adjust the horizaontal contraints for UI
-        prioritySliderConstraint.constant = (screenSize.width * 11)/30
-        durationSliderContraint.constant = (screenSize.width * 11)/30
-        titleTextFieldWidthConstraint.constant = (screenSize.width * 3)/5
+        prioritySliderConstraint.constant = (screenSize.width * 15)/30
+        durationSliderContraint.constant = (screenSize.width * 15)/30
+        titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
         priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
         durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
+        datePickerHeightConstraint.constant = (screenSize.height)/6
         
         
         formatPage()
@@ -173,17 +192,49 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         if UIDevice.current.orientation.isLandscape {
         let point = CGPoint(x: 0, y: 0)
         screenSize = CGRect(origin: point, size: size)
-            prioritySliderConstraint.constant = (screenSize.width)/2
-            durationSliderContraint.constant = (screenSize.width)/2
-            datePickerHeightConstraint.constant = (screenSize.height)/6
-            notesTextViewHeightConstraint.constant = (screenSize.height/3)
+            switch itemType {
+            case .toDo, .review:
+                notesTextViewHeightConstraint.constant = (screenSize.height/2)
+                break
+            case .nextAction:
+                 notesTextViewHeightConstraint.constant = (screenSize.height/3)
+                durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
+                priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+                datePickerHeightConstraint.constant = (screenSize.height)/6
+                prioritySliderConstraint.constant = (screenSize.width)/2
+                durationSliderContraint.constant = (screenSize.width)/2
+                break
+            case .project:
+                datePickerHeightConstraint.constant = (screenSize.height)/6
+                notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
+                break
+            default:
+                break
+            }
+            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
         } else {
             let point = CGPoint(x: 0, y: 0)
             screenSize = CGRect(origin: point, size: size)
-            prioritySliderConstraint.constant = (screenSize.width)/2
-            durationSliderContraint.constant = (screenSize.width)/2
-            datePickerHeightConstraint.constant = (screenSize.height)/5
-            notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
+            switch itemType {
+            case .toDo, .review:
+                notesTextViewHeightConstraint.constant = (screenSize.height/2)
+                break
+            case .nextAction:
+                notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
+                prioritySliderConstraint.constant = (screenSize.width * 15)/30
+                durationSliderContraint.constant = (screenSize.width * 15)/30
+                priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+                durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
+                    datePickerHeightConstraint.constant = (screenSize.height)/6
+                break
+            case .project:
+                notesTextViewHeightConstraint.constant = (screenSize.height/2)
+                    datePickerHeightConstraint.constant = (screenSize.height)/6
+                break
+            default:
+                break
+            }
+            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
         }
     }
 
@@ -198,7 +249,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             titleTextField.text = toDo?.name
             notesTextView.text = toDo?.details
             titleLabel.isHidden = false
-            titleLabel.text = "What's on my mind?"
+            titleLabel.text = "To Do"
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
@@ -214,16 +265,12 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "Notes"
             
-            if UIDevice.current.orientation.isLandscape {
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
-            } else {
-                notesTextViewHeightConstraint.constant = 3 * (screenSize.height/5)
-            }
-            
+        
             break
         case .nextAction:
             self.navigationItem.title = nextAction?.name
-            titleLabel.text = "Action to take"
+            titleLabel.text = "Action"
             titleTextField.text = nextAction?.name
             notesTextView.text = nextAction?.details
             prioritySlider.value = (nextAction?.priority)!
@@ -354,7 +401,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             break
         case .review:
             self.navigationItem.title = "Review Your Progress"
-            titleLabel.text = "What I've accomplished"
+            titleLabel.text = "Wins"
             titleTextField.text = review?.name
             notesTextView.text = review?.details
             titleLabel.isHidden = false
@@ -374,11 +421,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "How can I improve?"
             
-            if UIDevice.current.orientation.isLandscape {
-                notesTextViewHeightConstraint.constant = (screenSize.height/2)
-            } else {
-                notesTextViewHeightConstraint.constant = 3 * (screenSize.height/5)
-            }
+            notesTextViewHeightConstraint.constant = (screenSize.height/2)
             break
         default:
             notesLabel.text = "Notes"
@@ -435,6 +478,52 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             break
         default:
             break
+        }
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.notesTextViewIsEditing = true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        self.notesTextViewIsEditing = false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        titleTextField.resignFirstResponder()
+        notesTextView.resignFirstResponder()
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.fullStackViewTopConstaint.constant = 8
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if notesTextViewIsEditing {
+            var buffer: CGFloat = 0
+            switch itemType {
+            case .nextAction, .project:
+                buffer = 100
+                break
+            case .toDo, .review:
+                buffer = 180
+                break
+            default:
+                buffer = 100
+            }
+            let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + buttonStackView.frame.height
+            
+            self.view.layoutIfNeeded()
+            
+            UIView.animate(withDuration: 0.25, animations: {
+                
+                self.fullStackViewTopConstaint.constant = targetOffsetForTopConstraint
+                self.view.layoutIfNeeded()
+            })
         }
     }
     

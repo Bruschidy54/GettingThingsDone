@@ -27,7 +27,36 @@
                             </imageView>
                             <view alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIj-4G-V0P">
                                 <rect key="frame" x="-4" y="20" width="383" height="647"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Getting Things Done" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tvz-ru-8nM">
+                                        <rect key="frame" x="49.5" y="304" width="285" height="39.5"/>
+                                        <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="34"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspired by the David Allen book" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MRC-QD-0oa">
+                                        <rect key="frame" x="79" y="374" width="225" height="20"/>
+                                        <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Created by Dylan Bruschi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIz-W7-6Zx">
+                                        <rect key="frame" x="103" y="424" width="177" height="20"/>
+                                        <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="tvz-ru-8nM" firstAttribute="centerX" secondItem="UIj-4G-V0P" secondAttribute="centerX" id="8dw-qP-jhE"/>
+                                    <constraint firstItem="tvz-ru-8nM" firstAttribute="centerY" secondItem="UIj-4G-V0P" secondAttribute="centerY" id="LOm-9A-347"/>
+                                    <constraint firstItem="QIz-W7-6Zx" firstAttribute="centerX" secondItem="UIj-4G-V0P" secondAttribute="centerX" id="LtL-HS-A1e"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="QIz-W7-6Zx" secondAttribute="bottom" constant="10" id="MmH-ED-Rhy"/>
+                                    <constraint firstItem="QIz-W7-6Zx" firstAttribute="top" secondItem="MRC-QD-0oa" secondAttribute="bottom" constant="30" id="RyY-3V-3q6"/>
+                                    <constraint firstItem="MRC-QD-0oa" firstAttribute="top" secondItem="tvz-ru-8nM" secondAttribute="bottom" constant="30" id="YrW-He-FrI"/>
+                                    <constraint firstItem="MRC-QD-0oa" firstAttribute="centerX" secondItem="UIj-4G-V0P" secondAttribute="centerX" id="nnj-VW-75L"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -45,7 +74,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
     <resources>
