@@ -89,9 +89,9 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
             tableView.separatorStyle = .singleLine
             tableView.backgroundView = nil
             if !unsortedNextActions.isEmpty{
-            numOfSections = contexts.count + 1
+            numOfSections = sortedNextActions.count + 1
             } else {
-                numOfSections = contexts.count
+                numOfSections = sortedNextActions.count
             }
         } else {
             let noNextActionLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
@@ -112,13 +112,13 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
                 if let sortedNextAction: NextAction? = sortedNextActionsForContext[indexPath.row] {
                     let id = sortedNextAction?.id
                     sortedNextActions[indexPath.section].remove(at: indexPath.row)
+                
                     if let contexts = sortedNextAction?.contexts {
                         sortedNextAction?.removeFromContexts(contexts)
                     }
                     if let projects = sortedNextAction?.projects {
                         sortedNextAction?.removeFromProjects(projects)
                     }
-                    
                     // Delete from core data
                     do {
                         try allItemStore.deleteNextAction(id: id!)
@@ -132,7 +132,6 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
                 if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
                     let id = unsortedNextAction?.id
                     unsortedNextActions.remove(at: indexPath.row)
-                    
                     // Delete from core data
                     do {
                         try allItemStore.deleteNextAction(id: id!)
