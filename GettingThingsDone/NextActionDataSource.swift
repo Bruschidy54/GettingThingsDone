@@ -87,8 +87,12 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         var numOfSections: Int = 0
         if !unsortedNextActions.isEmpty || !sortedNextActions.isEmpty {
             tableView.separatorStyle = .singleLine
-            numOfSections = contexts.count + 1
             tableView.backgroundView = nil
+            if !unsortedNextActions.isEmpty{
+            numOfSections = contexts.count + 1
+            } else {
+                numOfSections = contexts.count
+            }
         } else {
             let noNextActionLabel: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
             noNextActionLabel.text = "No Next Actions"

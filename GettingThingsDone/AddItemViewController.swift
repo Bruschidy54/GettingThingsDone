@@ -840,22 +840,22 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
 // Use custom delegation to send relationships information from relatedToVC to AddItemVC
 extension AddItemViewController: RelatedToViewControllerDelegate {
     func didUpdateRelatedTo(sender: RelatedToViewController) {
-        if sender.relatedToNextActionsArray != nil {
-            self.relatedToNextActionsArray = sender.relatedToNextActionsArray!
+        if let relatedToNextActions =  sender.relatedToNextActionsArray {
+            self.relatedToNextActionsArray = relatedToNextActions
         }else {
             self.relatedToNextActionsArray = []
         }
         
-        if sender.relatedToProjectsArray != nil {
-            self.relatedToProjectsArray = sender.relatedToProjectsArray!
+        if let relatedToProjects = sender.relatedToProjectsArray {
+            self.relatedToProjectsArray = relatedToProjects
         }
         else {
             self.relatedToProjectsArray = []
         }
         
         
-        if sender.relatedToContextArray != nil {
-            self.relatedToContextArray = sender.relatedToContextArray!
+        if let relatedToContexts = sender.relatedToContextArray {
+            self.relatedToContextArray = relatedToContexts
         }
         else {
             self.relatedToContextArray = []

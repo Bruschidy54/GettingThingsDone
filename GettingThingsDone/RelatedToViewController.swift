@@ -33,6 +33,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
     weak var delegate:RelatedToViewControllerDelegate?
     
     
+    
     @IBAction func onDoneButtonTapped(_ sender: Any) {
         
         // Save relationships
@@ -240,76 +241,108 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                         cell?.accessoryType = .checkmark
                         tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
                     }
+                    else {
+                        cell?.accessoryType = .none
+                        
+                    }
+                    cell?.textLabel?.text = currentProject?.name
                 }
             }else if (allProjects?.isEmpty)! {
-                    if indexPath.section == 0 {
-                        let currentContext = allContexts?[indexPath.row]
-                        if (relatedToContextArray?.contains(currentContext!))! {
-                            cell?.accessoryType = .checkmark
-                            tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
-                        }
-                    }
-                } else {
-                    if indexPath.section == 0 {
-                        let currentProject = allProjects?[indexPath.row]
-                        if (relatedToProjectsArray?.contains(currentProject!))! {
-                            cell?.accessoryType = .checkmark
-                            tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
-                        }
-                        else {
-                            cell?.accessoryType = .none
-                            
-                        }
-                        cell?.textLabel?.text = currentProject?.name
-                    }
-                    else if indexPath.section == 1 {
-                        let currentContext = allContexts?[indexPath.row]
-                        if (relatedToContextArray?.contains(currentContext!))! {
-                            cell?.accessoryType = .checkmark
-                            tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
-                        }
-                        else {
-                            cell?.accessoryType = .none
-                            
-                        }
-                        cell?.textLabel?.text = currentContext?
-                            .name
-                    }
-                }
-                break
-                case .project:
                 if indexPath.section == 0 {
+                    let currentContext = allContexts?[indexPath.row]
+                    if (relatedToContextArray?.contains(currentContext!))! {
+                        cell?.accessoryType = .checkmark
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
+                    }
+                    else {
+                        cell?.accessoryType = .none
+                        
+                    }
+                    cell?.textLabel?.text = currentContext?
+                        .name
+                }
+            } else {
+                if indexPath.section == 0 {
+                    let currentProject = allProjects?[indexPath.row]
+                    if (relatedToProjectsArray?.contains(currentProject!))! {
+                        cell?.accessoryType = .checkmark
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
+                    }
+                    else {
+                        cell?.accessoryType = .none
+                        
+                    }
+                    cell?.textLabel?.text = currentProject?.name
+                }
+                else if indexPath.section == 1 {
+                    let currentContext = allContexts?[indexPath.row]
+                    if (relatedToContextArray?.contains(currentContext!))! {
+                        cell?.accessoryType = .checkmark
+                        tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
+                    }
+                    else {
+                        cell?.accessoryType = .none
+                        
+                    }
+                    cell?.textLabel?.text = currentContext?
+                        .name
+                }
+            }
+            break
+        case .project:
+            if indexPath.section == 0 {
                 let currentNextAction = allNextActions?[indexPath.row]
                 if (relatedToNextActionsArray?.contains(currentNextAction!))! {
-                cell?.accessoryType = .checkmark
-                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
+                    cell?.accessoryType = .checkmark
+                    tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.bottom)
                 }
                 else {
-                cell?.accessoryType = .none
-                
+                    cell?.accessoryType = .none
+                    
                 }
                 cell?.textLabel?.text = currentNextAction?.name
-                }
-                break
-                
-                default:
-                break
             }
+            break
             
-            
-            return cell!
-        }
-        
-        func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-            return sections[section]
+        default:
+            break
         }
         
         
-        func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-            let cell = tableView.cellForRow(at: indexPath as IndexPath)
-            
-            switch itemType {
-            case .nextAction:
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath as IndexPath)
+        
+        switch itemType {
+        case .nextAction:
+            if (allContexts?.isEmpty)! && (allProjects?.isEmpty)! {
+                break
+            } else if (allContexts?.isEmpty)! {
+                if indexPath.section == 0 {
+                    let project = allProjects?[indexPath.row]
+                    let indexes = relatedToProjectsArray?.enumerated().filter({ $0.element == project}).map{ $0.offset }
+                    for index in (indexes?.reversed())! {
+                        relatedToProjectsArray?.remove(at: index)
+                    }
+                    cell?.accessoryType = .none
+                }
+            }else if (allProjects?.isEmpty)! {
+                if indexPath.section == 0 {
+                    let context = allContexts?[indexPath.row]
+                    let indexes = relatedToContextArray?.enumerated().filter({ $0.element == context}).map{ $0.offset }
+                    for index in (indexes?.reversed())! {
+                        relatedToContextArray?.remove(at: index)
+                    }
+                    cell?.accessoryType = .none
+                }
+            }else {
                 if indexPath.section == 0 {
                     let project = allProjects?[indexPath.row]
                     let indexes = relatedToProjectsArray?.enumerated().filter({ $0.element == project}).map{ $0.offset }
@@ -326,29 +359,46 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     }
                     cell?.accessoryType = .none
                 }
-                break
-            case .project:
-                if indexPath.section == 0 {
-                    let nextAction = allNextActions?[indexPath.row]
-                    let indexes = relatedToNextActionsArray?.enumerated().filter({ $0.element == nextAction}).map{ $0.offset }
-                    for index in (indexes?.reversed())! {
-                        relatedToNextActionsArray?.remove(at: index)
-                    }
-                    cell?.accessoryType = .none
-                }
-                break
-            default:
-                break
             }
-            
+            break
+        case .project:
+            if indexPath.section == 0 {
+                let nextAction = allNextActions?[indexPath.row]
+                let indexes = relatedToNextActionsArray?.enumerated().filter({ $0.element == nextAction}).map{ $0.offset }
+                for index in (indexes?.reversed())! {
+                    relatedToNextActionsArray?.remove(at: index)
+                }
+                cell?.accessoryType = .none
+            }
+            break
+        default:
+            break
         }
         
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            
-            let cell = tableView.cellForRow(at: indexPath)
-            
-            switch itemType {
-            case .nextAction:
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        switch itemType {
+        case .nextAction:
+            if (allContexts?.isEmpty)! && (allProjects?.isEmpty)! {
+                break
+            } else if (allContexts?.isEmpty)! {
+                if indexPath.section == 0 {
+                    let project = allProjects?[indexPath.row]
+                    relatedToProjectsArray?.append(project!)
+                    cell?.accessoryType = .checkmark
+                }
+            } else if (allProjects?.isEmpty)! {
+                if indexPath.section == 0 {
+                    let context = allContexts?[indexPath.row]
+                    relatedToContextArray?.append(context!)
+                    
+                    cell?.accessoryType = .checkmark
+                }
+            } else {
                 if indexPath.section == 0 {
                     let project = allProjects?[indexPath.row]
                     relatedToProjectsArray?.append(project!)
@@ -360,40 +410,105 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     cell?.accessoryType = .checkmark
                 }
-                break
-            case .project:
-                if indexPath.section == 0 {
-                    let nextAction = allNextActions?[indexPath.row]
-                    relatedToNextActionsArray?.append(nextAction!)
-                    cell?.accessoryType = .checkmark
-                }
-                break
-            default:
-                break
             }
-            
-            
+            break
+        case .project:
+            if indexPath.section == 0 {
+                let nextAction = allNextActions?[indexPath.row]
+                relatedToNextActionsArray?.append(nextAction!)
+                cell?.accessoryType = .checkmark
+            }
+            break
+        default:
+            break
         }
         
-        func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-            switch itemType {
-            case .nextAction:
+        
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        switch itemType {
+        case .nextAction:
+            if sections.isEmpty {
+                break
+            } else if (allContexts?.isEmpty)! {
+                if indexPath.section == 0 {
+                    return "Complete"
+                }
+            } else if (allProjects?.isEmpty)! {
+                if indexPath.section == 0 {
+                    return "Delete"
+                }
+            } else {
+                
                 if indexPath.section == 0 {
                     return "Complete"
                 } else if indexPath.section == 1 {
                     return "Delete"
                 }
-            case .project:
-                return "Complete"
-            default:
-                return "Complete"
             }
-            return "What?"
+        case .project:
+            return "Complete"
+        default:
+            return "Complete"
         }
-        
-        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            switch itemType {
-            case .nextAction:
+        return "What?"
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        switch itemType {
+        case .nextAction:
+            if (allContexts?.isEmpty)! && (allProjects?.isEmpty)! {
+                break
+            } else if (allContexts?.isEmpty)! {
+                if indexPath.section == 0 {
+                    if let project: Project? = allProjects?[indexPath.row] {
+                        let id = project?.id
+                        allProjects?.remove(at: indexPath.row)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        let nextActionSet = project?.nextActions
+                        let nextActions = Array(nextActionSet!) as! [NextAction]
+                        
+                        // Delete from core data
+                        do {
+                            try allItemStore.deleteProject(id: id!)
+                        } catch {
+                            print("Error deleting Project: \(error)")
+                        }
+                        
+                        // Unsort relevant next actions
+                        for nextAction in nextActions {
+                            if nextAction.projects?.count == 0 {
+                                nextAction.projectSorted = false
+                            }
+                        }
+                    }
+                }
+            } else if (allProjects?.isEmpty)! {
+                if indexPath.section == 0 {
+                    if let context: Context? = allContexts?[indexPath.row] {
+                        let id = context?.id
+                        allContexts?.remove(at: indexPath.row)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        let nextActionSet = context?.nextActions
+                        let nextActions = Array(nextActionSet!) as! [NextAction]
+                        
+                        // Delete from core data
+                        do {
+                            try allItemStore.deleteContext(id: id!)
+                        } catch {
+                            print("Error deleting Context: \(error)")
+                        }
+                        
+                        // Unsort relevant next actions
+                        for nextAction in nextActions {
+                            if nextAction.contexts?.count == 0 {
+                                nextAction.contextSorted = false
+                            }
+                        }
+                    }
+                }
+            } else {
                 if indexPath.section == 0 {
                     if let project: Project? = allProjects?[indexPath.row] {
                         let id = project?.id
@@ -439,26 +554,27 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                         }
                     }
                 }
-                break
-            case .project:
-                if let nextAction: NextAction? = allNextActions?[indexPath.row] {
-                    let id = nextAction?.id
-                    allNextActions?.remove(at: indexPath.row)
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                    
-                    // Delete from core data
-                    do {
-                        try allItemStore.deleteNextAction(id: id!)
-                    } catch {
-                        print("Error deleting Next Action: \(error)")
-                    }
-                }
-                break
-            default:
-                break
             }
+            break
+        case .project:
+            if let nextAction: NextAction? = allNextActions?[indexPath.row] {
+                let id = nextAction?.id
+                allNextActions?.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                // Delete from core data
+                do {
+                    try allItemStore.deleteNextAction(id: id!)
+                } catch {
+                    print("Error deleting Next Action: \(error)")
+                }
+            }
+            break
+        default:
+            break
         }
-        
-        
-        
+    }
+    
+    
+    
 }
