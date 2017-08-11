@@ -230,6 +230,7 @@
                         <outlet property="durationLevelLabelWidthConstraint" destination="TPv-Ut-EzX" id="guQ-gL-CWk"/>
                         <outlet property="durationSlider" destination="mdc-E3-lcx" id="gCy-TG-zfs"/>
                         <outlet property="durationSliderWidthConstraint" destination="uGh-dM-l20" id="16f-jg-yZl"/>
+                        <outlet property="fullStackView" destination="QEG-Ro-NrR" id="jrE-Ho-bnn"/>
                         <outlet property="fullStackViewTopConstraint" destination="PKa-42-fSV" id="lcP-54-MFP"/>
                         <outlet property="itemTypePickerHeightConstraint" destination="uuS-CE-QZP" id="d5g-Tz-yP1"/>
                         <outlet property="notesLabel" destination="fUx-FG-RTq" id="pcS-hg-Ae0"/>

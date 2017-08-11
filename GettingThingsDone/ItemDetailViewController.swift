@@ -503,20 +503,10 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) {
-            if notesTextViewIsEditing {
-                var buffer: CGFloat = 0
-                switch itemType {
-                case .nextAction, .project:
-                    buffer = 100
-                    break
-                case .toDo, .review:
-                    buffer = 180
-                    break
-                default:
-                    buffer = 100
-                }
-                let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + buttonStackView.frame.height
+        
+          if notesTextViewIsEditing {
+  
+                let targetOffsetForTopConstraint = 8 - notesStackView.frame.origin.y
                 
                 self.view.layoutIfNeeded()
                 
@@ -526,7 +516,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
                     self.view.layoutIfNeeded()
                 })
             }
-        }
     }
     
     func datePickerTapped(gestureRecognizer: UITapGestureRecognizer) {

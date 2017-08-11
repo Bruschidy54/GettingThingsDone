@@ -36,6 +36,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
     @IBOutlet var fullStackViewTopConstraint: NSLayoutConstraint!
     
+    @IBOutlet var fullStackView: UIStackView!
     @IBOutlet var pickerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet var notesStackView: UIStackView!
     
@@ -739,7 +740,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         titleTextField.resignFirstResponder()
         notesTextView.resignFirstResponder()
-        
         self.view.layoutIfNeeded()
         
         UIView.animate(withDuration: 0.5, animations: {
@@ -749,21 +749,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if !(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) {
             if notesTextViewIsEditing {
-                var buffer: CGFloat = 0
-                switch itemType {
-                case .nextAction, .project:
-                    buffer = 100
-                    break
-                case .toDo, .review, .chooseAnOption, .none, .context:
-                    buffer = 140
-                    break
-                default:
-                    buffer = 100
-                }
-                let targetOffsetForTopConstraint = buffer - view.frame.size.height + notesStackView.frame.height + relatedToButton.frame.height
                 
+                let targetOffsetForTopConstraint = 8 - (pickerView.frame.height + notesStackView.frame.origin.y)
+                
+                print("StackView y: \(fullStackView.frame.origin.y)")
+                print("notesStackView y: \(notesStackView.frame.origin.y)")
                 print(targetOffsetForTopConstraint)
                 self.view.layoutIfNeeded()
                 
@@ -772,7 +763,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     self.view.layoutIfNeeded()
                 })
             }
-        }
     }
     
     
