@@ -61,40 +61,57 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     
     @IBAction func onDoneButtonTapped(_ sender: Any) {
-        createItem()
         
-        if reclassifiedToDo != nil {
-            let id = reclassifiedToDo?.id
-            do  {
-                try allItemStore.deleteToDo(id: id!)
-            } catch {
-                print("Error deleting To Do: \(error)")
-            }
-            self.navigationController?.popToRootViewController(animated: true)
-        }
+         createItem()
+        if titleTextField.text != "" {
             
-            // Integrate reclassified next actions and projects in a later patch
-        else if reclassifiedNextAction != nil {
-            let id = reclassifiedNextAction?.id
-            do  {
-                try allItemStore.deleteNextAction(id: id!)
-            } catch {
-                print("Error deleting Next Action: \(error)")
+            if reclassifiedToDo != nil {
+                let id = reclassifiedToDo?.id
+                
+                // Delete To Do from Core Data
+                do  {
+                    try allItemStore.deleteToDo(id: id!)
+                } catch {
+                    print("Error deleting To Do: \(error)")
+                }
+                self.navigationController?.popToRootViewController(animated: true)
+                
             }
-            self.navigationController?.popToRootViewController(animated: true)
-        } else if reclassifiedProject != nil {
-            let id = reclassifiedProject?.id
-            do {
-                try allItemStore.deleteProject(id: id!)
-            } catch {
-                print("Error deleting Project: \(error)")
+                
+                //            // Integrate reclassified next actions and projects in a later patch
+                //        else if reclassifiedNextAction != nil {
+                //            let id = reclassifiedNextAction?.id
+                //            do  {
+                //                try allItemStore.deleteNextAction(id: id!)
+                //            } catch {
+                //                print("Error deleting Next Action: \(error)")
+                //            }
+                //            self.navigationController?.popToRootViewController(animated: true)
+                //        } else if reclassifiedProject != nil {
+                //            let id = reclassifiedProject?.id
+                //            do {
+                //                try allItemStore.deleteProject(id: id!)
+                //            } catch {
+                //                print("Error deleting Project: \(error)")
+                //            }
+                //            self.navigationController?.popToRootViewController(animated: true)
+                //        }
+                
+            else {
+                
+                self.navigationController?.popToRootViewController(animated: true)
+              
             }
-            self.navigationController?.popToRootViewController(animated: true)
-        }
-            
-        else {
-            
-            self.navigationController?.popViewController(animated: true)
+            switch itemType {
+            case .chooseAnOption, .none, .toDo:
+                self.navigationController?.tabBarController?.selectedIndex = 0
+            case .nextAction, .context:
+                self.navigationController?.tabBarController?.selectedIndex = 1
+            case .project, .review:
+                self.navigationController?.tabBarController?.selectedIndex = 2
+            default:
+                break
+            }
         }
     }
     
@@ -720,9 +737,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             ac.addAction(cancelAction)
             
+            ac.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
             present(ac, animated: true, completion: nil)
         }
     }
+    
+    // MARK: - TextField/TextView Methods
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -741,28 +761,49 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         titleTextField.resignFirstResponder()
         notesTextView.resignFirstResponder()
         self.view.layoutIfNeeded()
+        var notesTextViewHeight: CGFloat = 0
+        
+        switch itemType {
+        case .chooseAnOption, .context, .toDo, .review:
+            notesTextViewHeight = (screenSize.height * 5)/12
+        case .nextAction:
+            if UIDevice.current.orientation.isLandscape {
+                notesTextViewHeight = screenSize.height/7
+            } else {
+                notesTextViewHeight = screenSize.height/6
+            }
+        case .project:
+            notesTextViewHeight = screenSize.height/4
+        default:
+            break
+        }
+        
         
         UIView.animate(withDuration: 0.5, animations: {
             self.pickerViewTopConstraint.constant = 0
+            self.notesTextViewHeightConstraint.constant = notesTextViewHeight
             self.view.layoutIfNeeded()
         })
     }
     
     func keyboardWillShow(notification: NSNotification) {
-            if notesTextViewIsEditing {
+        if notesTextViewIsEditing {
+            
+            if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                let keyboardHeight = keyboardSize.height
                 
                 let targetOffsetForTopConstraint = 8 - (pickerView.frame.height + notesStackView.frame.origin.y)
+                let targetOffsetForNotesTextViewHeight = screenSize.height - 100 - keyboardHeight
                 
-                print("StackView y: \(fullStackView.frame.origin.y)")
-                print("notesStackView y: \(notesStackView.frame.origin.y)")
-                print(targetOffsetForTopConstraint)
                 self.view.layoutIfNeeded()
                 
                 UIView.animate(withDuration: 0.25, animations: {
                     self.pickerViewTopConstraint.constant = targetOffsetForTopConstraint
+                    self.notesTextViewHeightConstraint.constant = targetOffsetForNotesTextViewHeight
                     self.view.layoutIfNeeded()
                 })
             }
+        }
     }
     
     

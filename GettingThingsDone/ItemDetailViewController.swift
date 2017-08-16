@@ -495,6 +495,27 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         self.view.layoutIfNeeded()
         
+        var notesTextViewHeight: CGFloat = 0
+        
+        switch itemType {
+        case .toDo, .review:
+            notesTextViewHeight = screenSize.height/2
+        case .nextAction:
+            if UIDevice.current.orientation.isLandscape {
+                notesTextViewHeight = screenSize.height/3
+            } else {
+                notesTextViewHeight = (screenSize.height * 2)/5
+            }
+        case .project:
+            if UIDevice.current.orientation.isLandscape {
+                notesTextViewHeight = (screenSize.height * 2)/5
+            } else {
+                notesTextViewHeight = screenSize.height/2
+            }
+        default:
+            break
+        }
+        
         UIView.animate(withDuration: 0.5, animations: {
             
             self.fullStackViewTopConstaint.constant = 8
@@ -506,16 +527,21 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
           if notesTextViewIsEditing {
   
+            if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                let keyboardHeight = keyboardSize.height
                 let targetOffsetForTopConstraint = 8 - notesStackView.frame.origin.y
+            let targetOffsetForNotesTextViewHeight = screenSize.height - 80 - keyboardHeight
                 
                 self.view.layoutIfNeeded()
                 
                 UIView.animate(withDuration: 0.25, animations: {
                     
                     self.fullStackViewTopConstaint.constant = targetOffsetForTopConstraint
+                    self.notesTextViewHeightConstraint.constant = targetOffsetForNotesTextViewHeight
                     self.view.layoutIfNeeded()
                 })
             }
+        }
     }
     
     func datePickerTapped(gestureRecognizer: UITapGestureRecognizer) {
