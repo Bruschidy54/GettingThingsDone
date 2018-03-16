@@ -52,7 +52,7 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if let toDo: ToDo? = toDos[indexPath.row] {
-                let id = toDo?.id
+                guard let id = toDo?.id else { return }
                 toDos.remove(at: indexPath.row)
                 if toDos.isEmpty {
                     tableView.deleteSections(NSIndexSet.init(index: indexPath.section) as IndexSet, with: .fade)
@@ -60,7 +60,7 @@ class ToDoDataSource: NSObject, UITableViewDataSource {
                     tableView.deleteRows(at: [indexPath], with: .fade)
                 }
                 do {
-                    try allItemStore.deleteToDo(id: id!)
+                    try allItemStore.deleteToDo(id: id)
                 }catch {
                     print("Error deleting To Do: \(error)")
                 }

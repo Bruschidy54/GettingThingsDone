@@ -338,8 +338,8 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             if indexPath.section == 0 {
                 if let item: AccordionCell.Item = self.cells.items[(indexPath as NSIndexPath).row] {
                     if item is AccordionCell.HeaderProject {
-                        let project = item.project
-                        let id = project?.id
+                        guard let project = item.project else { return }
+                        let id = project.id
                         self.cells.items.remove(at: indexPath.row)
                         
                         // Delete from core data
@@ -350,7 +350,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                         }
                         
                         // Unsort related next actions
-                        if let nextActionSet = project?.nextActions {
+                        if let nextActionSet = project.nextActions {
                             var i = 0
                             for item in self.cells.items {
                                 if item is AccordionCell.SubNextAction {
@@ -375,13 +375,13 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                         
 
                     } else if item is AccordionCell.SubNextAction {
-                        let nextAction = item.nextAction
-                        let id = nextAction?.id
+                        guard let nextAction = item.nextAction else { return }
+                        let id = nextAction.id
                         self.cells.items.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         
-                        if let projects = nextAction?.projects {
-                            nextAction?.removeFromProjects(projects)
+                        if let projects = nextAction.projects {
+                            nextAction.removeFromProjects(projects)
                         }
                         
                         // Delete from core data
@@ -394,7 +394,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             } else if indexPath.section == 1 {
                 if let review: Review? = reviews[indexPath.row] {
-                    let id = review?.id
+                    guard let id = review?.id else { return }
                     reviews.remove(at: indexPath.row)
                     
                     if reviews.isEmpty {
@@ -405,7 +405,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     // Delete from core data
                     do {
-                        try allItemStore.deleteReview(id: id!)
+                        try allItemStore.deleteReview(id: id)
                     } catch {
                         print("Error deleting Review: \(error)")
                     }

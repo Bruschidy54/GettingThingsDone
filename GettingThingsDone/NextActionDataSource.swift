@@ -110,7 +110,7 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
             if indexPath.section < contexts.count && indexPath.section >= 0 {
                 let sortedNextActionsForContext = sortedNextActions[indexPath.section]
                 if let sortedNextAction: NextAction? = sortedNextActionsForContext[indexPath.row] {
-                    let id = sortedNextAction?.id
+                    guard let id = sortedNextAction?.id else { return }
                     sortedNextActions[indexPath.section].remove(at: indexPath.row)
                 
                     if let contexts = sortedNextAction?.contexts {
@@ -121,7 +121,7 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
                     }
                     // Delete from core data
                     do {
-                        try allItemStore.deleteNextAction(id: id!)
+                        try allItemStore.deleteNextAction(id: id)
                     } catch {
                         print("Error deleting Next Action: \(error)")
                     }
@@ -130,11 +130,11 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
                 }
             } else if indexPath.section == contexts.count {
                 if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
-                    let id = unsortedNextAction?.id
+                    guard let id = unsortedNextAction?.id else { return }
                     unsortedNextActions.remove(at: indexPath.row)
                     // Delete from core data
                     do {
-                        try allItemStore.deleteNextAction(id: id!)
+                        try allItemStore.deleteNextAction(id: id)
                     } catch {
                         print("Error deleting Next Action: \(error)")
                     }

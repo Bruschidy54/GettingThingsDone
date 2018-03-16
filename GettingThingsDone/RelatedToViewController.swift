@@ -463,7 +463,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             } else if (allContexts?.isEmpty)! {
                 if indexPath.section == 0 {
                     if let project: Project? = allProjects?[indexPath.row] {
-                        let id = project?.id
+                        guard let id = project?.id else { return }
                         allProjects?.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         let nextActionSet = project?.nextActions
@@ -471,7 +471,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                         
                         // Delete from core data
                         do {
-                            try allItemStore.deleteProject(id: id!)
+                            try allItemStore.deleteProject(id: id)
                         } catch {
                             print("Error deleting Project: \(error)")
                         }
@@ -487,7 +487,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             } else if (allProjects?.isEmpty)! {
                 if indexPath.section == 0 {
                     if let context: Context? = allContexts?[indexPath.row] {
-                        let id = context?.id
+                        guard let id = context?.id else { return }
                         allContexts?.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         let nextActionSet = context?.nextActions
@@ -495,7 +495,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                         
                         // Delete from core data
                         do {
-                            try allItemStore.deleteContext(id: id!)
+                            try allItemStore.deleteContext(id: id)
                         } catch {
                             print("Error deleting Context: \(error)")
                         }
@@ -511,7 +511,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             } else {
                 if indexPath.section == 0 {
                     if let project: Project? = allProjects?[indexPath.row] {
-                        let id = project?.id
+                        guard let id = project?.id else { return }
                         allProjects?.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         let nextActionSet = project?.nextActions
@@ -519,7 +519,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                         
                         // Delete from core data
                         do {
-                            try allItemStore.deleteProject(id: id!)
+                            try allItemStore.deleteProject(id: id)
                         } catch {
                             print("Error deleting Project: \(error)")
                         }
@@ -533,7 +533,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                     }
                 } else if indexPath.section == 1 {
                     if let context: Context? = allContexts?[indexPath.row] {
-                        let id = context?.id
+                        guard let id = context?.id else { return }
                         allContexts?.remove(at: indexPath.row)
                         tableView.deleteRows(at: [indexPath], with: .fade)
                         let nextActionSet = context?.nextActions
@@ -541,7 +541,7 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
                         
                         // Delete from core data
                         do {
-                            try allItemStore.deleteContext(id: id!)
+                            try allItemStore.deleteContext(id: id)
                         } catch {
                             print("Error deleting Context: \(error)")
                         }
@@ -558,13 +558,13 @@ class RelatedToViewController: UIViewController, UITableViewDelegate, UITableVie
             break
         case .project:
             if let nextAction: NextAction? = allNextActions?[indexPath.row] {
-                let id = nextAction?.id
+                guard let id = nextAction?.id else { return }
                 allNextActions?.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 
                 // Delete from core data
                 do {
-                    try allItemStore.deleteNextAction(id: id!)
+                    try allItemStore.deleteNextAction(id: id)
                 } catch {
                     print("Error deleting Next Action: \(error)")
                 }
