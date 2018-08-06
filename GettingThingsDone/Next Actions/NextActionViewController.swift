@@ -13,8 +13,8 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
     
     @IBOutlet var tableView: UITableView!
     
-    var allItemStore: AllItemStore!
     let nextActionDataSource = NextActionDataSource()
+    var contexts = [Context]()
     
     
     override func viewDidLoad() {
@@ -23,6 +23,7 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         
         tableView.delegate = self
         tableView.dataSource = nextActionDataSource
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -31,10 +32,10 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         self.tabBarController?.tabBar.isHidden = false
         
         // Fetch contexts and context-unsorted next actions
+        do {
+        let allContexts = try AllItemStore.shared.fetchMainQueueContext()
         
-        let allContexts = try! self.allItemStore.fetchMainQueueContext()
-        
-        let unsortedNextActions = try! self.allItemStore.fetchUnsortedByContextNextActions()
+        let unsortedNextActions = try AllItemStore.shared.fetchUnsortedByContextNextActions()
         let scoredUnsortedNextActions = unsortedNextActions.sorted{
             $0.relevanceScore > $1.relevanceScore
         }
@@ -61,9 +62,14 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         OperationQueue.main.addOperation {
             self.nextActionDataSource.unsortedNextActions = scoredUnsortedNextActions
             self.nextActionDataSource.contexts = contextArray
+            self.contexts = contextArray
             self.nextActionDataSource.sortedNextActions = scoredNextActionArrays
             self.tableView.reloadData()
             
+        }
+            
+        } catch let err {
+            print("Error fetching objects", err)
         }
         
         
@@ -77,13 +83,27 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
         return UITableViewAutomaticDimension
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let label = IndentedLabel()
+        
+        if section < contexts.count && section >= 0 {
+            label.text = contexts[section].name
+        }  else if section == contexts.count {
+            label.text = "Unsorted"
+        }
+                
+        label.backgroundColor = .themeOrange
+        label.textColor = .themePurple
+        return label
+    }
+    
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddItemSegue" {
             let destinationVC = segue.destination as! AddItemViewController
-            destinationVC.allItemStore = allItemStore
         }
         else if segue.identifier == "ViewNextActionSegue" {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
@@ -101,7 +121,6 @@ class NextActionViewController: UIViewController, UITableViewDelegate {
                     destinationVC.nextAction = nextAction
                 }
                 
-                destinationVC.allItemStore = allItemStore
                 destinationVC.itemType = .nextAction
             }
         }

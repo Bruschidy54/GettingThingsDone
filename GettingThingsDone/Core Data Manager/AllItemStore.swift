@@ -11,7 +11,7 @@ import CoreData
 
 class AllItemStore {
     
-    
+    static let shared = AllItemStore()
     let coreDataStack = CoreDataStack(modelName: "GTDModel")
     
     // MARK: To Do Core Data Methods

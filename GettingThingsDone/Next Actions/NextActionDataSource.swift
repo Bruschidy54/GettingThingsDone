@@ -13,7 +13,6 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
     var sortedNextActions = [[NextAction]]()
     var unsortedNextActions = [NextAction]()
     var contexts = [Context]()
-    let allItemStore = AllItemStore()
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -23,15 +22,6 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
     }()
     
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        if section < contexts.count && section >= 0 {
-            return self.contexts[section].name
-        }  else if section == contexts.count {
-            return "Unsorted"
-        }
-        return ""
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == contexts.count {
@@ -57,20 +47,25 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         if indexPath.section < contexts.count && indexPath.section >= 0 {
             if let sortedNextActionsForContext: [NextAction] = sortedNextActions[indexPath.section] {
                 let sortedNextAction = sortedNextActionsForContext[indexPath.row]
-                cell.textLabel?.text = "\(indexPath.row + 1): \(sortedNextAction.name!)"
-                let dueDate = dateFormatter.string(from: sortedNextAction.duedate as! Date)
-                cell.detailTextLabel?.text = "     Due \(dueDate)"
-                if (sortedNextAction.duedate! as Date) < Date() {
+                if let name = sortedNextAction.name {
+                cell.textLabel?.text = "\(indexPath.row + 1): \(name)"
+                }
+                if let dueDate = sortedNextAction.duedate as? Date {
+                let dueDateString = dateFormatter.string(from: dueDate)
+                cell.detailTextLabel?.text = "     Due \(dueDateString)"
+                
+                if (dueDate as Date) < Date() {
                     cell.detailTextLabel?.textColor = UIColor.red
                 } else {
                     cell.detailTextLabel?.textColor = UIColor.darkGray
                 }
             }
+            }
         }
             
         else if indexPath.section == contexts.count {
                 if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
-                    cell.textLabel?.text = "\(indexPath.row + 1): \(unsortedNextAction!.name!)"
+                    cell.textLabel?.text = "\(indexPath.row + 1): \(unsortedNextAction!.name)"
                     let dueDate = dateFormatter.string(from: unsortedNextAction?.duedate as! Date)
                     cell.detailTextLabel?.text = "     Due \(dueDate)"
                     if (unsortedNextAction?.duedate! as! Date) < Date() {
@@ -109,37 +104,43 @@ class NextActionDataSource: NSObject, UITableViewDataSource {
         if editingStyle == .delete {
             if indexPath.section < contexts.count && indexPath.section >= 0 {
                 let sortedNextActionsForContext = sortedNextActions[indexPath.section]
-                if let sortedNextAction: NextAction? = sortedNextActionsForContext[indexPath.row] {
-                    guard let id = sortedNextAction?.id else { return }
+                let sortedNextAction = sortedNextActionsForContext[indexPath.row]
+                guard let id = sortedNextAction.id else { return }
                     sortedNextActions[indexPath.section].remove(at: indexPath.row)
                 
-                    if let contexts = sortedNextAction?.contexts {
-                        sortedNextAction?.removeFromContexts(contexts)
+                sortedNextActions = sortedNextActions.map { (context: [NextAction]) -> [NextAction] in
+                    var mutableContext = context
+                    if let index = context.index(of: sortedNextAction) {
+                        mutableContext.remove(at: index)
                     }
-                    if let projects = sortedNextAction?.projects {
-                        sortedNextAction?.removeFromProjects(projects)
+                    return mutableContext
+                }
+                
+                if let contexts = sortedNextAction.contexts {
+                    sortedNextAction.removeFromContexts(contexts)
+                    }
+                if let projects = sortedNextAction.projects {
+                    sortedNextAction.removeFromProjects(projects)
                     }
                     // Delete from core data
                     do {
-                        try allItemStore.deleteNextAction(id: id)
+                        try AllItemStore.shared.deleteNextAction(id: id)
                     } catch {
                         print("Error deleting Next Action: \(error)")
                     }
                     
                     tableView.reloadData()
-                }
             } else if indexPath.section == contexts.count {
-                if let unsortedNextAction: NextAction? = unsortedNextActions[indexPath.row] {
-                    guard let id = unsortedNextAction?.id else { return }
+                let unsortedNextAction = unsortedNextActions[indexPath.row]
+                guard let id = unsortedNextAction.id else { return }
                     unsortedNextActions.remove(at: indexPath.row)
                     // Delete from core data
                     do {
-                        try allItemStore.deleteNextAction(id: id)
+                        try AllItemStore.shared.deleteNextAction(id: id)
                     } catch {
                         print("Error deleting Next Action: \(error)")
                     }
                     tableView.reloadData()
-                }
             }
         }
     }

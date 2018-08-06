@@ -50,7 +50,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     var review: Review?
     var itemType: ItemType = .nextAction
     var nextAction: NextAction?
-    var allItemStore: AllItemStore!
     var screenSize: CGRect = UIScreen.main.bounds
     var notesTextViewIsEditing: Bool = false
     
@@ -80,64 +79,25 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         // Set the priority level label
         let sliderValue = (sender as! UISlider).value
         
-        if sliderValue >= 0 && sliderValue < 0.2  {
-            
-            self.priorityLevelLabel.text = "Very Low"
-            
-        } else if sliderValue >= 0.2 && sliderValue < 0.4 {
-            
-            self.priorityLevelLabel.text = "Low"
-            
-        } else if sliderValue >= 0.4 && sliderValue < 0.6 {
-            
-            self.priorityLevelLabel.text = "Medium"
-            
-        } else if sliderValue >= 0.6 && sliderValue < 0.8 {
-            
-            self.priorityLevelLabel.text = "High"
-            
-        } else if sliderValue >= 0.8 && sliderValue <= 1 {
-            
-            self.priorityLevelLabel.text = "Very High"
-            
-        }
+        let newValue = Int(sliderValue/20) * 20
+        (sender as! UISlider).setValue(Float(newValue), animated: false)
+        
+        print("original: \(sliderValue); new: \(newValue)")
+        
+        setPrioritySliderLabel(for: Double(newValue))
+        
     }
     
     @IBAction func onDurationSliderSlid(_ sender: Any) {
         
-        
         // Set the duration level label
         let sliderValue = (sender as! UISlider).value
         
-        if sliderValue == 0 {
-            
-            self.durationLevelLabel.text = "<2 Min"
-            
-        }else if sliderValue > 0 && sliderValue < 0.2  {
-            
-            self.durationLevelLabel.text = "<15 Min"
-            
-        } else if sliderValue >= 0.2 && sliderValue < 0.4 {
-            
-            self.durationLevelLabel.text = "<1 Hr"
-            
-        } else if sliderValue >= 0.4 && sliderValue < 0.6 {
-            
-            self.durationLevelLabel.text = "<2 Hr"
-            
-        } else if sliderValue >= 0.6 && sliderValue < 0.8 {
-            
-            self.durationLevelLabel.text = "<4 Hr"
-            
-        } else if sliderValue >= 0.8 && sliderValue < 1 {
-            
-            self.durationLevelLabel.text = "<8 Hr"
-            
-        } else if sliderValue == 1 {
-            
-            self.durationLevelLabel.text = ">8 Hr"
-            
-        }
+        // Round value to step
+        let newValue = Int(sliderValue/20) * 20
+        (sender as! UISlider).setValue(Float(newValue), animated: false)
+        
+        setDurationSliderLabel(for: Double(newValue))
     }
     
     
@@ -188,60 +148,88 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        // Adjust UI size constraints based on orientation
-        if UIDevice.current.orientation.isLandscape {
-            let point = CGPoint(x: 0, y: 0)
-            screenSize = CGRect(origin: point, size: size)
-            switch itemType {
-            case .toDo, .review:
-                notesTextViewHeightConstraint.constant = (screenSize.height/2)
-                break
-            case .nextAction:
+        
+        let point = CGPoint(x: 0, y: 0)
+        screenSize = CGRect(origin: point, size: size)
+        updateConstraintsForOrientation()
+    }
+    
+    private func updateConstraintsForOrientation() {
+        prioritySliderConstraint.constant = (screenSize.width * 15)/30
+        durationSliderContraint.constant = (screenSize.width * 15)/30
+        titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+        priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+        durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
+        datePickerHeightConstraint.constant = (screenSize.height)/6
+        
+        switch itemType {
+        case .toDo, .review:
+            notesTextViewHeightConstraint.constant = (screenSize.height/2)
+        case .nextAction:
+            if UIDevice.current.orientation.isLandscape {
+                datePickerHeightConstraint.constant = (screenSize.height)/6
                 notesTextViewHeightConstraint.constant = (screenSize.height/3)
-                durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
-                priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
-                datePickerHeightConstraint.constant = (screenSize.height)/6
-                prioritySliderConstraint.constant = (screenSize.width)/2
-                durationSliderContraint.constant = (screenSize.width)/2
-                break
-            case .project:
+            } else {
                 datePickerHeightConstraint.constant = (screenSize.height)/6
                 notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
-                break
-            default:
-                break
             }
-            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
-        } else {
-            let point = CGPoint(x: 0, y: 0)
-            screenSize = CGRect(origin: point, size: size)
-            switch itemType {
-            case .toDo, .review:
-                notesTextViewHeightConstraint.constant = (screenSize.height/2)
-                break
-            case .nextAction:
+        case .project:
+            if UIDevice.current.orientation.isLandscape {
+                datePickerHeightConstraint.constant = (screenSize.height)/6
                 notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
-                prioritySliderConstraint.constant = (screenSize.width * 15)/30
-                durationSliderContraint.constant = (screenSize.width * 15)/30
-                priorityLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
-                durationLevelLabelWidthConstraint.constant =  (screenSize.width * 7)/30
+            } else {
                 datePickerHeightConstraint.constant = (screenSize.height)/6
-                break
-            case .project:
                 notesTextViewHeightConstraint.constant = (screenSize.height/2)
-                datePickerHeightConstraint.constant = (screenSize.height)/6
-                break
-            default:
-                break
             }
-            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+        default:
+            break
+        }
+    }
+    
+    private func setPrioritySliderLabel(for value: Double) {
+        switch value {
+        case 0:
+            self.priorityLevelLabel.text = "Very Low"
+        case 20:
+            self.priorityLevelLabel.text = "Low"
+        case 40:
+            self.priorityLevelLabel.text = "Medium"
+        case 60:
+            self.priorityLevelLabel.text = "High"
+        case 80:
+            self.priorityLevelLabel.text = "Very High"
+        case 100:
+            self.priorityLevelLabel.text = "Highest"
+        default:
+            self.priorityLevelLabel.text = "Highest"
+        }
+    }
+    
+    private func setDurationSliderLabel(for value: Double) {
+        switch value {
+        case 0:
+            self.durationLevelLabel.text = "<2 Min"
+        case 20:
+            self.durationLevelLabel.text = "<30 Min"
+        case 40:
+            self.durationLevelLabel.text = "<2 Hr"
+        case 60:
+            self.durationLevelLabel.text = "<4 Hr"
+        case 80:
+            self.durationLevelLabel.text = "<8 Hr"
+        case 100:
+            self.durationLevelLabel.text = ">8 Hr"
+        default:
+            self.durationLevelLabel.text = ">8 Hr"
         }
     }
     
     
-    func formatPage() {
+    private func formatPage() {
         let newScreenSize = UIScreen.main.bounds
         screenSize = newScreenSize
+        
+        updateConstraintsForOrientation()
         
         switch itemType {
         case .toDo:
@@ -265,84 +253,32 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "Notes"
             
-            notesTextViewHeightConstraint.constant = (screenSize.height/2)
-            
             break
         case .nextAction:
             self.navigationItem.title = nextAction?.name
             titleLabel.text = "Action"
             titleTextField.text = nextAction?.name
             notesTextView.text = nextAction?.details
-            prioritySlider.value = (nextAction?.priority)!
-            durationSlider.value = (nextAction?.processingtime)!
-            dueDateFullDateLabel.text = dateFormatter.string(from: nextAction?.duedate as! Date)
-            if (nextAction?.duedate! as! Date) < Date() {
+            prioritySlider.value = nextAction?.priority ?? 0
+            durationSlider.value = nextAction?.processingtime ?? 0
+            let dueDate: Date = nextAction?.duedate as! Date
+            dueDateFullDateLabel.text = dateFormatter.string(from: dueDate)
+            if dueDate < Date() {
                 dueDateFullDateLabel.textColor = UIColor.red
             } else {
                 dueDateFullDateLabel.textColor = UIColor.darkGray
             }
-            dueDatePicker.date = nextAction?.duedate as! Date
+            dueDatePicker.date = dueDate
             notesLabel.text = "How I know I'm done"
             
-            if UIDevice.current.orientation.isLandscape {
-                datePickerHeightConstraint.constant = (screenSize.height)/6
-                notesTextViewHeightConstraint.constant = (screenSize.height/3)
-            } else {
-                datePickerHeightConstraint.constant = (screenSize.height)/6
-                notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
-            }
             
-            if Double((nextAction?.priority)!) >= 0 && Double((nextAction?.priority)!) < 0.2 {
-                
-                self.priorityLevelLabel.text = "Very Low"
-                
-            } else if Double((nextAction?.priority)!) >= 0.2 && Double((nextAction?.priority)!) < 0.4 {
-                
-                self.priorityLevelLabel.text = "Low"
-                
-            } else if Double((nextAction?.priority)!) >= 0.4 && Double((nextAction?.priority)!) < 0.6 {
-                
-                self.priorityLevelLabel.text = "Medium"
-                
-            } else if Double((nextAction?.priority)!) >= 0.6 && Double((nextAction?.priority)!) < 0.8 {
-                
-                self.priorityLevelLabel.text = "High"
-                
-            } else if Double((nextAction?.priority)!) >= 0.8 && Double((nextAction?.priority)!) <= 1 {
-                
-                self.priorityLevelLabel.text = "Very High"
-                
+            if let priority = nextAction?.priority {
+                setPrioritySliderLabel(for: Double(priority))
             }
             
             
-            if Double((nextAction?.processingtime)!) == 0 {
-                
-                self.durationLevelLabel.text = "<2 Min"
-                
-            }else if Double((nextAction?.processingtime)!) > 0 && Double((nextAction?.processingtime)!) < 0.2  {
-                
-                self.durationLevelLabel.text = "<15 Min"
-                
-            } else if Double((nextAction?.processingtime)!) >= 0.2 && Double((nextAction?.processingtime)!) < 0.4 {
-                
-                self.durationLevelLabel.text = "<1 Hr"
-                
-            } else if Double((nextAction?.processingtime)!) >= 0.4 && Double((nextAction?.processingtime)!) < 0.6 {
-                
-                self.durationLevelLabel.text = "<2 Hr"
-                
-            } else if Double((nextAction?.processingtime)!) >= 0.6 && Double((nextAction?.processingtime)!) < 0.8 {
-                
-                self.durationLevelLabel.text = "<4 Hr"
-                
-            } else if Double((nextAction?.processingtime)!) >= 0.8 && Double((nextAction?.processingtime)!) < 1 {
-                
-                self.durationLevelLabel.text = "<8 Hr"
-                
-            } else if Double((nextAction?.processingtime)!) == 1 {
-                
-                self.durationLevelLabel.text = ">8 Hr"
-                
+            if let duration = nextAction?.processingtime {
+                setDurationSliderLabel(for: Double(duration))
             }
             
             
@@ -367,13 +303,14 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             titleLabel.text = "Project"
             titleTextField.text = project?.name
             notesTextView.text = project?.details
-            dueDateFullDateLabel.text = dateFormatter.string(from: project?.duedate as! Date)
-            if (project?.duedate! as! Date) < Date() {
+            let dueDate = project?.duedate as! Date
+            dueDateFullDateLabel.text = dateFormatter.string(from: dueDate)
+            if dueDate < Date() {
                 dueDateFullDateLabel.textColor = UIColor.red
             } else {
                 dueDateFullDateLabel.textColor = UIColor.darkGray
             }
-            dueDatePicker.date = project?.duedate as! Date
+            dueDatePicker.date = dueDate
             titleLabel.isHidden = false
             titleTextField.isHidden = false
             priorityLabel.isHidden = true
@@ -391,13 +328,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "Planning"
             
-            if UIDevice.current.orientation.isLandscape {
-                datePickerHeightConstraint.constant = (screenSize.height)/6
-                notesTextViewHeightConstraint.constant = 2 * (screenSize.height/5)
-            } else {
-                datePickerHeightConstraint.constant = (screenSize.height)/6
-                notesTextViewHeightConstraint.constant = (screenSize.height/2)
-            }
             break
         case .review:
             self.navigationItem.title = "Review Your Progress"
@@ -421,7 +351,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "How can I improve?"
             
-            notesTextViewHeightConstraint.constant = (screenSize.height/2)
             break
         default:
             notesLabel.text = "Notes"
@@ -437,7 +366,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let toDoDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "datecreated" : toDo?.datecreated as Any, "details": notesTextView.text as Any, "id": toDo?.id]
             do {
-                try self.allItemStore.updateToDo(toDoDict: toDoDict)
+                try AllItemStore.shared.updateToDo(toDoDict: toDoDict)
                 print("To Do successfully updated")
             } catch {
                 print(error)
@@ -448,7 +377,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let nextActionDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : nextAction?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": nextAction?.id, "priority" : prioritySlider.value as Any, "processingtime" : durationSlider.value, "projects" : nextAction?.projects, "contexts" : nextAction?.contexts]
             do {
-                try self.allItemStore.updateNextActions(nextActionDict: nextActionDict)
+                try AllItemStore.shared.updateNextActions(nextActionDict: nextActionDict)
                 print("Next Action successfully updated")
             } catch {
                 print(error)
@@ -459,7 +388,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let projectDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createdate" : project?.createdate as Any, "duedate" : dueDatePicker.date as Any, "details": notesTextView.text as Any, "id": project?.id]
             do {
-                try self.allItemStore.updateProject(projectDict: projectDict)
+                try AllItemStore.shared.updateProject(projectDict: projectDict)
                 print("Project successfully updated")
             } catch {
                 print(error)
@@ -470,7 +399,7 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             // Update dictionary
             let reviewDict: Dictionary<String, Any> = ["name" : titleTextField.text as Any, "createDate" : review?.createDate as Any, "details": notesTextView.text as Any, "id": review?.id]
             do {
-                try self.allItemStore.updateReview(reviewDict: reviewDict)
+                try AllItemStore.shared.updateReview(reviewDict: reviewDict)
                 print("Topic successfully updated")
             } catch {
                 print(error)
@@ -494,7 +423,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         notesTextView.resignFirstResponder()
         
         self.view.layoutIfNeeded()
-        
         var notesTextViewHeight: CGFloat = 0
         
         switch itemType {
@@ -516,30 +444,31 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
             break
         }
         
-        UIView.animate(withDuration: 0.5, animations: {
-            
+        UIView.animate(withDuration: 0.45, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
             self.fullStackViewTopConstaint.constant = 8
+            self.notesTextViewHeightConstraint.constant = notesTextViewHeight
             self.view.layoutIfNeeded()
-        })
+        }, completion: nil)
     }
     
     func keyboardWillShow(notification: NSNotification) {
         
-          if notesTextViewIsEditing {
-  
+        if notesTextViewIsEditing {
+            
             if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
                 let keyboardHeight = keyboardSize.height
                 let targetOffsetForTopConstraint = 8 - notesStackView.frame.origin.y
-            let targetOffsetForNotesTextViewHeight = screenSize.height - 80 - keyboardHeight
+                let targetOffsetForNotesTextViewHeight = screenSize.height - 80 - keyboardHeight
                 
                 self.view.layoutIfNeeded()
                 
-                UIView.animate(withDuration: 0.25, animations: {
-                    
+                UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
                     self.fullStackViewTopConstaint.constant = targetOffsetForTopConstraint
                     self.notesTextViewHeightConstraint.constant = targetOffsetForNotesTextViewHeight
                     self.view.layoutIfNeeded()
-                })
+                }, completion: nil)
+                
+                
             }
         }
     }
@@ -567,11 +496,10 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         if segue.identifier == "ReclassifySegue" {
             let destinationVC = segue.destination as! AddItemViewController
-            destinationVC.allItemStore = allItemStore
             if itemType == .toDo {
                 destinationVC.reclassifiedToDo = toDo
             }
-            else if itemType == .nextAction{
+            else if itemType == .nextAction {
                 destinationVC.reclassifiedNextAction = nextAction
                 
             }
@@ -582,7 +510,6 @@ class ItemDetailViewController: UIViewController, UITextFieldDelegate, UITextVie
         else if segue.identifier == "RelatedToSegue" {
             let destinationVC = segue.destination as! RelatedToViewController
             
-            destinationVC.allItemStore = allItemStore
             destinationVC.nextAction = nextAction
             destinationVC.project = project
             destinationVC.addSegue = false

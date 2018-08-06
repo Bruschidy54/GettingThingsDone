@@ -13,8 +13,6 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     @IBOutlet var tableView: UITableView!
     
     let toDoDataSource = ToDoDataSource()
-    var allItemStore: AllItemStore!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +20,6 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         tableView.delegate = self
         tableView.dataSource = toDoDataSource
      
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,10 +27,15 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
         
         self.tabBarController?.tabBar.isHidden = false
         
-        let allToDos = try! self.allItemStore.fetchMainQueueToDos()
+        do {
+        let allToDos = try AllItemStore.shared.fetchMainQueueToDos()
         
         self.toDoDataSource.toDos = allToDos
-        
+        } catch let err {
+            print("Error fetching To Dos", err)
+        }
+            
+            
         OperationQueue.main.addOperation {
             self.tableView.reloadData()
         }
@@ -46,25 +48,18 @@ class ToDoViewController: UIViewController, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         return UITableViewAutomaticDimension
-        
     }
     
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "AddItemSegue" {
-            let destinationVC = segue.destination as! AddItemViewController
-            destinationVC.allItemStore = allItemStore
-        }
-        else if segue.identifier == "ViewToDoSegue" {
+        if segue.identifier == "ViewToDoSegue" {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 let toDo = toDoDataSource.toDos[selectedIndexPath.row]
                 
                 let destinationVC = segue.destination as! ItemDetailViewController
                 destinationVC.toDo = toDo
-                destinationVC.allItemStore = allItemStore
                 destinationVC.itemType = .toDo
             }
         }

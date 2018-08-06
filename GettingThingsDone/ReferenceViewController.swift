@@ -18,7 +18,6 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     var selectedHeaderIndex: Int?
     var selectedItemIndex: Int?
     var selectedReviewIndex: Int?
-    var allItemStore: AllItemStore!
     var cells: AccordionCell!
     var reviews = [Review]()
     var segueType: SegueType = .headerType
@@ -40,14 +39,7 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        tableView.allowsSelection = false
-        cells = AccordionCell()
-        self.tableView.estimatedRowHeight = 45
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.allowsMultipleSelection = true
-        
+        setupTableView()
     }
     
     
@@ -56,41 +48,57 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
         self.tabBarController?.tabBar.isHidden = false
         
         cells.removeAll()
+        fetchAllObjects()
         
-        // Fetch projects and project-unsorted next actions
-        let allProjects = try! self.allItemStore.fetchMainQueueProjects()
-        
-        let unsortedNextActions = try! self.allItemStore.fetchUnsortedByProjectNextActions()
-        
-        
-        // Fetch and sort reviews
-        self.reviews = try! self.allItemStore.fetchMainQueueReviews()
-        
-        if !self.reviews.isEmpty{
-            let sortedReviews = self.reviews.sorted{
-                ($0.createDate as! Date) > ($1.createDate as! Date)
-            }
-            self.reviews = sortedReviews
+        OperationQueue.main.addOperation {
+            self.tableView.reloadData()
         }
         
-        // Fetch sorted next actions
-        for project in allProjects {
-            self.cells.append(AccordionCell.HeaderProject(project: project))
-            if project.nextActions != nil {
-                for nextAction in Array(project.nextActions!) {
-                    self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction as! NextAction))
+    }
+    
+    private func setupTableView() {
+        tableView.allowsSelection = false
+        cells = AccordionCell()
+        self.tableView.estimatedRowHeight = 45
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.allowsMultipleSelection = true
+        
+    }
+    
+    private func fetchAllObjects() {
+        // Fetch projects and project-unsorted next actions
+        
+        do {
+            let allProjects = try AllItemStore.shared.fetchMainQueueProjects()
+            
+            let unsortedNextActions = try AllItemStore.shared.fetchUnsortedByProjectNextActions()
+            
+            // Fetch and sort reviews
+            self.reviews = try AllItemStore.shared.fetchMainQueueReviews()
+            if !self.reviews.isEmpty{
+                let sortedReviews = self.reviews.sorted {
+                    ($0.createDate as! Date) > ($1.createDate as! Date)
+                }
+                self.reviews = sortedReviews
+            }
+            
+            // Fetch sorted next actions
+            for project in allProjects {
+                self.cells.append(AccordionCell.HeaderProject(project: project))
+                if project.nextActions != nil {
+                    for nextAction in Array(project.nextActions!) {
+                        self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction as! NextAction))
+                    }
                 }
             }
-        }
-        
-        // Add a blank header project to serve as a header for unsorted next actions
+            
+            // Add a blank header project to serve as a header for unsorted next actions
             self.cells.append(AccordionCell.HeaderProject())
             for nextAction in unsortedNextActions {
                 self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction))
             }
-        
-        OperationQueue.main.addOperation {
-            self.tableView.reloadData()
+        } catch let err {
+            print("Error fetching objects", err)
         }
         
     }
@@ -113,16 +121,11 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             tableView.separatorStyle = .none
             return 0
         } else {
-        if reviews.isEmpty {
             tableView.separatorStyle = .singleLine
             tableView.backgroundView = nil
-            return 1
-        } else {
-            tableView.separatorStyle = .singleLine
-            tableView.backgroundView = nil
-            return 2
-        }
-        }
+            
+            return reviews.isEmpty ? 1 : 2
+    }
     }
     
 
@@ -138,6 +141,22 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let label = IndentedLabel()
+        
+        if section == 0 {
+            label.text = "Projects"
+        }  else if section == 2 {
+            label.text = "Review"
+        }
+        
+        label.backgroundColor = .themeOrange
+        label.textColor = .themePurple
+        return label
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -293,7 +312,6 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
             } else {
                 segueType = .subItemType
                 if (indexPath as NSIndexPath).row != self.selectedItemIndex {
-                    let cell = self.tableView.cellForRow(at: indexPath) as! ReferenceTableViewCell
                     
                     if let selectedItemIndex = self.selectedItemIndex {
                         let previousCell = self.tableView.cellForRow(at: IndexPath(row: selectedItemIndex, section: 0)) as! ReferenceTableViewCell
@@ -323,31 +341,17 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     
     
     func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        if indexPath.section == 0 {
-            return "Complete"
-        } else if indexPath.section == 1 {
-            return "Delete"
-            
-        } else {
-            return "Complete"
-        }
+        return indexPath.section == 1 ? "Delete" : "Complete"
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             if indexPath.section == 0 {
-                if let item: AccordionCell.Item = self.cells.items[(indexPath as NSIndexPath).row] {
+                let item: AccordionCell.Item = self.cells.items[(indexPath as NSIndexPath).row]
                     if item is AccordionCell.HeaderProject {
                         guard let project = item.project else { return }
-                        let id = project.id
+                        guard let id = project.id else { return }
                         self.cells.items.remove(at: indexPath.row)
-                        
-                        // Delete from core data
-                        do {
-                            try allItemStore.deleteProject(id: id!)
-                        } catch {
-                            print("Error deleting Project: \(error)")
-                        }
                         
                         // Unsort related next actions
                         if let nextActionSet = project.nextActions {
@@ -364,36 +368,44 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                             let nextActions = Array(nextActionSet) as! [NextAction]
                             for nextAction in nextActions {
                                 if nextAction.projects?.count == 0 {
-                                nextAction.projectSorted = false
+                                    nextAction.projectSorted = false
+                                    self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction))
                                 }
-                                self.cells.append(AccordionCell.SubNextAction(nextAction: nextAction))
                             }
                         }
+                        
+                        // Delete from core data
+                        do {
+                            try AllItemStore.shared.deleteProject(id: id)
+                        } catch {
+                            print("Error deleting Project: \(error)")
+                        }
+                        
                         OperationQueue.main.addOperation {
-                        tableView.reloadData()
+                            tableView.reloadData()
                         }
                         
 
                     } else if item is AccordionCell.SubNextAction {
                         guard let nextAction = item.nextAction else { return }
-                        let id = nextAction.id
+                        guard let id = nextAction.id else { return }
                         self.cells.items.remove(at: indexPath.row)
-                        tableView.deleteRows(at: [indexPath], with: .fade)
                         
+                        tableView.reloadData()
+                                                
                         if let projects = nextAction.projects {
                             nextAction.removeFromProjects(projects)
                         }
                         
                         // Delete from core data
                         do {
-                            try allItemStore.deleteNextAction(id: id!)
+                            try AllItemStore.shared.deleteNextAction(id: id)
                         } catch {
                             print("Error deleting Next Action: \(error)")
                         }
                     }
-                }
             } else if indexPath.section == 1 {
-                if let review: Review? = reviews[indexPath.row] {
+                let review: Review? = reviews[indexPath.row] 
                     guard let id = review?.id else { return }
                     reviews.remove(at: indexPath.row)
                     
@@ -405,24 +417,22 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     // Delete from core data
                     do {
-                        try allItemStore.deleteReview(id: id)
+                        try AllItemStore.shared.deleteReview(id: id)
                     } catch {
                         print("Error deleting Review: \(error)")
                     }
-                }
             }
         }
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 {
-            if let item: AccordionCell.Item = self.cells.items[(indexPath as NSIndexPath).row] {
+            let item: AccordionCell.Item = self.cells.items[(indexPath as NSIndexPath).row]
                 if item is AccordionCell.HeaderProject && item.project == nil {
                     return false
                 } else {
                     return true
                 }
-            }
         } else {
             return true
         }
@@ -437,7 +447,6 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ViewItemSegue" {
             let destinationVC = segue.destination as! ItemDetailViewController
-            destinationVC.allItemStore = allItemStore
             
             switch segueType {
             case .reviewType:
@@ -466,24 +475,9 @@ class ReferenceViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
                 break
             }
-        } else if segue.identifier == "AddItemSegue" {
-            let destinationVC = segue.destination as! AddItemViewController
-            destinationVC.allItemStore = allItemStore
         }
     }
     
 }
+    
 
-extension UIImage{
-    
-    func alpha(_ value:CGFloat)->UIImage
-    {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        draw(at: CGPoint.zero, blendMode: .normal, alpha: value)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage!
-        
-    }
-    
-}

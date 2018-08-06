@@ -35,7 +35,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     @IBOutlet var priorityLevelLabelWidthContraint: NSLayoutConstraint!
     @IBOutlet var durationLevelLabelWidthConstraint: NSLayoutConstraint!
     @IBOutlet var fullStackViewTopConstraint: NSLayoutConstraint!
-    
     @IBOutlet var fullStackView: UIStackView!
     @IBOutlet var pickerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet var notesStackView: UIStackView!
@@ -48,7 +47,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     var relatedToNextActionsArray: [NextAction] = []
     var relatedToProjectsArray: [Project] = []
     var relatedToContextArray: [Context] = []
-    var allItemStore: AllItemStore!
     var notesTextViewIsEditing: Bool = false
     var screenSize: CGRect = UIScreen.main.bounds
     
@@ -62,15 +60,15 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     @IBAction func onDoneButtonTapped(_ sender: Any) {
         
-         createItem()
+        createItem()
         if titleTextField.text != "" {
             
             if reclassifiedToDo != nil {
-                let id = reclassifiedToDo?.id
+                guard let id = reclassifiedToDo?.id else { return }
                 
                 // Delete To Do from Core Data
                 do  {
-                    try allItemStore.deleteToDo(id: id!)
+                    try AllItemStore.shared.deleteToDo(id: id)
                 } catch {
                     print("Error deleting To Do: \(error)")
                 }
@@ -100,7 +98,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             else {
                 
                 self.navigationController?.popToRootViewController(animated: true)
-              
+                
             }
             switch itemType {
             case .chooseAnOption, .none, .toDo:
@@ -109,8 +107,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 self.navigationController?.tabBarController?.selectedIndex = 1
             case .project, .review:
                 self.navigationController?.tabBarController?.selectedIndex = 2
-            default:
-                break
             }
         }
     }
@@ -121,65 +117,23 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     }
     
     @IBAction func onPrioritySliderSlid(_ sender: Any) {
-        var sliderValue = (sender as! UISlider).value
+        let sliderValue = (sender as! UISlider).value
         
-        if sliderValue >= 0 && sliderValue < 0.2  {
-            
-            self.priorityLevelLabel.text = "Very Low"
-            
-        } else if sliderValue >= 0.2 && sliderValue < 0.4 {
-            
-            self.priorityLevelLabel.text = "Low"
-            
-        } else if sliderValue >= 0.4 && sliderValue < 0.6 {
-            
-            self.priorityLevelLabel.text = "Medium"
-            
-        } else if sliderValue >= 0.6 && sliderValue < 0.8 {
-            
-            self.priorityLevelLabel.text = "High"
-            
-        } else if sliderValue >= 0.8 && sliderValue <= 1 {
-            
-            self.priorityLevelLabel.text = "Very High"
-            
-        }
+        let newValue = Int(sliderValue/20) * 20
+        (sender as! UISlider).setValue(Float(newValue), animated: false)
+        
+       setPrioritySliderLabel(for: Double(newValue))
         
     }
     
     @IBAction func onDurationSliderSlid(_ sender: Any) {
-        var sliderValue = (sender as! UISlider).value
+        let sliderValue = (sender as! UISlider).value
         
-        if sliderValue == 0 {
-            
-            self.durationLevelLabel.text = "<2 Min"
-            
-        }else if sliderValue > 0 && sliderValue < 0.2  {
-            
-            self.durationLevelLabel.text = "<15 Min"
-            
-        } else if sliderValue >= 0.2 && sliderValue < 0.4 {
-            
-            self.durationLevelLabel.text = "<1 Hr"
-            
-        } else if sliderValue >= 0.4 && sliderValue < 0.6 {
-            
-            self.durationLevelLabel.text = "<2 Hr"
-            
-        } else if sliderValue >= 0.6 && sliderValue < 0.8 {
-            
-            self.durationLevelLabel.text = "<4 Hr"
-            
-        } else if sliderValue >= 0.8 && sliderValue < 1 {
-            
-            self.durationLevelLabel.text = "<8 Hr"
-            
-        } else if sliderValue == 1 {
-            
-            self.durationLevelLabel.text = ">8 Hr"
-            
-        }
+        // Round value to step
+        let newValue = Int(sliderValue/20) * 20
+        (sender as! UISlider).setValue(Float(newValue), animated: false)
         
+        setDurationSliderLabel(for: Double(newValue))
     }
     
     
@@ -193,51 +147,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         
-        titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
-        notesLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
-        priorityLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
-        durationLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
-        dueDateLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
-        priorityLevelLabel.font = UIFont(name: "GillSans", size: 15)
-        durationLevelLabel.font = UIFont(name: "GillSans", size: 15)
+        setupUI()
         
-        relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
-        
-        
-        dueDatePicker.setValue(UIColor.darkGray, forKeyPath: "textColor")
-        
-        self.dueDatePicker.datePickerMode = .date
-        
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        notesTextView.delegate = self
-        
-        
-        // Set UI horizontal constraints proportional to screen width
-        prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
-        durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
-        titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
-        priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
-        durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
-        
-        
-        // Adjust vertical constraint proporations based on device orientation
-        if UIDevice.current.orientation.isLandscape {
-            
-            itemTypePickerHeightConstraint.constant = (screenSize.height)/5
-            dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-            notesTextViewHeightConstraint.constant = (screenSize.height)/2
-        }
-        else {
-            
-            itemTypePickerHeightConstraint.constant = (screenSize.height)/4
-            dueDatePickerHeightConstraint.constant = (screenSize.height)/5
-            notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
-        }
+        updateConstraintsForOrientation()
         
         updateForm()
         
-        self.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -274,57 +189,121 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         
-        // Update constraints based on device orientation changes
+        let point = CGPoint(x: 0, y: 0)
+                    screenSize = CGRect(origin: point, size: size)
+        updateConstraintsForOrientation()
+        
+    }
+    
+    private func setPrioritySliderLabel(for value: Double) {
+        switch value {
+        case 0:
+            self.priorityLevelLabel.text = "Very Low"
+        case 20:
+            self.priorityLevelLabel.text = "Low"
+        case 40:
+            self.priorityLevelLabel.text = "Medium"
+        case 60:
+            self.priorityLevelLabel.text = "High"
+        case 80:
+            self.priorityLevelLabel.text = "Very High"
+        case 100:
+            self.priorityLevelLabel.text = "Highest"
+        default:
+            self.priorityLevelLabel.text = "Highest"
+        }
+    }
+    
+    private func setDurationSliderLabel(for value: Double) {
+        switch value {
+        case 0:
+            self.durationLevelLabel.text = "<2 Min"
+        case 20:
+            self.durationLevelLabel.text = "<30 Min"
+        case 40:
+            self.durationLevelLabel.text = "<2 Hr"
+        case 60:
+            self.durationLevelLabel.text = "<4 Hr"
+        case 80:
+            self.durationLevelLabel.text = "<8 Hr"
+        case 100:
+            self.durationLevelLabel.text = ">8 Hr"
+        default:
+            self.durationLevelLabel.text = ">8 Hr"
+        }
+    }
+    
+    private func setupUI() {
+        navigationItem.leftBarButtonItem?.tintColor = .themeOrange
+        navigationItem.rightBarButtonItem?.tintColor = .themeOrange
+        
+        titleLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        notesLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        priorityLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
+        durationLabel.font = UIFont(name: "GillSans-SemiBold", size: 11)
+        dueDateLabel.font = UIFont(name: "GillSans-SemiBold", size: 13)
+        priorityLevelLabel.font = UIFont(name: "GillSans", size: 15)
+        durationLevelLabel.font = UIFont(name: "GillSans", size: 15)
+        
+        relatedToButton.titleLabel?.font = UIFont(name: "GillSans-SemiBold", size: 17)
+        
+        
+        dueDatePicker.setValue(UIColor.darkGray, forKeyPath: "textColor")
+        
+        self.dueDatePicker.datePickerMode = .date
+        
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        notesTextView.delegate = self
+        
+        self.tabBarController?.tabBar.isHidden = true
+        
+    }
+    
+    private func updateConstraintsForOrientation() {
+        // Set UI horizontal constraints proportional to screen width
+        prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
+        durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
+        titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+        priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
+        durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
+        
+        
+        // Adjust vertical constraint proporations based on device orientation
         if UIDevice.current.orientation.isLandscape {
-            let point = CGPoint(x: 0, y: 0)
-            screenSize = CGRect(origin: point, size: size)
-            switch itemType {
-            case .chooseAnOption, .toDo, .review, .context:
-                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
-                break
-            case .nextAction:
-                notesTextViewHeightConstraint.constant = (screenSize.height)/7
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/7
-                prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
-                durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
-                priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
-                durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
-                
-                break
-            case .project:
-                notesTextViewHeightConstraint.constant = (screenSize.height)/4
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-                break
-            default:
-                break
-            }
-            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+            
             itemTypePickerHeightConstraint.constant = (screenSize.height)/5
-        } else {
-            let point = CGPoint(x: 0, y: 0)
-            screenSize = CGRect(origin: point, size: size)
-            switch itemType {
-            case .chooseAnOption, .toDo, .review, .context:
-                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
-                break
-            case .nextAction:
-                notesTextViewHeightConstraint.constant = (screenSize.height)/6
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-                prioritySliderWidthConstraint.constant = (screenSize.width * 15)/30
-                durationSliderWidthConstraint.constant = (screenSize.width * 15)/30
-                priorityLevelLabelWidthContraint.constant = (screenSize.width * 7)/30
-                durationLevelLabelWidthConstraint.constant = (screenSize.width * 7)/30
-                
-                break
-            case .project:
-                notesTextViewHeightConstraint.constant = (screenSize.height)/4
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-                break
-            default:
-                break
-            }
-            titleTextFieldWidthConstraint.constant = (screenSize.width * 22)/30
+            dueDatePickerHeightConstraint.constant = (screenSize.height)/6
+            notesTextViewHeightConstraint.constant = (screenSize.height)/2
+        }
+        else {
+            
             itemTypePickerHeightConstraint.constant = (screenSize.height)/4
+            dueDatePickerHeightConstraint.constant = (screenSize.height)/5
+            notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
+        }
+        
+        switch itemType {
+        case .toDo, .review:
+            if UIDevice.current.orientation.isLandscape {
+                
+                notesTextViewHeightConstraint.constant = (screenSize.height)/3
+            } else {
+                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
+            }
+        case .nextAction:
+            if UIDevice.current.orientation.isLandscape {
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/7
+                notesTextViewHeightConstraint.constant = (screenSize.height)/7
+            } else {
+                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
+                notesTextViewHeightConstraint.constant = (screenSize.height)/6
+            }
+        case .project:
+            notesTextViewHeightConstraint.constant = (screenSize.height)/4
+            dueDatePickerHeightConstraint.constant = (screenSize.height)/6
+        default:
+            break
         }
     }
     
@@ -382,6 +361,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         let newScreenSize = UIScreen.main.bounds
         screenSize = newScreenSize
         
+        updateConstraintsForOrientation()
+        
         switch itemType {
         case .none:
             titleLabel.isHidden = true
@@ -432,12 +413,6 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "Notes"
             
-            if UIDevice.current.orientation.isLandscape {
-                
-                notesTextViewHeightConstraint.constant = (screenSize.height)/3
-            } else {
-                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
-            }
             
             break
         case .nextAction:
@@ -457,65 +432,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             durationLevelLabel.isHidden = false
             notesLabel.text = "How I know I'm done"
             
-            if UIDevice.current.orientation.isLandscape {
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/7
-                notesTextViewHeightConstraint.constant = (screenSize.height)/7
-            } else {
-                dueDatePickerHeightConstraint.constant = (screenSize.height)/6
-                notesTextViewHeightConstraint.constant = (screenSize.height)/6
-            }
             
-            if Double(prioritySlider.value) >= 0 && Double(prioritySlider.value) < 0.2 {
-                self.priorityLevelLabel.text = "Very Low"
-            }
-            else if Double(prioritySlider.value) >= 0.2 && Double(prioritySlider.value) < 0.4 {
-                
-                self.priorityLevelLabel.text = "Low"
-                
-            } else if Double(prioritySlider.value) >= 0.4 && Double(prioritySlider.value) < 0.6{
-                
-                self.priorityLevelLabel.text = "Medium"
-                
-            } else if Double(prioritySlider.value) >= 0.6 && Double(prioritySlider.value) < 0.8 {
-                
-                self.priorityLevelLabel.text = "High"
-                
-            } else if Double(prioritySlider.value) >= 0.8 && Double(prioritySlider.value) < 1 {
-                
-                self.priorityLevelLabel.text = "Very High"
-                
-            }
+            setPrioritySliderLabel(for: Double(prioritySlider.value))
             
+            setDurationSliderLabel(for: Double(durationSlider.value))
             
-            if Double(durationSlider.value) == 0 {
-                
-                self.durationLevelLabel.text = "<2 Min"
-                
-            }else if Double(durationSlider.value) > 0 && Double(durationSlider.value) < 0.2  {
-                
-                self.durationLevelLabel.text = "<15 Min"
-                
-            } else if Double(durationSlider.value) > 0.2 && Double(durationSlider.value) < 0.4  {
-                
-                self.durationLevelLabel.text = "<1 Hr"
-                
-            } else if Double(durationSlider.value) > 0.4 && Double(durationSlider.value) < 0.6  {
-                
-                self.durationLevelLabel.text = "<2 Hr"
-                
-            } else if Double(durationSlider.value) > 0.6 && Double(durationSlider.value) < 0.8  {
-                
-                self.durationLevelLabel.text = "<4 Hr"
-                
-            } else if Double(durationSlider.value) > 0.8 && Double(durationSlider.value) < 1  {
-                
-                self.durationLevelLabel.text = "<8 Hr"
-                
-            } else if Double(durationSlider.value) == 1 {
-                
-                self.durationLevelLabel.text = ">8 Hr"
-                
-            }
             
             break
         case .project:
@@ -555,35 +476,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             durationLevelLabel.isHidden = true
             notesLabel.text = "How can I improve?"
             
-            if UIDevice.current.orientation.isLandscape {
-                
-                notesTextViewHeightConstraint.constant = (screenSize.height)/3
-            } else {
-                notesTextViewHeightConstraint.constant = (screenSize.height * 5)/12
-            }
             
             break
         case .context:
             titleLabel.isHidden = false
             titleLabel.text = "Context"
             titleTextField.isHidden = false
-            priorityLabel.isHidden = true
-            prioritySlider.isHidden = true
-            durationLabel.isHidden = true
-            durationSlider.isHidden = true
-            notesLabel.isHidden = true
-            notesTextView.isHidden = true
-            dueDateLabel.isHidden = true
-            dueDatePicker.isHidden = true
-            relatedToButton.isHidden = true
-            priorityLevelLabel.isHidden = true
-            durationLevelLabel.isHidden = true
-            notesLabel.text = "Notes"
-            break
-        default:
-            titleLabel.isHidden = true
-            titleLabel.text = "Title"
-            titleTextField.isHidden = true
             priorityLabel.isHidden = true
             prioritySlider.isHidden = true
             durationLabel.isHidden = true
@@ -610,13 +508,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     print("Error: Title and/or notes came back as nil")
                     return
                 }
-                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let context = AllItemStore.shared.coreDataStack.mainQueueContext
                 let newToDo = NSEntityDescription.insertNewObject(forEntityName: "ToDo", into: context)
                 newToDo.setValue(toDoTitle, forKey: "name")
                 newToDo.setValue(toDoNotes, forKey: "details")
                 
                 do {
-                    try self.allItemStore?.coreDataStack.saveChanges()
+                    try AllItemStore.shared.coreDataStack.saveChanges()
                     print("Save Complete")
                 }
                 catch let error {
@@ -633,8 +531,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 let duration = durationSlider.value
                 let date = dueDatePicker.date
                 
-                createCalendarEvent(forItem: title, forDate: date)
-                let context = self.allItemStore.coreDataStack.mainQueueContext
+                createCalendarEvent(forItem: title, forDate: date, with: notes)
+                let context = AllItemStore.shared.coreDataStack.mainQueueContext
                 let newNextAction = NSEntityDescription.insertNewObject(forEntityName: "NextAction", into: context)
                 newNextAction.setValue(title, forKey: "name")
                 newNextAction.setValue(priority, forKey: "priority")
@@ -655,7 +553,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
                 
                 do {
-                    try self.allItemStore.coreDataStack.saveChanges()
+                    try AllItemStore.shared.coreDataStack.saveChanges()
                     print("Save Complete")
                 }
                 catch let error {
@@ -669,8 +567,8 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     return
                 }
                 let date = dueDatePicker.date
-                createCalendarEvent(forItem: title, forDate: date)
-                let context = self.allItemStore.coreDataStack.mainQueueContext
+                createCalendarEvent(forItem: title, forDate: date, with: notes)
+                let context = AllItemStore.shared.coreDataStack.mainQueueContext
                 let newProject = NSEntityDescription.insertNewObject(forEntityName: "Project", into: context)
                 newProject.setValue(title, forKey: "name")
                 newProject.setValue(date, forKey: "duedate")
@@ -680,7 +578,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     nextActions.add(nextAction)
                 }
                 do {
-                    try self.allItemStore.coreDataStack.saveChanges()
+                    try AllItemStore.shared.coreDataStack.saveChanges()
                     print("Save Complete")
                 }
                 catch let error {
@@ -693,13 +591,13 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     return
                 }
                 
-                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let context = AllItemStore.shared.coreDataStack.mainQueueContext
                 let newReview = NSEntityDescription.insertNewObject(forEntityName: "Review", into: context)
                 newReview.setValue(title, forKey: "name")
                 newReview.setValue(notes, forKey: "details")
                 
                 do {
-                    try self.allItemStore.coreDataStack.saveChanges()
+                    try AllItemStore.shared.coreDataStack.saveChanges()
                     print("Save Complete")
                 }
                 catch let error {
@@ -711,12 +609,12 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     print("Error: Title and/or notes came back as nil")
                     return
                 }
-                let context = self.allItemStore.coreDataStack.mainQueueContext
+                let context = AllItemStore.shared.coreDataStack.mainQueueContext
                 let newContext = NSEntityDescription.insertNewObject(forEntityName: "Context", into: context)
                 newContext.setValue(title, forKey: "name")
                 
                 do {
-                    try self.allItemStore.coreDataStack.saveChanges()
+                    try AllItemStore.shared.coreDataStack.saveChanges()
                     print("Save Complete")
                 }
                 catch let error {
@@ -778,12 +676,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             break
         }
         
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.pickerViewTopConstraint.constant = 0
+        UIView.animate(withDuration: 0.45, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: { self.pickerViewTopConstraint.constant = 0
             self.notesTextViewHeightConstraint.constant = notesTextViewHeight
             self.view.layoutIfNeeded()
-        })
+        }, completion: nil)
+        
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -797,27 +694,23 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 
                 self.view.layoutIfNeeded()
                 
-                UIView.animate(withDuration: 0.25, animations: {
+                 UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
                     self.pickerViewTopConstraint.constant = targetOffsetForTopConstraint
                     self.notesTextViewHeightConstraint.constant = targetOffsetForNotesTextViewHeight
                     self.view.layoutIfNeeded()
-                })
+                 }, completion: nil)
             }
         }
     }
     
-    
-    
     // MARK: - Calendar method
-    func createCalendarEvent(forItem item: String, forDate date: Date) {
+    func createCalendarEvent(forItem item: String, forDate date: Date, with notes: String) {
         
         let eventStore : EKEventStore = EKEventStore()
         
         eventStore.requestAccess(to: .event, completion: { (granted, error) in
             
             if (granted) && (error == nil) {
-                print("granted \(granted)")
-                print("error \(error)")
                 
                 let event:EKEvent = EKEvent(eventStore: eventStore)
                 switch self.itemType {
@@ -831,7 +724,7 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                     event.title = "Item Due: \(item)"
                     break
                 }
-                event.notes = self.notesTextView.text
+                event.notes = notes
                 event.isAllDay = true
                 event.startDate = date
                 event.endDate = date
@@ -844,12 +737,10 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
                 }
                 print("Saved Event")
             } else {
-                print("Failed to save event with error: \(error) or access not granted")
+                print("Failed to save event with error: \(error?.localizedDescription ?? "") or access not granted")
             }
         })
     }
-    
-    
     
     // MARK: - Navigation
     
@@ -858,53 +749,11 @@ class AddItemViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
             let destinationVC = segue.destination as! RelatedToViewController
             destinationVC.addSegue = true
             destinationVC.itemType = itemType
-            destinationVC.allItemStore = allItemStore
             destinationVC.delegate = self
-            
-            
-            
         }
     }
-    
-    
     
 }
 
-// Use custom delegation to send relationships information from relatedToVC to AddItemVC
-extension AddItemViewController: RelatedToViewControllerDelegate {
-    func didUpdateRelatedTo(sender: RelatedToViewController) {
-        if let relatedToNextActions =  sender.relatedToNextActionsArray {
-            self.relatedToNextActionsArray = relatedToNextActions
-        }else {
-            self.relatedToNextActionsArray = []
-        }
-        
-        if let relatedToProjects = sender.relatedToProjectsArray {
-            self.relatedToProjectsArray = relatedToProjects
-        }
-        else {
-            self.relatedToProjectsArray = []
-        }
-        
-        
-        if let relatedToContexts = sender.relatedToContextArray {
-            self.relatedToContextArray = relatedToContexts
-        }
-        else {
-            self.relatedToContextArray = []
-        }
-    }
-}
 
-extension UIViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}
 
